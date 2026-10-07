@@ -1,0 +1,84 @@
+{
+  "phase": "write",
+  "host": "Node 24",
+  "runtime": {
+    "ruby": "3.3.3",
+    "rails": "8.0.1",
+    "platform": "wasm32-wasi",
+    "adapter": "PostgreSQL"
+  },
+  "duckdb": "v1.2.2",
+  "checks": [
+    {
+      "name": "Fresh database has no records",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails creates 架空・宮崎テスト会場",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails creates 架空・第2会場",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails creates 架空・ホテル",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails rejects blank name with 422",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails rejects negative capacity with 422",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails rejects negative cost with 422",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails rejects invalid category with 422",
+      "status": "PASS"
+    },
+    {
+      "name": "Rails rejects duplicate name with 422",
+      "status": "PASS"
+    },
+    {
+      "name": "Quoted/template/HTML-like text safely round-trips as data",
+      "status": "PASS"
+    },
+    {
+      "name": "Runtime is genuine Ruby/Rails on Wasm",
+      "status": "PASS"
+    },
+    {
+      "name": "All four records readable through Rails",
+      "status": "PASS"
+    },
+    {
+      "name": "PGlite is the source of truth",
+      "status": "PASS"
+    },
+    {
+      "name": "DuckDB-Wasm aggregates Rails/PGlite-derived records exactly",
+      "status": "PASS"
+    }
+  ],
+  "summaries": [
+    {
+      "category": "hotel",
+      "count": 1,
+      "capacity": 10,
+      "cost": 20000
+    },
+    {
+      "category": "venue",
+      "count": 3,
+      "capacity": 130,
+      "cost": 270000
+    }
+  ],
+  "browserVerified": false
+}

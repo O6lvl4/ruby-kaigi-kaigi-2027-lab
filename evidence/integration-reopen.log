@@ -1,0 +1,7 @@
+Initializing Rails application...
+Rails application has been loaded but not initialized
+PASS: Runtime is genuine Ruby/Rails on Wasm
+PASS: Records survive independent process/database reopen (Node FS)
+PASS: PGlite is the source of truth
+PASS: DuckDB-Wasm aggregates Rails/PGlite-derived records exactly
+PASS 4 checks; browser IndexedDB persistence is NOT tested by this suite.

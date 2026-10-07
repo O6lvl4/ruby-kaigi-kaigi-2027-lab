@@ -1,0 +1,44 @@
+{
+  "phase": "reopen",
+  "host": "Node 24",
+  "runtime": {
+    "ruby": "3.3.3",
+    "rails": "8.0.1",
+    "platform": "wasm32-wasi",
+    "adapter": "PostgreSQL"
+  },
+  "duckdb": "v1.2.2",
+  "checks": [
+    {
+      "name": "Runtime is genuine Ruby/Rails on Wasm",
+      "status": "PASS"
+    },
+    {
+      "name": "Records survive independent process/database reopen (Node FS)",
+      "status": "PASS"
+    },
+    {
+      "name": "PGlite is the source of truth",
+      "status": "PASS"
+    },
+    {
+      "name": "DuckDB-Wasm aggregates Rails/PGlite-derived records exactly",
+      "status": "PASS"
+    }
+  ],
+  "summaries": [
+    {
+      "category": "hotel",
+      "count": 1,
+      "capacity": 10,
+      "cost": 20000
+    },
+    {
+      "category": "venue",
+      "count": 3,
+      "capacity": 130,
+      "cost": 270000
+    }
+  ],
+  "browserVerified": false
+}

@@ -1,0 +1,5 @@
+node_modules/
+dist/
+public/base-app.wasm
+.test-data/
+upstream-*/

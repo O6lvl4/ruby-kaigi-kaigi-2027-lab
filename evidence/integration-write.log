@@ -1,0 +1,21 @@
+Initializing Rails application...
+Rails application has been loaded but not initialized
+-- create_table(:venues)
+   -> 0.0156s
+-- add_index(:venues, :name, {:unique=>true})
+   -> 0.0037s
+PASS: Fresh database has no records
+PASS: Rails creates 架空・宮崎テスト会場
+PASS: Rails creates 架空・第2会場
+PASS: Rails creates 架空・ホテル
+PASS: Rails rejects blank name with 422
+PASS: Rails rejects negative capacity with 422
+PASS: Rails rejects negative cost with 422
+PASS: Rails rejects invalid category with 422
+PASS: Rails rejects duplicate name with 422
+PASS: Quoted/template/HTML-like text safely round-trips as data
+PASS: Runtime is genuine Ruby/Rails on Wasm
+PASS: All four records readable through Rails
+PASS: PGlite is the source of truth
+PASS: DuckDB-Wasm aggregates Rails/PGlite-derived records exactly
+PASS 14 checks; browser IndexedDB persistence is NOT tested by this suite.
