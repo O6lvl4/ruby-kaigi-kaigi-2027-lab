@@ -25,6 +25,7 @@ function dispose() {
 function fail(error, run) {
   if (run !== generation) return;
   clearTimeout(timeout);
+  document.querySelector('#boot-panel h1').textContent = 'まとめを表示できませんでした';
   $('boot-status').textContent = 'Rails/Wasm でまとめを生成できませんでした';
   $('boot-error').textContent = error.message || String(error);
   $('boot-error').hidden = false;
@@ -47,6 +48,7 @@ async function start() {
   $('retry').hidden = true;
   $('diagnostics').hidden = true;
   $('copy-status').textContent = '';
+  document.querySelector('#boot-panel h1').textContent = 'まとめを読み込んでいます';
   $('boot-status').textContent = 'Ruby / Rails を読み込んでいます…';
   window.summaryApp.ready = false;
   window.summaryApp.error = null;
