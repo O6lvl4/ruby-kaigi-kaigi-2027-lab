@@ -1,0 +1,15 @@
+{
+  "env": {
+    "RUBY_GC_HEAP_0_INIT_SLOTS": "100",
+    "RUBY_GC_HEAP_1_INIT_SLOTS": "100",
+    "RUBY_GC_HEAP_2_INIT_SLOTS": "100",
+    "RUBY_GC_HEAP_3_INIT_SLOTS": "100",
+    "RUBY_GC_HEAP_4_INIT_SLOTS": "100",
+    "RUBY_GC_HEAP_5_INIT_SLOTS": "100"
+  },
+  "initial": 37355520,
+  "boot": 335216640,
+  "rss": 485507072,
+  "stats": "{count: 1, time: 4, marking_time: 3, sweeping_time: 0, heap_allocated_pages: 7, heap_empty_pages: 0, heap_allocatable_slots: 0, heap_available_slots: 11941, heap_live_slots: 8337, heap_free_slots: 3604, heap_final_slots: 0, heap_marked_slots: 6112, heap_eden_pages: 7, total_allocated_pages: 7, total_freed_pages: 0, total_allocated_objects: 9086, total_freed_objects: 749, malloc_increase_bytes: 182825, malloc_increase_bytes_limit: 16777216, minor_gc_count: 1, major_gc_count: 0, compact_count: 0, read_barrier_faults: 0, total_moved_objects: 0, remembered_wb_unprotected_objects: 0, remembered_wb_unprotected_objects_limit: 5, old_objects: 513, old_objects_limit: 1026, oldmalloc_increase_bytes: 1207462, oldmalloc_increase_bytes_limit: 16777216}",
+  "heaps": "{0 => {slot_size: 24, heap_live_slots: 6120, heap_free_slots: 2070, heap_final_slots: 0, heap_eden_pages: 3, heap_eden_slots: 8190, total_allocated_pages: 3, force_major_gc_count: 0, force_incremental_marking_finish_count: 0, total_allocated_objects: 6607, total_freed_objects: 487}, 1 => {slot_size: 48, heap_live_slots: 1614, heap_free_slots: 1115, heap_final_slots: 0, heap_eden_pages: 2, heap_eden_slots: 2729, total_allocated_pages: 2, force_major_gc_count: 0, force_incremental_marking_finish_count: 0, total_allocated_objects: 1751, total_freed_objects: 137}, 2 => {slot_size: 96, heap_live_slots: 587, heap_free_slots: 94, heap_final_slots: 0, heap_eden_pages: 1, heap_eden_slots: 681, total_allocated_pages: 1, force_major_gc_count: 0, force_incremental_marking_finish_count: 0, total_allocated_objects: 631, total_freed_objects: 44}, 3 => {slot_size: 192, heap_live_slots: 62, heap_free_slots: 279, heap_final_slots: 0, heap_eden_pages: 1, heap_eden_slots: 341, total_allocated_pages: 1, force_major_gc_count: 0, force_incremental_marking_finish_count: 0, total_allocated_objects: 95, total_freed_objects: 33}, 4 => {slot_size: 384, heap_live_slots: 0, heap_free_slots: 0, heap_final_slots: 0, heap_eden_pages: 0, heap_eden_slots: 0, total_allocated_pages: 1, force_major_gc_count: 0, force_incremental_marking_finish_count: 0, total_allocated_objects: 48, total_freed_objects: 48}}"
+}

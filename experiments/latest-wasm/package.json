@@ -1,0 +1,16 @@
+{
+  "name": "latest-rails-wasm-foundation-proof",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "inspect": "node scripts/inspect-wasm.mjs browser/foundation.wasm",
+    "serve": "python3 -m http.server 4178 --bind 127.0.0.1 --directory browser",
+    "test:browser": "node scripts/browser-proof.mjs"
+  },
+  "dependencies": {
+    "@ruby/wasm-wasi": "2.10.1"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}
