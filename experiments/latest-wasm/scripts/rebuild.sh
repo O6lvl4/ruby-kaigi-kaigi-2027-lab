@@ -23,12 +23,15 @@ cp "$ROOT/Gemfile.lock" "$WORK/rails/Gemfile.lock"
 export BUNDLE_PATH="$WORK/gems" BUNDLE_FROZEN=true
 export BUNDLE_GEMFILE="$WORK/core/Gemfile"
 bundle install --jobs 2 --retry 2
+# Resolve and verify all framework inputs before the expensive cross-build.
+export BUNDLE_GEMFILE="$WORK/rails/Gemfile"
+bundle install --jobs 2 --retry 2
+export BUNDLE_GEMFILE="$WORK/core/Gemfile"
 export RUBY_WASM_ROOT="$WORK/core-build" WASM_NO_MMAP=1 BUILD_JOBS=2
 export WASM_OPT="$RUBY_WASM_ROOT/build/toolchain/binaryen/bin/wasm-opt"
 export FOUNDATION_POSTLINK="$ROOT/scripts/postlink.sh"
 ruby -rruby_wasm -rruby_wasm/cli -rbundler/setup "$ROOT/scripts/build-core.rb" build --ruby-version "$WORK/ruby-4.0.7" --build-profile full --dest-dir "$WORK/core-fs" -o "$WORK/core.wasm" 2>&1 | tee "$WORK/evidence/core-build.log"
 export BUNDLE_GEMFILE="$WORK/rails/Gemfile"
-bundle install --jobs 2 --retry 2
 bundle exec ruby "$ROOT/scripts/stage-gems.rb" "$WORK/gems-to-pack"
 unset BUNDLE_GEMFILE BUNDLE_FROZEN BUNDLE_PATH
 ruby "$ROOT/scripts/pack-runtime.rb" "$WORK/core.wasm" "$WORK/gems-to-pack" "$ROOT/app" "$ROOT/compat" "$ROOT/scripts/proof.rb" "$WORK/foundation.wasm"
