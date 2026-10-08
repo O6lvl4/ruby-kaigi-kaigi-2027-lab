@@ -24,6 +24,9 @@ for(const [engineName,engine] of Object.entries({chromium,webkit})){
    console.log('PASS map/card Rails consistency and linked selection',engineName,key);
 
   }
+  await page.evaluate(()=>{for(let i=0;i<30;i++)document.querySelector(`[data-map-scenario="${['arrival','venue','night'][i%3]}"]`).click();});
+  await page.waitForFunction(()=>window.summaryApp.mapState?.key==='night');assert.equal(await page.locator('[data-place-id]').count(),3);
+  assert.equal(await page.locator('.leaflet-container').count(),1);console.log('PASS rapid scenario changes settle on latest request with one map',engineName);
   await page.setViewportSize({width:390,height:844});await page.locator('#fit-map').click();await page.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();
   const mobile=await browser.newContext({viewport:{width:390,height:844}});const mobilePage=await mobile.newPage();await mobilePage.goto(url);await ready(mobilePage);await mobilePage.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await mobilePage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await mobilePage.screenshot({path:`evidence/map-${engineName}-mobile.png`,fullPage:true});await mobile.close();
   const failed=await browser.newContext({viewport:{width:390,height:844}});const fallback=await failed.newPage();await failed.route('https://cyberjapandata.gsi.go.jp/**',route=>route.abort('failed'));

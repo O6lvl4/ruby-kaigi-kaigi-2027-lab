@@ -21,9 +21,12 @@ async function boot(mode) {
   registerPGliteWasmInterface(self, db);
   }
   vm = await initRailsVM(`${import.meta.env.BASE_URL}base-app.wasm`, { skipInitialize: true, async: true, env: summaryOnly ? ['SUMMARY_ONLY=1'] : [], database: { adapter: 'pglite' }, progressCallback: progress });
-  progress('Rails アプリケーションを起動中…');
+  progress('Ruby の起動完了。Rails のファイルを準備しています…');
   self.appFiles = JSON.stringify({ '/demo/application.rb': appSource, '/demo/summary.rb': summarySource, '/demo/map_guide.rb': mapSource, '/demo/map_places.json': mapPlaces, '/demo/views/summary/_map_cards.html.erb': mapCards, '/demo/views/summary/show.html.erb': summaryView, '/demo/vendor/pglite_adapter.rb': adapterSource, '/demo/vendor/pglite_shims/pg.rb': pgSource });
-  await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
+  await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }`);
+  self.appFiles = null;
+  progress('Rails ライブラリを読み込んでいます…');
+  await vm.evalAsync(`load '/demo/application.rb'`);
   progress(summaryOnly ? 'Rails の準備完了' : 'Rails + PGlite の準備完了');
 }
 let queue = Promise.resolve();
