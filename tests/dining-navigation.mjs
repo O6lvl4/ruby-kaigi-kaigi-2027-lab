@@ -42,6 +42,7 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   assert.equal(await page.locator('#site-navigation a[href="https://aid-on.org"]').count(),1);
   if(size==='mobile'){
    await page.locator('#menu-toggle').click();assert.equal(await page.locator('#site-navigation').isVisible(),true);
+   await page.screenshot({path:`evidence/mobile-menu-${engineName}.png`});
    await page.keyboard.press('Escape');assert.equal(await page.locator('#site-navigation').isVisible(),false);
    assert.equal(await page.locator('#menu-toggle').evaluate(el=>el===document.activeElement),true);
    await page.locator('#menu-toggle').click();await page.locator('#site-navigation a[href="#dining"]').click();
@@ -87,7 +88,12 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   await dining.locator('#dining-area').selectOption('all');
   await dining.locator('[data-dining-pin="the-meibia-miyazaki-banquet"]').click();
   assert.equal(await dining.locator('[data-dining-detail-id="the-meibia-miyazaki-banquet"]').count(),1);
+  await dining.locator('[data-dining-detail-id="the-meibia-miyazaki-banquet"] details > summary').click();
+  await dining.locator('#dining-capacity').selectOption('10');
+  assert.equal(await dining.locator('[data-dining-detail-id="the-meibia-miyazaki-banquet"] details').evaluate(el=>el.open),true,'Keeping a selection must preserve expanded details');
+  await dining.locator('#dining-capacity').selectOption('0');
   await page.screenshot({path:`evidence/dining-map-${engineName}-${size}.png`,fullPage:true});
+  await page.screenshot({path:`evidence/dining-map-viewport-${engineName}-${size}.png`});
   for(let i=0;i<3;i++){
    await dining.locator('[data-dining-view="list"]').click();assert.equal(await dining.locator('#dining-map-canvas .leaflet-pane').count(),0);
    assert.equal(await dining.locator('[data-restaurant-id]:visible').count(),20);

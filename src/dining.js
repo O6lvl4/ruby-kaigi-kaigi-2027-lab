@@ -12,13 +12,20 @@ export function initDiningGuide(sourceVenues = []) {
   const mapPanel=root.querySelector('#dining-map-panel'),grid=root.querySelector('.dining-grid'),detail=root.querySelector('#dining-map-detail');
   const status=root.querySelector('#dining-map-status');
   let mode='list',selected=null,map=null,disposed=false,mapGeneration=0,matches=[];
+  function updateSelectionNote(venue){
+    let notice=detail.querySelector('.dining-selection-note');
+    if(matches.some(v=>v.id===venue.id)){notice?.remove();return;}
+    if(!notice){notice=document.createElement('p');notice.className='note dining-selection-note';detail.prepend(notice);}
+    notice.textContent='現在の絞り込み条件の対象外です';
+  }
   function setDetail(id){
     selected=id;
     root.querySelector('#dining-map-choice').value=id||'';
     for(const venue of venues){venue.card.classList.toggle('dining-card-selected',venue.id===id);venue.card.querySelector('[data-dining-focus]')?.setAttribute('aria-pressed',String(venue.id===id));}
-    detail.replaceChildren();
     const venue=venues.find(v=>v.id===id);
-    if(venue){if(!matches.some(v=>v.id===id)){const notice=document.createElement('p');notice.className='note';notice.textContent='現在の絞り込み条件の対象外です';detail.append(notice);}const clone=venue.card.cloneNode(true);clone.hidden=false;clone.removeAttribute('data-restaurant-id');clone.removeAttribute('data-group-capacity');clone.dataset.diningDetailId=venue.id;clone.querySelector('[data-dining-focus]')?.remove();detail.append(clone);}
+    if(venue&&detail.querySelector('[data-dining-detail-id]')?.dataset.diningDetailId===id){updateSelectionNote(venue);map?.select(id);return;}
+    detail.replaceChildren();
+    if(venue){updateSelectionNote(venue);const clone=venue.card.cloneNode(true);clone.hidden=false;clone.removeAttribute('data-restaurant-id');clone.removeAttribute('data-group-capacity');clone.dataset.diningDetailId=venue.id;clone.querySelector('[data-dining-focus]')?.remove();detail.append(clone);}
     else{const p=document.createElement('p');p.className='dining-detail-empty';p.textContent='ピンを選ぶと、名称・住所・移動リンクをここで確認できます';detail.append(p);}
     map?.select(id);
   }
