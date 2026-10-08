@@ -1,0 +1,14 @@
+{
+  "marker": "RUBY_407_WASM_BOOT_PASSED",
+  "file": "rails-core-latest.wasm",
+  "bytes": 32629680,
+  "sha256": "4b88f1424fbb437f66ef027d95696aed91482ac0e3c3c3969f3c5f995f5aab71",
+  "ruby": "4.0.7",
+  "platform": "wasm32-wasi",
+  "compileMs": 78.22395499999999,
+  "bootMs": 284.407274,
+  "initialMemory": 37486592,
+  "bootMemory": 66912256,
+  "rss": 227401728,
+  "maxRssKiB": 228296
+}

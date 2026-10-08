@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+gem 'railties', '= 8.1.4'
+gem 'actionpack', '= 8.1.4'
+gem 'actionview', '= 8.1.4'
+
+# Match the JSON extension shipped in the checksum-pinned Ruby 4.0.7 source.
+gem 'json', '= 2.18.0'
+
+gem "tzinfo-data", "= 1.2026.5"

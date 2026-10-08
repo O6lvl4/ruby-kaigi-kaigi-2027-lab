@@ -1,0 +1,11 @@
+{
+  "artifact": "node_modules/@ruby/4.0-wasm-wasi/dist/ruby+stdlib.wasm",
+  "sha256": "9fe3c749730a16da9b0d1a973bb77bec164f8d958efcb7f5b81e4275ea8c5439",
+  "bytes": 32555374,
+  "compileMs": 141.12440499999997,
+  "bootMs": 1332.8915020000002,
+  "ruby": "ruby 4.0.0 (2025-12-25 revision 553f1675f3) +PRISM [wasm32-wasi]",
+  "platform": "wasm32-wasi",
+  "memory": 335282176,
+  "rss": 483962880
+}

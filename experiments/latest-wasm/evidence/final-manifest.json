@@ -1,0 +1,12 @@
+{
+  "ruby": "4.0.7",
+  "rails": "8.1.4",
+  "toolkit": "2.10.1",
+  "experimental": true,
+  "physicalIPhoneVerified": false,
+  "inputBytes": 40640442,
+  "bytes": 40640442,
+  "sourceSha256": "20ce98f8a2db894bac7009d254818cc9379bad5b04805d3f0078bb3fde893c99",
+  "sha256": "20ce98f8a2db894bac7009d254818cc9379bad5b04805d3f0078bb3fde893c99",
+  "coreSectionsIdentical": true
+}
