@@ -1,0 +1,17 @@
+{
+  "marker": "REAL_RAILS_WASM_PROOF_PASSED",
+  "ruby": "4.0.7",
+  "rails": "8.1.4",
+  "platform": "wasm32-wasi",
+  "name": "RubyKaigiKaigi",
+  "engine": "ruby",
+  "html_sanitization": false,
+  "bytes": 40640442,
+  "sha256": "20ce98f8a2db894bac7009d254818cc9379bad5b04805d3f0078bb3fde893c99",
+  "compileMs": 4108.205532,
+  "rubyBootMs": 8455.792752999998,
+  "railsAndTestsMs": 7331.923676000002,
+  "memory": 98435072,
+  "rss": 254001152,
+  "maxRssKiB": 257168
+}

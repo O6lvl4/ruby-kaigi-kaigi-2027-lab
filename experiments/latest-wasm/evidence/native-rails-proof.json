@@ -1,0 +1,1 @@
+{"marker":"REAL_RAILS_PROOF_PASSED","runtime":{"ruby":"4.0.7","rails":"8.1.4","platform":"x86_64-linux","name":"Roundtrip","engine":"ruby"},"html":"<main><h1>&lt;script&gt;alert(1)&lt;/script&gt;&amp;&quot;</h1><p>Ruby 4.0.7 / Rails 8.1.4</p></main>"}

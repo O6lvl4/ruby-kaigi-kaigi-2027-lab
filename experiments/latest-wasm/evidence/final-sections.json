@@ -1,0 +1,69 @@
+{
+  "file": "app-repo/experiments/latest-wasm/browser/foundation.wasm",
+  "bytes": 40640442,
+  "sha256": "20ce98f8a2db894bac7009d254818cc9379bad5b04805d3f0078bb3fde893c99",
+  "sections": [
+    {
+      "id": 1,
+      "size": 1052
+    },
+    {
+      "id": 2,
+      "size": 3596
+    },
+    {
+      "id": 3,
+      "size": 16810
+    },
+    {
+      "id": 4,
+      "size": 7
+    },
+    {
+      "id": 5,
+      "size": 4
+    },
+    {
+      "id": 6,
+      "size": 19
+    },
+    {
+      "id": 7,
+      "size": 947
+    },
+    {
+      "id": 9,
+      "size": 17883
+    },
+    {
+      "id": 12,
+      "size": 3
+    },
+    {
+      "id": 10,
+      "size": 12166697
+    },
+    {
+      "id": 11,
+      "size": 28433080
+    },
+    {
+      "id": 0,
+      "size": 189,
+      "name": "producers"
+    },
+    {
+      "id": 0,
+      "size": 107,
+      "name": "target_features"
+    }
+  ],
+  "definedFunctions": 16807,
+  "memories": [
+    {
+      "flags": 0,
+      "initialPages": 694,
+      "initialBytes": 45481984
+    }
+  ]
+}
