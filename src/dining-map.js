@@ -12,6 +12,7 @@ export function createDiningMap(container,venues,onSelect,onStatus){
     const marker=L.marker([venue.coordinates[1],venue.coordinates[0]],{title:venue.name,keyboard:true,icon:L.divIcon({className:'dining-pin',html:`<span>${venue.number}</span>`,iconSize:[34,34],iconAnchor:[17,17]})}).addTo(map);
     const label=document.createElement('span');label.textContent=venue.name;marker.bindTooltip(label,{direction:'top',offset:[0,-14]});marker.on('click',()=>onSelect(venue.id));markers.set(venue.id,marker);
     marker.getElement()?.setAttribute('data-dining-pin',venue.id);
+    marker.getElement()?.classList.toggle('dining-pin-unknown',venue.groupCapacity===null);
   }
   return{
     fit(){if(disposed)return;map.invalidateSize({animate:false});if(venues.length)map.fitBounds(L.latLngBounds(venues.map(v=>[v.coordinates[1],v.coordinates[0]])),{padding:[38,38],maxZoom:15,animate:false});else map.setView([31.915,131.424],13);},

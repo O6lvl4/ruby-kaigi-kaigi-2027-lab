@@ -30,7 +30,9 @@ export function initDiningGuide(sourceVenues = []) {
     const known=matches.filter(v=>v.groupCapacity!==null).length,unknown=matches.length-known;
     root.querySelector('#dining-results').textContent=`${area==='all'?'全エリア':area} · ${minimum?minimum+'人以上の掲載目安':'すべての人数'}：${known}件 ＋ 人数要確認 ${unknown}件`;
     root.querySelector('#dining-empty').hidden=minimum===0 || known>0;
-    root.querySelector('#dining-map-count').textContent=`全${located.length}地点を表示 · 条件内${located.filter(v=>matchedIds.has(v.id)).length}地点 · 位置未確認${matches.filter(v=>!located.includes(v)).length}件は一覧で確認`;
+    const locatedMatches=located.filter(v=>matchedIds.has(v.id));
+    const locatedKnown=locatedMatches.filter(v=>v.groupCapacity!==null).length;
+    root.querySelector('#dining-map-count').textContent=`全${located.length}地点を表示 · 掲載人数の条件内${locatedKnown}地点 ＋ 人数要確認${locatedMatches.length-locatedKnown}地点 · 位置未確認${matches.filter(v=>!located.includes(v)).length}件は一覧で確認`;
     if(selected){
       if(!matchedIds.has(selected)&&preserveSelection!==true)setDetail(null);
       else setDetail(selected);

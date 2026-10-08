@@ -51,7 +51,8 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.equal(await page.locator('[data-restaurant-id]:visible').count(),restaurants.length);
    for(const restaurant of restaurants){
      const card=page.locator(`[data-restaurant-id="${restaurant.id}"]`);
-     assert.equal(await card.locator(`a[href="${restaurant.sourceUrl}"]`).count(),1);
+     assert.equal(await card.locator(`.source > a[href="${restaurant.sourceUrl}"]`).count(),1);
+     assert.equal(await card.locator(`.restaurant-details a[href="${restaurant.coordinateSourceUrl}"]`).count(),1);
    }
    await page.locator('[data-restaurant-id="torihisa"] summary').click();
    assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(),/2027年の空席/);

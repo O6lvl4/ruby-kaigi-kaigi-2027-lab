@@ -14,6 +14,7 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   });
   const page=await context.newPage(),requests=[],errors=[];
   page.on('request',request=>requests.push(request.url()));page.on('pageerror',error=>errors.push(error.message));
+  try{
   await page.goto(base);await page.waitForFunction(()=>window.summaryApp?.mapReady||window.summaryApp?.error,null,{timeout:180000});
   assert.equal(await page.evaluate(()=>window.summaryApp.error),null);
   const initialWasm=requests.filter(u=>u.includes('base-app.wasm')).length;
@@ -57,6 +58,7 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   assert.deepEqual(await page.evaluate(()=>window.diningGuideState.matchingIds),listMatches);
   assert.equal(await dining.locator('[data-dining-pin]').count(),20);
   assert.equal(await dining.locator('.dining-pin-muted').count(),20-listMatches.length);
+  assert.ok(await dining.locator('.dining-pin-unknown:not(.dining-pin-muted)').count()>0);
   await dining.locator('#dining-map-choice').selectOption('torihisa');
   assert.equal(await dining.locator('[data-dining-detail-id="torihisa"]').count(),1);
   assert.match(await dining.locator('#dining-map-detail').innerText(),/対象外/);
@@ -81,7 +83,8 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   assert.equal(await page.evaluate(()=>window.geolocationCalls),0);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.deepEqual(errors,[]);
   results.push({engine:engineName,size,status:'PASS',all20Pins:true,sharedFilters:true,addressLinks:true,copyAndFallback:true,noLocationAccess:true,workerReleased:true,repeatedTeardown:true,tileFailureReadable:true,mobileNavigation:true});
-  console.log('PASS dining map/address/header lifecycle',engineName,size);await context.close();
+  console.log('PASS dining map/address/header lifecycle',engineName,size);
+  }catch(error){await page.screenshot({path:`evidence/dining-navigation-failure-${engineName}-${size}.png`}).catch(()=>{});throw error;}finally{await context.close();}
  }}finally{await browser.close();}
 }
 await writeFile('evidence/dining-navigation-results.json',JSON.stringify({url:base,results},null,2));
