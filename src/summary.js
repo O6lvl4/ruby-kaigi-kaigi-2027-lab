@@ -1,3 +1,4 @@
+import './map.css';
 const $ = id => document.getElementById(id);
 let worker, sequence = 0, generation = 0;
 const pending = new Map();
@@ -85,6 +86,14 @@ async function start() {
     window.summaryApp.ready = true;
     window.summaryApp.renderer = 'Rails-ActionView-ERB';
     clearTimeout(timeout);
+    try {
+      const { initMapGuide } = await import('./map.js');
+      await initMapGuide(request);
+    } catch (mapError) {
+      const status=document.getElementById('map-status');
+      if(status){status.textContent='地図を起動できませんでした。地点カードと公式の出典はそのまま確認できます。';status.classList.add('map-warning');}
+      window.summaryApp.mapError=mapError.message;
+    }
     if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   } catch (error) { if (!window.summaryApp.error) fail(error, run); }
 }

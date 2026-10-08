@@ -45,19 +45,32 @@ class PreparationSnapshot
   end
 end
 
+require '/demo/map_guide'
+
 class SummaryController < ActionController::Base
   prepend_view_path '/demo/views'
 
   def show
     @snapshot = PreparationSnapshot.current
+    @guide = MiyazakiMapGuide.select(params[:scenario])
     @runtime = { ruby: RUBY_VERSION, rails: Rails.version, platform: RUBY_PLATFORM, renderer: 'ActionView::ERB', controller: self.class.name }
     response.set_header('X-Summary-Renderer', 'Rails-ActionView-ERB')
     response.set_header('X-Ruby-Platform', RUBY_PLATFORM)
     response.set_header('X-Rails-Version', Rails.version)
     respond_to do |format|
       format.html { render template: 'summary/show', layout: false }
-      format.json { render json: { snapshot: @snapshot, runtime: @runtime } }
+      format.json { render json: { snapshot: @snapshot, runtime: @runtime, map: @guide } }
     end
+  end
+
+  def map
+    @guide = MiyazakiMapGuide.select(params[:scenario])
+    response.set_header('X-Summary-Renderer', 'Rails-ActionView-ERB')
+    response.set_header('X-Ruby-Platform', RUBY_PLATFORM)
+    cards = render_to_string(partial: 'summary/map_cards', formats: [:html])
+    render json: @guide.merge(html: cards, renderer: 'Rails-ActionView-ERB', controller: self.class.name)
+  rescue ArgumentError
+    render json: { error: 'Unknown map scenario' }, status: :unprocessable_entity
   end
 end
 

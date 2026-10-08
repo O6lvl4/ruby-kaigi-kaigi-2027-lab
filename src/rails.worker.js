@@ -1,6 +1,9 @@
 import { initRailsVM, registerPGliteWasmInterface } from 'wasmify-rails';
 import appSource from './ruby/application.rb?raw';
 import summarySource from './ruby/summary.rb?raw';
+import mapSource from './ruby/map_guide.rb?raw';
+import mapPlaces from './ruby/map_places.json?raw';
+import mapCards from './ruby/views/summary/_map_cards.html.erb?raw';
 import summaryView from './ruby/views/summary/show.html.erb?raw';
 import adapterSource from './ruby/vendor/pglite_adapter.rb?raw';
 import pgSource from './ruby/vendor/pglite_shims/pg.rb?raw';
@@ -19,7 +22,7 @@ async function boot(mode) {
   }
   vm = await initRailsVM(`${import.meta.env.BASE_URL}base-app.wasm`, { skipInitialize: true, async: true, env: summaryOnly ? ['SUMMARY_ONLY=1'] : [], database: { adapter: 'pglite' }, progressCallback: progress });
   progress('Rails アプリケーションを起動中…');
-  self.appFiles = JSON.stringify({ '/demo/application.rb': appSource, '/demo/summary.rb': summarySource, '/demo/views/summary/show.html.erb': summaryView, '/demo/vendor/pglite_adapter.rb': adapterSource, '/demo/vendor/pglite_shims/pg.rb': pgSource });
+  self.appFiles = JSON.stringify({ '/demo/application.rb': appSource, '/demo/summary.rb': summarySource, '/demo/map_guide.rb': mapSource, '/demo/map_places.json': mapPlaces, '/demo/views/summary/_map_cards.html.erb': mapCards, '/demo/views/summary/show.html.erb': summaryView, '/demo/vendor/pglite_adapter.rb': adapterSource, '/demo/vendor/pglite_shims/pg.rb': pgSource });
   await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
   progress(summaryOnly ? 'Rails の準備完了' : 'Rails + PGlite の準備完了');
 }
