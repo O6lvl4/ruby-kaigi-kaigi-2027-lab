@@ -32,7 +32,9 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.ok(requests.some(x=>x.includes('base-app.wasm')),'Homepage must execute the Ruby Wasm runtime');
    assert.ok(!requests.some(x=>/postgres.*\.(wasm|data)|duckdb.*\.wasm/.test(x)),'Read mode must not boot unrelated database engines');
    assert.deepEqual(errors,[]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   const requestsBeforeReading=requests.length;
    assert.equal(await page.locator('[data-restaurant-id]').count(),4);
+   assert.deepEqual(await page.locator('#dining-capacity option').evaluateAll(options=>options.map(x=>x.value)),['0','10','20','30','50','60']);
    assert.equal(await page.locator('[data-archive-year]').count(),5);
    await page.locator('a[href="#dining"]').click();
    await page.locator('#dining-capacity').selectOption('30');
@@ -55,7 +57,6 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    }
    await page.locator('.archive-reading > summary').click();
    assert.equal(await page.locator('.reading-grid article').count(),3);
-   const requestsBeforeReading=requests.length;
    for(let i=0;i<3;i++){await page.locator('#dining').scrollIntoViewIfNeeded();await page.locator('#archive').scrollIntoViewIfNeeded();}
    assert.equal(page.workers().length,0);
    assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);

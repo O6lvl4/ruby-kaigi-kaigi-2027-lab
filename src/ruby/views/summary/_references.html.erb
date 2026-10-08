@@ -3,7 +3,7 @@
   <div class="section-label"><span>05</span><h2 id="dining-title"><%= dining.fetch('title') %></h2></div>
   <p class="section-intro"><%= dining.fetch('intro') %></p>
   <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= dining.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
-  <div class="dining-filter"><label for="dining-capacity">集まる人数の目安</label><select id="dining-capacity" aria-describedby="capacity-help"><option value="0">すべての店</option value="10">10人以上</option value="20">20人以上</option value="30">30人以上</option value="50">50人以上</option><option value="60">60人以上</option></select><p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。</p></div>
+  <div class="dining-filter"><label for="dining-capacity">集まる人数の目安</label><select id="dining-capacity" aria-describedby="capacity-help"><option value="0">すべての店</option><option value="10">10人以上</option><option value="20">20人以上</option><option value="30">30人以上</option><option value="50">50人以上</option><option value="60">60人以上</option></select><p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。</p></div>
   <p id="dining-results" class="source" role="status" aria-live="polite">4店を掲載（うち人数要確認 1店）</p>
   <p id="dining-empty" class="note" hidden>掲載人数の条件に合う店はありません。人数要確認の店は下に残しています。</p>
   <div class="dining-grid"><% dining.fetch('restaurants').each do |restaurant| %>
