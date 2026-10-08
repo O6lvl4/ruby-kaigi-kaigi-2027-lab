@@ -51,7 +51,7 @@ export async function initMapGuide(request) {
     if(JSON.stringify(cardIds)!==JSON.stringify(points.map(x=>x.id)))throw new Error('Map and Rails cards do not match');
     for(const feature of data.geojson.features){
       if(feature.geometry.type==='LineString'){
-        L.polyline(feature.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#932639',weight:3,dashArray:'7 9',opacity:.72,interactive:false}).addTo(layer);
+        L.polyline(feature.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#a3293d',weight:3,dashArray:'7 9',opacity:.72,interactive:false}).addTo(layer);
       }
     }
     for(const feature of points){
@@ -86,3 +86,4 @@ export async function initMapGuide(request) {
   window.summaryApp.mapReady=false;
   await loadScenario(sidebar.dataset.scenario || 'arrival');
 }
+
