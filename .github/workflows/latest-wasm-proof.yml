@@ -27,6 +27,8 @@ jobs:
         with:
           ruby-version: '4.0.7'
           bundler: '4.0.20'
+      - name: Verify worker lifecycle without booting Wasm
+        run: node scripts/worker-lifecycle-test.mjs
       - name: Build checksum-pinned Ruby and real Rails proof
         run: |
           mkdir -p evidence

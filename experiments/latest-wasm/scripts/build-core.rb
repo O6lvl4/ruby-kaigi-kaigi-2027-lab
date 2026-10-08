@@ -10,7 +10,8 @@ end
 RubyWasm::BuildExecutor.prepend(BoundedBuild)
 module CheckedPostlink
   def system(*args, **kwargs)
-    if ENV['FOUNDATION_POSTLINK'] && args.first.to_s == 'make' && args.any? { |arg| arg.to_s == 'install' }
+    wasm_build = kwargs[:chdir].to_s.include?('/wasm32-unknown-wasip1/ruby-')
+    if wasm_build && ENV['FOUNDATION_POSTLINK'] && args.first.to_s == 'make' && args.any? { |arg| arg.to_s == 'install' }
       args << "POSTLINK=#{ENV.fetch('FOUNDATION_POSTLINK')} $@"
     end
     super(*args, **kwargs)
@@ -27,4 +28,4 @@ module WasiMemoryConfiguration
   end
 end
 RubyWasm::CrossRubyProduct.prepend(WasiMemoryConfiguration)
-RubyWasm::CLI.new(stdout: $stdout, stderr: $stderr).run(ARGV)
+RubyWasm::CLI.new(stdout: $stdout, stderr: $stderr).run(ARGV) if $PROGRAM_NAME == __FILE__
