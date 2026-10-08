@@ -47,3 +47,13 @@ In one same-machine Node comparison, compile-stage RSS fell201→167MiB and firs
 Its explicit check runs one worker through Ruby alone, then genuine Rails initialization, then the actual ERB summary response. It does not load Leaflet tiles, PGlite or DuckDB, and terminates the worker after the check. Passing this check while the full guide fails would narrow the investigation; neither outcome independently identifies an OS memory kill. The main guide also records its latest stage locally, including successful initialization. A successful stage does not prove the browser remained alive afterward.
 
 A truly smaller custom Rails bundle is feasible upstream, but would require rebuilding and validating dependency packaging. No dependency swap or unverified newer runtime has been introduced here.
+
+## Read-only worker lifetime and persistent schematic
+
+A later report described an immediate failure around tab switching/scrolling. That does not establish cumulative request growth or a map fault. The following bounds are deliberate improvements, not a claim of reproduced iPhone resolution.
+
+The reading homepage now executes genuine browser Rails once to generate the HTML, runtime JSON and all three scenario responses. It then terminates the Ruby worker before map interaction; only five bounded Rails response objects remain. Repeated scenario changes do not restart Ruby or enqueue Ruby requests. The writing lab still has its own live Rails/PGlite worker.
+
+The default map is an original Rails ERB SVG schematic with all seven verified places at fixed authored positions. Every scenario returns all seven real-coordinate features plus selected IDs; switching scenarios only changes camera/emphasis. Coordinates stay available for the optional real map. The diagram is explicitly not to scale, and its paths are not road navigation. The real map loads Leaflet/GSI only when requested, retains all markers across scenario switches, and removes the map and listeners when left.
+
+Regression checks cover the cold page, immediate scenario switching and scrolling, fixed SVG nodes/anchors, stable real-map marker nodes, repeated map-mode disposal, zero retained read-only workers, five total Rails requests, a three-scenario cache and a20-second post-interaction observation. These are Linux Chromium/WebKit checks, not physical Safari evidence.

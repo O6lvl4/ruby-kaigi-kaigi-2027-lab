@@ -1,5 +1,20 @@
 # Public sources only. Coordinates and provenance live in map_places.json.
 class MiyazakiMapGuide
+  SCHEMATIC_POINTS = {
+    'jingu_station' => {x:730,y:150,label:'宮崎神宮駅',lx:762,ly:154,anchor:'start'},
+    'bunkakoen' => {x:380,y:230,label:'文化公園前',lx:370,ly:189,anchor:'middle'},
+    'venue' => {x:270,y:300,label:'文化センター',lx:270,ly:360,anchor:'middle'},
+    'tachibana' => {x:470,y:490,label:'橘通り3丁目',lx:450,ly:445,anchor:'end'},
+    'miyazaki_station' => {x:750,y:515,label:'宮崎駅',lx:785,ly:526,anchor:'start'},
+    'nishitachi' => {x:340,y:555,label:'ニシタチ',lx:330,ly:611,anchor:'middle'},
+    'airport' => {x:815,y:795,label:'宮崎空港',lx:815,ly:856,anchor:'middle'}
+  }.freeze
+  SCHEMATIC_ROUTES = {
+    'arrival' => ['M815 795 H470 V490 V230 H380 L270 300'],
+    'venue' => ['M750 515 H470 V230 H380 L270 300', 'M730 150 L550 150 L270 300'],
+    'night' => ['M750 515 L340 555']
+  }.freeze
+  SCHEMATIC_CAMERAS = {'arrival'=>[50,35,930,835], 'venue'=>[90,70,890,550], 'night'=>[150,380,830,300]}.freeze
   SCENARIOS = {
     'arrival' => {
       label: '宮崎に着く', title: '空港から会場へ、街で乗り換える',
@@ -37,12 +52,13 @@ class MiyazakiMapGuide
       end
       place
     end
-    points = places.each_with_index.map do |place, index|
-      { type: 'Feature', id: place[:id], geometry: { type: 'Point', coordinates: place[:coordinates] }, properties: place.reject { |k, _| k == :coordinates }.merge(number: index + 1) }
+    points = all.map do |place|
+      index = scenario.fetch(:ids).index(place[:id])
+      { type: 'Feature', id: place[:id], geometry: { type: 'Point', coordinates: place[:coordinates] }, properties: place.reject { |k, _| k == :coordinates }.merge(number: index ? index + 1 : nil, selected: !index.nil?) }
     end
     lines = scenario.fetch(:paths).each_with_index.map do |ids, index|
       { type: 'Feature', id: "#{key}-schematic-#{index}", geometry: { type: 'LineString', coordinates: ids.map { |id| places.find { |p| p[:id] == id }.fetch(:coordinates) } }, properties: { kind: 'schematic', label: '概略線・道路に沿ったナビではありません', place_ids: ids, source: scenario[:source] } }
     end
-    scenario.reject { |k, _| %i[ids paths].include?(k) }.merge(key: key, checked_on: '2026-10-08', places: places, geojson: { type: 'FeatureCollection', features: points + lines })
+    scenario.reject { |k, _| %i[ids paths].include?(k) }.merge(key: key, checked_on: '2026-10-08', places: places, all_places: all, selected_ids: scenario.fetch(:ids), schematic: {view_box: SCHEMATIC_CAMERAS.fetch(key), overview: [0,0,1000,900]}, geojson: { type: 'FeatureCollection', features: points + lines })
   end
 end
