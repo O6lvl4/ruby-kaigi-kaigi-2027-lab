@@ -1,6 +1,9 @@
 // Run on a normal development computer where browser launch is supported.
 // This is intentionally NOT a substitute for the recorded Node Wasm checks.
-import { chromium } from 'playwright';
+import { chromium, webkit } from 'playwright';
+const browserName=process.env.TEST_BROWSER || 'chromium';
+const engine=browserName==='webkit' ? webkit : chromium;
+const evidencePrefix=`evidence/${browserName}-`;
 import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -13,11 +16,12 @@ let context;
 const browserLogs=[];
 await mkdir('evidence',{recursive:true});
 async function open(){
- context=await chromium.launchPersistentContext(profile,options);
+ context=await engine.launchPersistentContext(profile,options);
  const page=await context.newPage();
  page.on('console',msg=>{ browserLogs.push(`${msg.type()}: ${msg.text()}`); console.log('BROWSER',msg.type(),msg.text()); });
  page.on('pageerror',err=>{ browserLogs.push(err.stack); console.error('PAGE ERROR',err); });
  page.on('requestfailed',req=>console.error('FAILED REQUEST',req.url(),req.failure()));
+ console.log('TEST ENGINE', browserName);
  await page.goto(url);
  await page.waitForFunction(()=>window.demo?.ready || document.querySelector('#status')?.textContent.startsWith('起動エラー'),null,{timeout:180000});
  if (!await page.evaluate(()=>window.demo?.ready)) throw new Error(await page.locator('#status').textContent());
@@ -38,7 +42,7 @@ try{
  assert.equal(invalid.status,422);pass('Rails rejects invalid browser request');
  const tab2=await context.newPage();await tab2.goto(url);
  await tab2.getByText(/別のタブでこのデモが開いています/).waitFor();pass('Second writer tab is blocked');await tab2.close();
- await mkdir('evidence',{recursive:true});await page.screenshot({path:'evidence/browser-desktop.png',fullPage:true});
+ await mkdir('evidence',{recursive:true});await page.screenshot({path:`${evidencePrefix}browser-desktop.png`,fullPage:true});
  await page.reload();
  await page.waitForFunction(()=>window.demo?.ready,null,{timeout:180000});
  assert.equal(await page.locator('#count').textContent(),'1');pass('Reload restores IndexedDB record');
@@ -49,12 +53,12 @@ try{
  assert.deepEqual(snapshot.summaries,[{category:'venue',count:1,capacity:50,cost:100000}]);pass('DuckDB aggregate reconstructs after browser reopen');
  await page.setViewportSize({width:390,height:844});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));pass('Mobile layout has no horizontal overflow');
- await page.screenshot({path:'evidence/browser-mobile.png',fullPage:true});
- await writeFile('evidence/browser-results.json',JSON.stringify({status:'PASS',url,profile,results,browserLogs},null,2));
+ await page.screenshot({path:`${evidencePrefix}browser-mobile.png`,fullPage:true});
+ await writeFile(`${evidencePrefix}browser-results.json`,JSON.stringify({status:'PASS',browserName,url,profile,results,browserLogs},null,2));
  } catch(error) {
  results.push({name:error.message,status:'FAIL'});
  const page=context?.pages().at(-1);
- if(page) await page.screenshot({path:'evidence/browser-failure.png',fullPage:true}).catch(()=>{});
- await writeFile('evidence/browser-results.json',JSON.stringify({status:'FAIL',url,results,browserLogs},null,2));
+ if(page) await page.screenshot({path:`${evidencePrefix}browser-failure.png`,fullPage:true}).catch(()=>{});
+ await writeFile(`${evidencePrefix}browser-results.json`,JSON.stringify({status:'FAIL',browserName,url,results,browserLogs},null,2));
  throw error;
 }finally{await context?.close();}
