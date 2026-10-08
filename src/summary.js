@@ -1,4 +1,5 @@
 import './map.css';
+import {saveStage,stageLabel} from './runtime-status.js';
 const $ = id => document.getElementById(id);
 let worker, sequence = 0, generation = 0;
 const pending = new Map();
@@ -9,6 +10,8 @@ const CHECKPOINT_KEY = 'rubykaigi-boot-checkpoint-v1';
 let previousCheckpoint;
 try { previousCheckpoint = JSON.parse(sessionStorage.getItem(CHECKPOINT_KEY) || 'null'); } catch {}
 function checkpoint(state, stage) {
+  stage=stageLabel(stage);
+  saveStage({build:BUILD,state,stage,at:new Date().toISOString(),source:'reading'});
   try { sessionStorage.setItem(CHECKPOINT_KEY, JSON.stringify({build: BUILD, state, stage, at: new Date().toISOString()})); } catch {}
 }
 function diagnostic(error = '') {
@@ -131,7 +134,7 @@ $('copy-diagnostics').addEventListener('click', async () => {
 window.summaryApp = { ready: false, error: null, request, lastResponse: null, build: BUILD };
 if (previousCheckpoint?.state === 'booting') {
   $('boot-status').textContent = '前回の読み込みが途中で中断されました';
-  $('boot-error').textContent = `最後に記録した段階：${previousCheckpoint.stage}。再読み込み・タブ終了・ブラウザの停止など、中断の理由はここでは特定できません。`;
+  $('boot-error').textContent = `最後に記録した段階：${stageLabel(previousCheckpoint.stage)}。再読み込み・タブ終了・ブラウザの停止など、中断の理由はここでは特定できません。`;
   $('boot-error').hidden = false;
   $('retry').hidden = false;
   $('retry').textContent = '読み込みを再開する';
