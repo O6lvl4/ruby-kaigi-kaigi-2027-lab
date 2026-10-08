@@ -1,0 +1,9 @@
+import {readFile} from 'node:fs/promises';import vm from 'node:vm';import assert from 'node:assert/strict';
+const elements=Object.fromEntries(['start','stop','status','view','log'].map(name=>['#'+name,{textContent:'',disabled:name==='stop',innerHTML:'',replaceChildren(){this.innerHTML='';}}]));
+const workers=[],events={};class Worker{constructor(){this.terminated=false;workers.push(this);}postMessage(){}terminate(){this.terminated=true;}}
+const storage=new Map();const context=vm.createContext({Worker,Date,document:{querySelector:s=>elements[s]},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},window:{addEventListener:(name,fn)=>{events[name]=fn;}}});
+vm.runInContext(await readFile(new URL('../browser/diagnostic.js',import.meta.url),'utf8'),context);
+assert.equal(workers.length,0,'Landing does not create a Worker');elements['#start'].onclick();const first=workers[0];elements['#start'].onclick();assert.equal(workers.length,1,'Repeated start is bounded');elements['#stop'].onclick();assert.equal(first.terminated,true);elements['#start'].onclick();const second=workers[1];
+first.onmessage({data:{type:'error',error:'stale'}});first.onerror({message:'late stale error'});assert.equal(second.terminated,false,'Old events cannot kill new Worker');assert.equal(elements['#start'].disabled,true);
+second.onmessage({data:{type:'success',result:{html:'<main>verified</main>'}}});assert.equal(second.terminated,true);assert.equal(elements['#start'].disabled,false);assert.equal(elements['#view'].innerHTML,'<main>verified</main>');assert.match(elements['#status'].textContent,/テスト成功/);
+elements['#start'].onclick();events.pagehide();assert.equal(workers[2].terminated,true);events.pageshow({persisted:true});assert.equal(elements['#start'].disabled,false);console.log('WORKER_LIFECYCLE_PASSED');
