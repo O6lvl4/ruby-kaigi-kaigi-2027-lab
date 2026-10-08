@@ -37,7 +37,7 @@ jobs:
           du -sh dist
           test "$(du -sb dist | cut -f1)" -lt 1000000000
       - name: Install test browser
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Browser persistence test without isolation headers
         env:
           DEMO_URL: http://127.0.0.1:4173/ruby-kaigi-lab/
@@ -50,6 +50,7 @@ jobs:
             if curl --fail --silent "$DEMO_URL" > /dev/null; then break; fi
             sleep 1
           done
+          node tests/summary.mjs
           npm run test:e2e
       - name: Upload verification evidence
         if: always()
@@ -94,11 +95,13 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - name: Test deployed site and actual browser restart
         env:
           DEMO_URL: ${{ needs.deploy.outputs.page_url }}
-        run: npm run test:e2e
+        run: |
+          node tests/summary.mjs
+          npm run test:e2e
       - name: Upload live-browser evidence
         if: always()
         uses: actions/upload-artifact@v4
