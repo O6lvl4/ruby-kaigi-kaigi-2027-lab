@@ -1,8 +1,10 @@
 # RubyKaigi 2027 宮崎：公開情報のまとめ
 
-入口は「現時点の情報を読む」ための軽量な日本語ページです。公式に掲載された日程・会場、会場公式のアクセス情報、確認範囲内でまだ見つからない詳細、提案の確認リストを分けて掲載しています。情報確認日は 2026年10月8日です。個人による非公式のまとめであり、主催者の承認・提携を示すものではありません。
+入口は「現時点の情報を読む」ための日本語ページです。公式に掲載された日程・会場、会場公式のアクセス情報、確認範囲内でまだ見つからない詳細、提案の確認リストを分けて掲載しています。情報確認日は 2026年10月8日です。個人による非公式のまとめであり、主催者の承認・提携を示すものではありません。
 
-ホームは静的 HTML/CSS で、JavaScript も Wasm も不要です。Wasm の起動に失敗しても開催概要を読むことには影響しません。従来の Rails / PGlite / DuckDB の実験は lab.html に移し、明示的に開いたときだけ読み込みます。これは読む画面の構成変更であり、Wasm ランタイム自体の互換性を変更するものではありません。
+ホームのまとめ自体を、ブラウザ内の本物の Ruby/Wasm・Rails で生成します。軽量な初期 HTML は起動中・失敗時の案内だけで、静的なまとめを成功表示として代用しません。ブラウザの Worker → Rack → SummaryController → ActionView ERB → HTML レスポンス、という経路です。Ruby の PreparationSnapshot が公開情報を組み立て、同じ内容を /summary.json でも返します。
+
+起動には約80 MiB の Ruby/Wasm が必要です。失敗時はエラー詳細・再試行・診断情報のコピーを表示します。読み取りモードでは技術デモの PGlite DB を開かず、DuckDB も起動しません。PGlite・DuckDB の実験は lab.html に残しています。iPhone 実機の互換性は未検証です。
 
 - 公開版に含めるのは公式サイトで確認した公開情報だけです
 - 担当者、会議内容、非公開メール、未確定の期限、架空の進捗を掲載しません
@@ -27,7 +29,7 @@ npm run setup:runtime
 npm run dev
 ```
 
-表示されたローカル URL では軽量なまとめページを読めます。技術デモを試す場合は、ページ下部の「技術デモを開く」から lab.html を開いてください。技術デモの初回は 79 MiB の Ruby/Rails Wasm に加え、PGlite と DuckDB の Wasm を読み込みます。メモリ消費の小さいデモではありません。
+表示されたローカル URL では、Ruby/Wasm と Rails の起動後にまとめページを読めます。技術デモを試す場合は、ページ下部の「技術デモを開く」から lab.html を開いてください。技術デモの初回は 79 MiB の Ruby/Rails Wasm に加え、PGlite と DuckDB の Wasm を読み込みます。メモリ消費の小さいデモではありません。
 
 1. 架空の名前・種類・人数・概算費用を入力して「Rails で検証して保存」
 2. 候補一覧と種類別の集計を確認
@@ -83,7 +85,7 @@ npm test はテスト専用の新しいディレクトリに PGlite を保存し
 
 ```sh
 npx playwright install chromium webkit
-node tests/summary.mjs  # Chromium/WebKit で読む画面を検証
+node tests/summary.mjs  # Chromium/WebKitで実物Rails/ERB・失敗・再試行・再読込を検証
 npm run test:e2e         # 別ページの技術デモを検証
 ```
 
@@ -99,4 +101,14 @@ npm run test:e2e         # 別ページの技術デモを検証
 - オフライン再起動は保証しません。静的サーバーは必要です
 - .npmrc の legacy-peer-deps は、未使用の SQLite peer dependency の prerelease 解決問題を避けるためです。SQLite は使いません
 
-詳しい実測結果: TEST_REPORT.md
+初期技術デモの検証記録: TEST_REPORT.md。現在の実行結果は GitHub Actions の verification / live-browser artifacts を参照してください。
+
+## 読む画面の Rails/Wasm 実装
+
+- src/ruby/summary.rb: 公開情報の Ruby オブジェクトと SummaryController
+- src/ruby/views/summary/show.html.erb: ブラウザ内 ActionView が実行する ERB ビュー
+- src/summary.js: Worker に Rails リクエストを送り、成功した HTML を表示する起動シェル
+- tests/summary-node.mjs: 実物 Wasm で HTML/JSON の経路と ERB 展開を検証
+- tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
+
+固定 Ruby/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。

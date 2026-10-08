@@ -28,6 +28,7 @@ module MiyazakiWasm
   end
 end
 MiyazakiWasm::Application.initialize!
+unless ENV['SUMMARY_ONLY'] == '1'
 ActiveRecord::Base.establish_connection(adapter: 'pglite', database: 'miyazaki', js_interface: 'pglite4rails', prepared_statements: true)
 unless ActiveRecord::Base.connection.table_exists?(:venues)
   ActiveRecord::Schema.define do
@@ -61,17 +62,25 @@ class VenuesController < ActionController::API
     end
   end
 end
+end
+require '/demo/summary'
 Rails.application.routes.draw do
-  get '/venues', to: 'venues#index'
-  post '/venues', to: 'venues#create'
+  get '/summary', to: 'summary#show'
+  get '/', to: 'summary#show'
+  unless ENV['SUMMARY_ONLY'] == '1'
+    get '/venues', to: 'venues#index'
+    post '/venues', to: 'venues#create'
+  end
 end
 # The JS bridge supplies data via JS.global, never interpolates untrusted Ruby source.
 $dispatch = proc do
   payload = JSON.parse(JS.global[:railsRequest].to_s)
-  env = Rack::MockRequest.env_for(payload.fetch('path'), method: payload.fetch('method'), input: JSON.generate(payload.fetch('body', {})), 'CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json')
+  env = Rack::MockRequest.env_for(payload.fetch('path'), method: payload.fetch('method'), input: JSON.generate(payload.fetch('body', {})), 'CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => payload.fetch('accept', 'application/json'))
   status, headers, body = Rails.application.call(env)
   text = +''
   body.each { |chunk| text << chunk }
   body.close if body.respond_to?(:close)
-  JSON.generate(status: status, body: JSON.parse(text))
+  content_type = headers['content-type'] || headers['Content-Type'] || ''
+  rendered_body = content_type.include?('application/json') ? JSON.parse(text) : text
+  JSON.generate(status: status, headers: headers, body: rendered_body)
 end
