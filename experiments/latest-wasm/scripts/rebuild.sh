@@ -15,6 +15,7 @@ fetch https://cache.ruby-lang.org/pub/ruby/4.0/ruby-4.0.7.tar.gz "$WORK/download
 fetch https://rubygems.org/downloads/ruby_wasm-2.10.1-x86_64-linux.gem "$WORK/downloads/ruby_wasm-2.10.1-x86_64-linux.gem" 728e29dc688246572b56dcef1c7b131431d07865320c9b8434dd1ccdfd63db2b
 if ! test -d "$WORK/ruby-4.0.7"; then tar -xzf "$WORK/downloads/ruby-4.0.7.tar.gz" -C "$WORK"; fi
 gem install --local "$WORK/downloads/ruby_wasm-2.10.1-x86_64-linux.gem" --ignore-dependencies --no-document
+ruby "$ROOT/scripts/build-wrapper-test.rb"
 cp "$ROOT/Gemfile.core" "$WORK/core/Gemfile"
 cp "$ROOT/Gemfile.core.lock" "$WORK/core/Gemfile.lock"
 cp "$ROOT/Gemfile" "$WORK/rails/Gemfile"
