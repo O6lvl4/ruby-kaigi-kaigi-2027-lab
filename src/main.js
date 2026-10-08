@@ -23,6 +23,7 @@ function rpc(type, extra = {}) { return new Promise((resolve, reject) => { const
 const request = (method, path, body = {}) => rpc('request', { request: { method, path, body } });
 let analyticalDB, connection;
 async function initDuckDB() {
+  // Only single-threaded MVP/EH bundles: Pages does not supply COOP/COEP.
   const bundle = await duckdb.selectBundle({ mvp: { mainModule: duckMvp, mainWorker: duckMvpWorker }, eh: { mainModule: duckEh, mainWorker: duckEhWorker } });
   analyticalDB = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING), new Worker(bundle.mainWorker));
   await analyticalDB.instantiate(bundle.mainModule);
