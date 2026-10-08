@@ -32,3 +32,18 @@ Related primary reports describe different possible failure classes, not a diagn
 - [ruby.wasm Safari stack overflow #532](https://github.com/ruby/ruby.wasm/issues/532)
 - [WebKit iOS 18.4 compilation-memory report](https://bugs.webkit.org/show_bug.cgi?id=291677)
 - [WebKit optimizing-compiler memory report](https://bugs.webkit.org/show_bug.cgi?id=304810)
+
+
+## Release artifact and isolated check (2026-10-08)
+
+The subsequent physical iPhone Safari retest still failed. The earlier hardening is not a resolution.
+
+The release artifact now removes only nine `.debug_*` DWARF custom sections from the same checksum-pinned upstream module. Input SHA256 remains `de9cc366e32e24a13b58b7bf1409744fd50159d6554f8575fc325a5a4b3605d4`; release SHA256 is `28acbb22c853454d6b392dd4838f85051eff9d37ad0870c44ac75c17288d9e56`. Size falls from82,698,936 to65,019,499bytes (21.4%). Setup verifies that every non-custom section is byte-identical. Function names, producers and target features remain. No optimizer or runtime-version change is involved.
+
+In one same-machine Node comparison, compile-stage RSS fell201→167MiB and first-render RSS270→250MiB. Linear memory remained about131MiB. This is a measurable reduction in input and process memory, not a proven Safari fix.
+
+`runtime-check.html` is a lightweight landing page with no automatic Wasm or map load. It reads one localStorage record containing only build, stage, state, timestamp and source. Unlike the same-tab session recovery, this record can be read after reopening a new tab in the same browser/origin; browser data clearing/private-session termination can still erase it. Nothing is uploaded automatically.
+
+Its explicit check runs one worker through Ruby alone, then genuine Rails initialization, then the actual ERB summary response. It does not load Leaflet tiles, PGlite or DuckDB, and terminates the worker after the check. Passing this check while the full guide fails would narrow the investigation; neither outcome independently identifies an OS memory kill. The main guide also records its latest stage locally, including successful initialization. A successful stage does not prove the browser remained alive afterward.
+
+A truly smaller custom Rails bundle is feasible upstream, but would require rebuilding and validating dependency packaging. No dependency swap or unverified newer runtime has been introduced here.

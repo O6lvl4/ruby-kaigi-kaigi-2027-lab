@@ -51,6 +51,7 @@ jobs:
             if curl --fail --silent "$DEMO_URL" > /dev/null; then break; fi
             sleep 1
           done
+          node tests/runtime-check.mjs
           node tests/summary.mjs
           node tests/map.mjs
           npm run test:e2e
@@ -102,6 +103,7 @@ jobs:
         env:
           DEMO_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
+          node tests/runtime-check.mjs
           node tests/summary.mjs
           node tests/map.mjs
           npm run test:e2e
