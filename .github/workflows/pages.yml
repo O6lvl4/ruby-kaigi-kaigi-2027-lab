@@ -1,0 +1,108 @@
+name: Test and deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Fetch checksum-pinned Rails Wasm
+        run: npm run setup:runtime
+      - name: Test real Rails PGlite DuckDB Wasm
+        run: npm test
+      - name: Build for project subpath
+        env:
+          VITE_BASE_PATH: /ruby-kaigi-lab/
+        run: npm run build
+      - name: Check artifact size
+        run: |
+          du -sh dist
+          test "$(du -sb dist | cut -f1)" -lt 1000000000
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+      - name: Browser persistence test without isolation headers
+        env:
+          DEMO_URL: http://127.0.0.1:4173/ruby-kaigi-lab/
+          VITE_BASE_PATH: /ruby-kaigi-lab/
+        run: |
+          npm run preview -- --port 4173 > evidence/preview.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --fail --silent "$DEMO_URL" > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:e2e
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-${{ github.sha }}
+          path: evidence
+          retention-days: 14
+      - name: Configure Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+      - name: Upload Pages static artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+  verify-live:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Test deployed site and actual browser restart
+        env:
+          DEMO_URL: ${{ needs.deploy.outputs.page_url }}
+        run: npm run test:e2e
+      - name: Upload live-browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-browser-${{ github.sha }}
+          path: evidence
+          retention-days: 14

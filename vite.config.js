@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
+// GitHub Pages project sites live under /ruby-kaigi-lab/.
+// Neither the dev nor preview server adds COOP/COEP: CI tests Pages conditions.
 export default defineConfig({
-  server: { headers: { 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp' } },
-  preview: { headers: { 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp' } },
+  base: process.env.VITE_BASE_PATH || '/',
   optimizeDeps: { exclude: ['@electric-sql/pglite', '@duckdb/duckdb-wasm'] },
   worker: { format: 'es' },
   build: { target: 'es2022' }
