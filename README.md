@@ -4,6 +4,14 @@ RubyKaigi 宮崎の準備を題材にした、架空の候補を登録する個�
 
 **現在の到達点:** 本物の Ruby / Rails の Wasm 実行、Active Record → PGlite の登録・検証・読み出し、DuckDB-Wasm の集計を Node 上で確認しました。ブラウザ向けの実装と E2E テストは用意済みですが、この実行環境ではブラウザ QA ができていません。ブラウザを閉じて開き直したときの IndexedDB 復元は未確認です。
 
+## GitHub Pages
+
+GitHub Actions が Node/Wasm テスト、プロジェクト用サブパスのビルド、COOP/COEP なしの Chromium E2E を通過してから Pages に配信します。配信後は公開 URL に対して再度フォーム保存・再読み込み・ブラウザ終了/再起動をテストします。
+
+公開予定 URL: https://o6lvl4.github.io/ruby-kaigi-lab/
+
+DB のデータは各閲覧者のブラウザ内に保存され、GitHub へ送信されません。初回ロードは大きいため Wi-Fi とデスクトップ Chrome を推奨します。DuckDB は単一スレッド版を使い、SharedArrayBuffer や特殊なレスポンスヘッダーを要求しません。
+
 ## 試す
 
 Node.js 22 以上、npm、Chromium 系のブラウザを用意してください。
