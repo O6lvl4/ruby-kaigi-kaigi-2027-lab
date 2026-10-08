@@ -128,3 +128,9 @@ npm run test:e2e         # 別ページの技術デモを検証
 地図の資料： https://maps.gsi.go.jp/development/ichiran.html / https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html 。国土地理院の背景地図に独自の地点と概略線を重ねたもので、国土地理院作成の移動案内ではありません。
 
 地図のブラウザ検証： `node tests/map.mjs`（Chromium / WebKit、3つの見方、カード連動、タイル読込失敗時のテキスト継続）。
+
+### Safari investigation: smaller release artifact and isolated check
+
+The published runtime removes only DWARF `.debug_*` sections from the pinned upstream module:82,698,936→65,019,499bytes. The setup script verifies both hashes and byte-identical executable/data sections; generated Wasm is still not committed. See `docs/mobile-runtime.md` for measurements and limits.
+
+`runtime-check.html` loads no Wasm by default. It reads the last locally saved startup stage, or explicitly tests Ruby alone → Rails → real ERB rendering without the map/databases. There is no external telemetry. Physical iPhone Safari failures remain unresolved until verified on a device; Linux WebKit success is not that verification.

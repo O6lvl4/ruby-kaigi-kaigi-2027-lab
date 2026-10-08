@@ -37,14 +37,14 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   }
   // A blocked Ruby download must show an error, never a static success substitute.
   const context=await browser.newContext();const page=await context.newPage();
-  await context.route('**/base-app.wasm',route=>route.abort('failed'));
+  await context.route('**/base-app.wasm*',route=>route.abort('failed'));
   await page.goto(base);await page.locator('#boot-error').waitFor({state:'visible',timeout:30000});
   assert.equal(await page.locator('#rails-root').isVisible(),false);
   assert.equal(await page.locator('#rails-root main').count(),0);
   await page.locator('#diagnostics summary').click();assert.match(await page.locator('#diagnostic-text').innerText(),/"stage"/);
   await page.locator('#copy-diagnostics').click();await page.waitForFunction(()=>document.getElementById('copy-status').textContent.length>0);assert.ok((await page.locator('#copy-status').innerText()).length>0);
   await page.screenshot({path:`evidence/summary-${name}-error.png`,fullPage:true});
-  await context.unroute('**/base-app.wasm');await page.locator('#retry').click();await ready(page);
+  await context.unroute('**/base-app.wasm*');await page.locator('#retry').click();await ready(page);
   assert.equal(await page.locator('#boot-panel').isVisible(),false);assert.equal(await page.locator('#rails-root main[data-renderer="rails-erb"]').count(),1);
   results.push({engine:name,status:'PASS',blockedRubyShowsError:true,noStaticFallback:true,diagnostics:true,retry:true});
   console.log('PASS truthful failure and successful retry',name);await context.close();

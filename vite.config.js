@@ -6,5 +6,5 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
   optimizeDeps: { exclude: ['@electric-sql/pglite', '@duckdb/duckdb-wasm'] },
   worker: { format: 'es' },
-  build: { target: 'es2022', rollupOptions: { input: { summary: resolve('index.html'), lab: resolve('lab.html') } } }
+  build: { target: 'es2022', rollupOptions: { input: { summary: resolve('index.html'), lab: resolve('lab.html'), diagnostic: resolve('runtime-check.html') } } }
 });
