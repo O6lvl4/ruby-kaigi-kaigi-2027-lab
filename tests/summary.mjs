@@ -39,7 +39,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.equal(await page.locator('[data-restaurant-id]').count(),restaurants.length);
    assert.deepEqual(await page.locator('#dining-capacity option').evaluateAll(options=>options.map(x=>x.value)),['0','10','20','30','50','60','100']);
    assert.equal(await page.locator('[data-archive-year]').count(),5);
-   await page.locator('a[href="#dining"]').click();
+   await page.locator('.contents a[href="#dining"]').click();
    for(const minimum of [10,20,30,50,60,100,0]){
      await page.locator('#dining-capacity').selectOption(String(minimum));
      const expected=restaurants.filter(r=>r.groupCapacity===null || r.groupCapacity>=minimum).map(r=>r.id);
@@ -51,12 +51,13 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.equal(await page.locator('[data-restaurant-id]:visible').count(),restaurants.length);
    for(const restaurant of restaurants){
      const card=page.locator(`[data-restaurant-id="${restaurant.id}"]`);
-     assert.equal(await card.locator(`a[href="${restaurant.sourceUrl}"]`).count(),1);
+     assert.equal(await card.locator(`.source > a[href="${restaurant.sourceUrl}"]`).count(),1);
+     assert.equal(await card.locator(`.restaurant-details a[href="${restaurant.coordinateSourceUrl}"]`).count(),1);
    }
    await page.locator('[data-restaurant-id="torihisa"] summary').click();
    assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(),/2027年の空席/);
    await page.screenshot({path:`evidence/dining-${name}-${size}.png`,fullPage:true});
-   await page.locator('a[href="#archive"]').click();
+   await page.locator('.contents a[href="#archive"]').click();
    for(const event of ruby.body.references.archiveSection.years){
      const card=page.locator(`[data-archive-year="${event.year}"]`);
      assert.equal(await card.locator(`a[href="${event.scheduleUrl}"]`).count(),1);

@@ -53,6 +53,7 @@ jobs:
           done
           node tests/runtime-check.mjs
           node tests/summary.mjs
+          node tests/dining-navigation.mjs
           node tests/map.mjs
           npm run test:e2e
       - name: Upload verification evidence
@@ -105,6 +106,7 @@ jobs:
         run: |
           node tests/runtime-check.mjs
           node tests/summary.mjs
+          node tests/dining-navigation.mjs
           node tests/map.mjs
           npm run test:e2e
       - name: Upload live-browser evidence

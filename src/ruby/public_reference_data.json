@@ -2,7 +2,7 @@
   "checkedAt": "2026-10-08",
   "restaurantSection": {
     "title": "宮崎のごはんと集まれる人数",
-    "intro": "食事先を考えるための公開情報です。昼食・少人数の食事から個室宴会・ホテル宴会場まで掲載しています。総席数と、ひとつの宴会で利用できる人数を分けて見てください。2027年の営業・空席・受入条件は未確認です。",
+    "intro": "食事先を考えるための公開情報です。昼食・少人数の食事から個室宴会・ホテル宴会場まで掲載しています。総席数と、ひとつの宴会で利用できる人数を分けて見てください。2027年の営業・空席・受入条件は未確認です。 一覧と地図で同じ候補を比較できます。写真の利用許諾・配信を確認できていない候補は、写真未掲載の表示です。",
     "capacityNote": "総席数は店全体の席数で、同じ宴会で利用できる人数とは一致しません。着席・立食・貸切条件を区別しています。ホテルは表示中の部屋の人数です。掲載内容の相違・未確認項目は各店舗欄をご覧ください。",
     "restaurants": [
       {
@@ -27,7 +27,16 @@
           "groupCapacity": "sourceUrl",
           "privateBooking": "sourceUrl",
           "privateRoom": "sourceUrl"
-        }
+        },
+        "coordinates": [
+          131.4218938181338,
+          31.914144881031202
+        ],
+        "coordinateSourceUrl": "https://tabelog.com/miyazaki/A4501/A450101/45012538/",
+        "coordinateSourceType": "operator_managed_listing",
+        "coordinatePrecision": "食べログの「公式」店舗情報に掲載された位置。「お店の営業情報は店舗関係者によって公開」と明記。入口精度は未確認。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "ajidokoro-shu",
@@ -50,7 +59,16 @@
           "totalSeats": "sourceUrl",
           "privateBooking": "sourceUrl",
           "privateRoom": "sourceUrl"
-        }
+        },
+        "coordinates": [
+          131.42187602214463,
+          31.9103793884535
+        ],
+        "coordinateSourceUrl": "https://tabelog.com/miyazaki/A4501/A450101/45012130/",
+        "coordinateSourceType": "operator_managed_listing",
+        "coordinatePrecision": "食べログの「公式」店舗情報に掲載された位置。「お店の営業情報は店舗関係者によって公開」と明記。入口精度は未確認。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "anbai",
@@ -77,7 +95,16 @@
           "privateRoom": "sourceUrl",
           "accessibility": "sourceUrl",
           "sourceUpdatedAt": "sourceUrl"
-        }
+        },
+        "coordinates": [
+          131.4225448621825,
+          31.914174768451304
+        ],
+        "coordinateSourceUrl": "https://tabelog.com/miyazaki/A4501/A450101/45000301/",
+        "coordinateSourceType": "operator_managed_listing",
+        "coordinatePrecision": "食べログの「公式」店舗情報に掲載された位置。「お店の営業情報は店舗関係者によって公開」と明記。入口精度は未確認。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "takasago",
@@ -102,7 +129,16 @@
           "privateBooking": "sourceUrl",
           "privateRoom": "sourceUrl",
           "accessibility": "sourceUrl"
-        }
+        },
+        "coordinates": [
+          131.42151564283296,
+          31.91320780880282
+        ],
+        "coordinateSourceUrl": "https://takasago.owst.jp/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "hareruya",
@@ -139,7 +175,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "17:00〜23:30（料理・ドリンクL.O.23:00）",
-        "area": "橘通西・中央通"
+        "area": "橘通西・中央通",
+        "coordinates": [
+          131.4215881263416,
+          31.913601099511098
+        ],
+        "coordinateSourceUrl": "https://miyazakihareruya.owst.jp/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "ginnotuki",
@@ -176,7 +221,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "17:30〜23:00（料理L.O.22:00、ドリンクL.O.22:30）",
-        "area": "橘通東2丁目"
+        "area": "橘通東2丁目",
+        "coordinates": [
+          131.4226505764082,
+          31.9118946435094
+        ],
+        "coordinateSourceUrl": "https://ginnotuki.owst.jp/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "ebisuya-ichibangai",
@@ -211,7 +265,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "月〜木17:00〜24:00／金17:00〜翌2:00／土14:00〜翌2:00／日・祝14:00〜24:00。料理L.O.は閉店1時間前、ドリンクL.O.は30分前",
-        "area": "橘通西・中央通"
+        "area": "橘通西・中央通",
+        "coordinates": [
+          131.4224679,
+          31.9152517
+        ],
+        "coordinateSourceUrl": "https://ebisuya-ichibangai.com/table/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトの埋込地図が返す施設マーカー。URL内の地図表示中心の座標は使っていません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "torinosato",
@@ -248,7 +311,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "月〜土・祝日・祝前日17:00〜22:00（L.O.21:30）",
-        "area": "川原町"
+        "area": "川原町",
+        "coordinates": [
+          131.42449051290467,
+          31.908044552826986
+        ],
+        "coordinateSourceUrl": "https://torinosato.owst.jp/map",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "kurage",
@@ -285,7 +357,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "月〜土・祝日・祝前日18:00〜翌0:00（料理L.O.23:00、ドリンクL.O.23:30）",
-        "area": "橘通東2丁目"
+        "area": "橘通東2丁目",
+        "coordinates": [
+          131.42231122044356,
+          31.91044388226215
+        ],
+        "coordinateSourceUrl": "https://sakanagushikurage.owst.jp/map",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "rikyu",
@@ -322,7 +403,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "月〜土・祝日・祝前日17:00〜23:00（料理L.O.22:00、ドリンクL.O.22:30）",
-        "area": "橘通東2丁目"
+        "area": "橘通東2丁目",
+        "coordinates": [
+          131.422694,
+          31.9120186
+        ],
+        "coordinateSourceUrl": "https://jidoritokaienrikyu.owst.jp/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "nanden-yokocho",
@@ -360,7 +450,16 @@
           "area": "sourceUrl"
         },
         "openingHours": "17:00〜翌0:00（L.O.23:30）",
-        "area": "橘通西・中央通"
+        "area": "橘通西・中央通",
+        "coordinates": [
+          131.42071038256415,
+          31.915293393874496
+        ],
+        "coordinateSourceUrl": "https://nandenyokocho.owst.jp/map",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "take-miyazaki",
@@ -398,7 +497,16 @@
           "privateBooking": "seatsSourceUrl",
           "privateRoom": "sourceUrl",
           "note": "seatsSourceUrl"
-        }
+        },
+        "coordinates": [
+          131.431072883992,
+          31.914830797448758
+        ],
+        "coordinateSourceUrl": "https://take.owst.jp/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトに掲載された店舗位置。入口・階・室内動線の精度を示すものではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "uruwashi",
@@ -432,7 +540,16 @@
           "area": "sourceUrl",
           "closedDays": "sourceUrl",
           "note": "introSourceUrl"
-        }
+        },
+        "coordinates": [
+          131.4225545,
+          31.91562
+        ],
+        "coordinateSourceUrl": "https://www.uruwashi.com/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "橘通本店のリンクを採用。一ツ葉店の別リンクや埋込地図の表示中心は使っていません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "rakui-miyazaki-station",
@@ -466,7 +583,16 @@
           "area": "sourceUrl",
           "closedDays": "sourceUrl",
           "note": "mallSourceUrl"
-        }
+        },
+        "coordinates": [
+          131.4318507,
+          31.9161194
+        ],
+        "coordinateSourceUrl": "https://masuko-net.com/h-rakui/",
+        "coordinateSourceType": "official_operator",
+        "coordinatePrecision": "運営元の宮崎駅店リンク。地図表示中心の座標は使っていません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "ogura-honten",
@@ -475,7 +601,7 @@
         "sourceLabel": "宮崎市公式観光サイト",
         "sourceType": "official_tourism",
         "checkedAt": "2026-10-08",
-        "address": "宮崎市橘通東3-4-24",
+        "address": "宮崎県宮崎市橘通東3-4-24",
         "openingHours": "11:00〜L.O.14:30／17:00〜L.O.19:50（閉店時刻ではなくラストオーダー）",
         "totalSeats": 59,
         "groupCapacity": null,
@@ -499,7 +625,16 @@
           "cuisine": "sourceUrl",
           "area": "sourceUrl",
           "closedDays": "sourceUrl"
-        }
+        },
+        "coordinates": [
+          131.423694,
+          31.9158801
+        ],
+        "coordinateSourceUrl": "https://www.miyazaki-city.tourism.or.jp/feature/chicken_nanban",
+        "coordinateSourceType": "official_tourism",
+        "coordinatePrecision": "市公式観光サイトの「おぐら本店」マーカー。瀬頭店の座標ではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "snooup-amu-miyazaki",
@@ -530,7 +665,16 @@
           "cuisine": "mallSourceUrl",
           "area": "mallSourceUrl",
           "note": "mallSourceUrl"
-        }
+        },
+        "coordinates": [
+          131.4314323,
+          31.9148991
+        ],
+        "coordinateSourceUrl": "https://www.amu-miyazaki.com/access/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトの埋込地図が返す施設マーカー。URL内の地図表示中心の座標は使っていません。 うみ館の建物位置で、店舗自体の位置・入口ではありません。The Snooupは公式施設案内でうみ館4Fを確認。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "the-meibia-miyazaki-banquet",
@@ -595,7 +739,16 @@
           "address": "addressSourceUrl",
           "venueType": "sourceUrl"
         },
-        "venueType": "hotel_banquet"
+        "venueType": "hotel_banquet",
+        "coordinates": [
+          131.4317875,
+          31.9217481
+        ],
+        "coordinateSourceUrl": "https://the-meibia-miyazaki.jp/access/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "ホテル建物の位置です。宴会室・入口の位置を個別に示していません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "hotel-jal-city-miyazaki-banquet",
@@ -652,7 +805,16 @@
           "address": "addressSourceUrl",
           "venueType": "sourceUrl"
         },
-        "venueType": "hotel_banquet"
+        "venueType": "hotel_banquet",
+        "coordinates": [
+          131.4230651,
+          31.9182857
+        ],
+        "coordinateSourceUrl": "https://www.miyazaki-jalcity.co.jp/access/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトの埋込地図が返す施設マーカー。URL内の地図表示中心の座標は使っていません。 ホテル建物の位置で、宴会室や入口の位置ではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "miyazaki-kanko-hotel-banquet",
@@ -713,7 +875,16 @@
           "address": "addressSourceUrl",
           "venueType": "sourceUrl"
         },
-        "venueType": "hotel_banquet"
+        "venueType": "hotel_banquet",
+        "coordinates": [
+          131.4267824,
+          31.905684
+        ],
+        "coordinateSourceUrl": "https://www.miyakan-h.com/outline/access.html",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトの埋込地図が返す施設マーカー。URL内の地図表示中心の座標は使っていません。 ホテル建物の位置で、宴会室や入口の位置ではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       },
       {
         "id": "art-hotel-miyazaki-skytower-banquet",
@@ -790,7 +961,16 @@
           "address": "addressSourceUrl",
           "venueType": "sourceUrl"
         },
-        "venueType": "hotel_banquet"
+        "venueType": "hotel_banquet",
+        "coordinates": [
+          131.428562,
+          31.916514
+        ],
+        "coordinateSourceUrl": "https://art-miyazaki-skytower.com/access/",
+        "coordinateSourceType": "official",
+        "coordinatePrecision": "公式サイトの埋込地図が返す施設マーカー。URL内の地図表示中心の座標は使っていません。 ホテル建物の位置で、宴会室や入口の位置ではありません。",
+        "coordinateCheckedAt": "2026-10-08",
+        "thumbnail": null
       }
     ],
     "filterGuidance": "人数フィルターはgroupCapacityだけを参照し、totalSeatsから推定しない。groupCapacityがnullの店は『人数要確認』として別に残す。表示するのは『掲載人数の目安』であり予約可能の保証ではない。",
