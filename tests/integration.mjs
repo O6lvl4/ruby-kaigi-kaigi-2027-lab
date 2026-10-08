@@ -14,7 +14,7 @@ registerPGliteWasmInterface(globalThis, db);
 const module = await WebAssembly.compile(await readFile('public/base-app.wasm'));
 const vm = await initRailsVM(module, {skipInitialize:true,async:true,database:{adapter:'pglite'}});
 const files = {};
-for (const [target, source] of Object.entries({'/demo/application.rb':'src/ruby/application.rb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'})) files[target] = await readFile(source,'utf8');
+for (const [target, source] of Object.entries({'/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'})) files[target] = await readFile(source,'utf8');
 globalThis.appFiles = JSON.stringify(files);
 await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
 async function request(method,body={}) {

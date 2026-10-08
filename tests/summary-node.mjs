@@ -1,0 +1,23 @@
+import { readFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { initRailsVM } from 'wasmify-rails';
+const module=await WebAssembly.compile(await readFile('public/base-app.wasm'));
+const vm=await initRailsVM(module,{skipInitialize:true,async:true,env:['SUMMARY_ONLY=1']});
+const files={};
+for(const [target,path] of Object.entries({'/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'}))files[target]=await readFile(path,'utf8');
+globalThis.appFiles=JSON.stringify(files);
+await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
+async function get(path,accept){globalThis.railsRequest=JSON.stringify({method:'GET',path,accept});return JSON.parse((await vm.evalAsync('$dispatch.call')).toString());}
+const html=await get('/summary','text/html');
+assert.equal(html.status,200);assert.equal(html.headers['x-summary-renderer'],'Rails-ActionView-ERB');assert.equal(html.headers['x-ruby-platform'],'wasm32-wasi');
+assert.match(html.body,/data-renderer="rails-erb"/);assert.match(html.body,/2027年4月14日〜16日/);assert.match(html.body,/バス 約60分/);assert.match(html.body,/SummaryController/);assert.ok(!html.body.includes('<%'));assert.equal((html.body.match(/data-renderer=/g)||[]).length,1);
+console.log('PASS genuine Rails SummaryController renders ActionView ERB with Ruby snapshot values');
+const json=await get('/summary.json','application/json');
+assert.equal(json.status,200);assert.equal(json.body.runtime.controller,'SummaryController');assert.equal(json.body.runtime.renderer,'ActionView::ERB');assert.equal(json.body.runtime.platform,'wasm32-wasi');assert.equal(json.body.snapshot.routes.length,3);assert.equal(json.body.snapshot.checked_on,'2026-10-08');
+console.log('PASS Rails JSON route exposes the same Ruby snapshot and actual runtime');
+assert.equal(typeof globalThis.pglite4rails,'undefined');
+console.log('PASS reading-mode Rails boots and renders without opening the lab database');
+await vm.evalAsync(`$original_snapshot = PreparationSnapshot.method(:current); class << PreparationSnapshot; def current; $original_snapshot.call.merge(venue: 'RUBY_DYNAMIC_SENTINEL <script>bad</script>'); end; end`);
+const changed=await get('/summary','text/html');
+assert.match(changed.body,/RUBY_DYNAMIC_SENTINEL/);assert.match(changed.body,/&lt;script&gt;bad&lt;\/script&gt;/);assert.ok(!changed.body.includes('<script>bad</script>'));
+console.log('PASS changing Ruby snapshot changes ERB output and ActionView escapes HTML');

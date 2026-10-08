@@ -2,39 +2,54 @@ import { chromium, webkit } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const base=process.env.DEMO_URL || 'http://127.0.0.1:5173/';
-const results=[];
-await mkdir('evidence',{recursive:true});
+const results=[];await mkdir('evidence',{recursive:true});
+async function ready(page){
+ await page.waitForFunction(()=>window.summaryApp?.ready || window.summaryApp?.error,null,{timeout:180000});
+ if(!await page.evaluate(()=>window.summaryApp.ready))throw new Error(await page.locator('#boot-error').textContent());
+}
 for(const [name,engine] of Object.entries({chromium,webkit})){
  const browser=await engine.launch({headless:true});
- try {
+ try{
   for(const [size,viewport] of Object.entries({desktop:{width:1360,height:1000},mobile:{width:390,height:844}})){
-   const context=await browser.newContext({javaScriptEnabled:false,viewport});
-   const page=await context.newPage();const requested=[];const failures=[];
-   page.on('request',r=>requested.push(r.url()));page.on('requestfailed',r=>failures.push(r.url()));
-   await page.goto(base,{waitUntil:'networkidle'});
-   await page.getByRole('heading',{name:'いま分かっていること。',exact:true}).waitFor();
-   assert.match(await page.locator('body').innerText(),/2027年4月14日〜16日/);
-   assert.match(await page.locator('body').innerText(),/情報確認日 2026年10月8日/);
-   assert.equal(await page.locator('form,input,button').count(),0,'Reading home must not be a form');
-   assert.equal(requested.some(x=>/\.wasm(?:\?|$)|rails\.worker|duckdb|postgres/.test(x)),false,'No heavyweight runtimes on home');
-   assert.deepEqual(failures,[]);
-   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No horizontal overflow');
-   for(const id of ['overview','access','pending','next'])assert.equal(await page.locator('#'+id).count(),1);
+   const context=await browser.newContext({viewport});const page=await context.newPage();const requests=[];const errors=[];
+   page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
+   await page.goto(base);await ready(page);
+   const proof=await page.evaluate(()=>({response:window.summaryApp.lastResponse,renderer:window.summaryApp.renderer}));
+   assert.equal(proof.response.status,200);assert.equal(proof.renderer,'Rails-ActionView-ERB');
+   assert.equal(proof.response.headers['x-ruby-platform'],'wasm32-wasi');assert.equal(proof.response.headers['x-summary-renderer'],'Rails-ActionView-ERB');
+   assert.match(proof.response.body,/data-controller="SummaryController"/);
+   assert.match(proof.response.body,/2027年4月14日〜16日/);assert.ok(!proof.response.body.includes('<%'));
+   assert.equal(await page.locator('#rails-root main[data-renderer="rails-erb"]').count(),1);
+   assert.equal(await page.locator('#rails-root form,#rails-root input').count(),0);
+   const ruby=await page.evaluate(()=>window.summaryApp.request('/summary.json'));
+   assert.equal(ruby.body.runtime.controller,'SummaryController');assert.equal(ruby.body.runtime.renderer,'ActionView::ERB');assert.equal(ruby.body.snapshot.routes.length,3);
+   assert.equal(ruby.body.snapshot.checked_on,'2026-10-08');
+   assert.ok(requests.some(x=>x.includes('base-app.wasm')),'Homepage must execute the Ruby Wasm runtime');
+   assert.ok(!requests.some(x=>/postgres.*\.(wasm|data)|duckdb.*\.wasm/.test(x)),'Read mode must not boot unrelated database engines');
+   assert.deepEqual(errors,[]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.locator('a[href="#pending"]').click();assert.equal(new URL(page.url()).hash,'#pending');
-   await page.locator('summary').click();
-   assert.equal(await page.getByRole('link',{name:'技術デモを開く',exact:true}).getAttribute('href'),'./lab.html');
-   assert.equal(await page.locator('a[href="https://rubykaigi.org/2027/"]').count()>0,true);
    await page.screenshot({path:`evidence/summary-${name}-${size}.png`,fullPage:true});
-   results.push({engine:name,viewport:size,status:'PASS',javaScriptEnabled:false,wasmRequests:0,requests:requested.length});
-   console.log('PASS reading summary',name,size,'without JS/Wasm');
-   await context.close();
+   await page.reload();await ready(page);assert.equal(await page.locator('#rails-root main[data-platform="wasm32-wasi"]').count(),1);
+   results.push({engine:name,viewport:size,status:'PASS',rubyWasm:true,railsController:'SummaryController',erb:true,jsonRoute:true,reload:true});
+   console.log('PASS actual Rails ERB reading summary',name,size,'and refresh');await context.close();
   }
-  const context=await browser.newContext();const page=await context.newPage();const requests=[];
-  page.on('request',r=>requests.push(r.url()));await page.goto(base,{waitUntil:'networkidle'});
-  assert.equal(requests.some(x=>/\.wasm(?:\?|$)|rails\.worker|duckdb|postgres/.test(x)),false);
-  results.push({engine:name,status:'PASS',javaScriptEnabled:true,wasmRequests:0});
-  console.log('PASS reading summary',name,'with JS enabled still requests no Wasm');
-  await context.close();
+  // A blocked Ruby download must show an error, never a static success substitute.
+  const context=await browser.newContext();const page=await context.newPage();
+  await context.route('**/base-app.wasm',route=>route.abort('failed'));
+  await page.goto(base);await page.locator('#boot-error').waitFor({state:'visible',timeout:30000});
+  assert.equal(await page.locator('#rails-root').isVisible(),false);
+  assert.equal(await page.getByRole('heading',{name:'いま分かっていること。',exact:true}).count(),0);
+  await page.locator('#diagnostics summary').click();assert.match(await page.locator('#diagnostic-text').innerText(),/"stage"/);
+  await page.locator('#copy-diagnostics').click();await page.waitForFunction(()=>document.getElementById('copy-status').textContent.length>0);assert.ok((await page.locator('#copy-status').innerText()).length>0);
+  await page.screenshot({path:`evidence/summary-${name}-error.png`,fullPage:true});
+  await context.unroute('**/base-app.wasm');await page.locator('#retry').click();await ready(page);
+  assert.equal(await page.locator('#boot-panel').isVisible(),false);assert.equal(await page.locator('#rails-root main[data-renderer="rails-erb"]').count(),1);
+  results.push({engine:name,status:'PASS',blockedRubyShowsError:true,noStaticFallback:true,diagnostics:true,retry:true});
+  console.log('PASS truthful failure and successful retry',name);await context.close();
+  const nojs=await browser.newContext({javaScriptEnabled:false});const nojsPage=await nojs.newPage();await nojsPage.goto(base);
+  assert.equal(await nojsPage.getByRole('heading',{name:'いま分かっていること。',exact:true}).count(),0);
+  assert.match(await nojsPage.locator('noscript').innerText(),/JavaScript/);await nojs.close();
+  console.log('PASS JS-disabled mode explicitly requires Rails/Wasm rather than pretending success',name);
  }finally{await browser.close();}
 }
 await writeFile('evidence/summary-results.json',JSON.stringify({url:base,results},null,2));
