@@ -48,6 +48,17 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   assert.equal(await page.locator('#boot-panel').isVisible(),false);assert.equal(await page.locator('#rails-root main[data-renderer="rails-erb"]').count(),1);
   results.push({engine:name,status:'PASS',blockedRubyShowsError:true,noStaticFallback:true,diagnostics:true,retry:true});
   console.log('PASS truthful failure and successful retry',name);await context.close();
+  const interrupted=await browser.newContext();const interruptedPage=await interrupted.newPage();const interruptedRequests=[];
+  interruptedPage.on('request',r=>interruptedRequests.push(r.url()));
+  await interruptedPage.addInitScript(()=>{if(!sessionStorage.getItem('recovery-test-seeded')){sessionStorage.setItem('recovery-test-seeded','1');sessionStorage.setItem('rubykaigi-boot-checkpoint-v1',JSON.stringify({build:'test',state:'booting',stage:'Rails initialization checkpoint',at:'2026-10-08T00:00:00Z'}));}});
+  await interruptedPage.goto(base);await interruptedPage.locator('#retry').waitFor({state:'visible'});
+  assert.match(await interruptedPage.locator('#boot-error').innerText(),/Rails initialization checkpoint/);
+  assert.ok(!interruptedRequests.some(x=>x.includes('base-app.wasm')),'Interrupted boot must not automatically enter a reload loop');
+  await interruptedPage.locator('#diagnostics summary').click();assert.match(await interruptedPage.locator('#diagnostic-text').innerText(),/Previous load did not finish/);
+  await interruptedPage.locator('#retry').click();await ready(interruptedPage);
+  assert.equal(await interruptedPage.evaluate(()=>JSON.parse(sessionStorage.getItem('rubykaigi-boot-checkpoint-v1')).state),'ready');
+  await interruptedPage.reload();await ready(interruptedPage);
+  console.log('PASS interrupted boot preserves local stage, waits for one retry and normal reload recovers',name);await interrupted.close();
   const nojs=await browser.newContext({javaScriptEnabled:false});const nojsPage=await nojs.newPage();await nojsPage.goto(base);
   assert.equal(await nojsPage.locator('#rails-root main').count(),0);
   assert.match(await nojsPage.locator('noscript').innerText(),/JavaScript/);await nojs.close();

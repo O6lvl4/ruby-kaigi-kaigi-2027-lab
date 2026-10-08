@@ -1,15 +1,18 @@
 require 'wasmify/rails/shim'
 require 'rails'
-require 'active_record'
 require 'action_controller/railtie'
-require 'active_record/railtie'
 require 'rack/mock'
 require 'json'
+unless ENV['SUMMARY_ONLY'] == '1'
+require 'active_record'
+require 'active_record/railtie'
 require '/demo/vendor/pglite_adapter'
 ActiveRecord::ConnectionAdapters.register('pglite', 'ActiveRecord::ConnectionAdapters::PGliteAdapter', '/demo/vendor/pglite_adapter')
 
 FileUtils.mkdir_p('/demo/config')
 File.write('/demo/config/database.yml', "wasm:\n  adapter: pglite\n  database: miyazaki\n  js_interface: pglite4rails\n  prepared_statements: true\n")
+
+end
 
 module MiyazakiWasm
   class Application < Rails::Application
@@ -27,6 +30,7 @@ module MiyazakiWasm
     config.consider_all_requests_local = true
   end
 end
+JS.eval("globalThis.postMessage?.({type:'progress',message:'Rails アプリケーションを初期化しています…'})")
 MiyazakiWasm::Application.initialize!
 unless ENV['SUMMARY_ONLY'] == '1'
 ActiveRecord::Base.establish_connection(adapter: 'pglite', database: 'miyazaki', js_interface: 'pglite4rails', prepared_statements: true)
@@ -63,7 +67,8 @@ class VenuesController < ActionController::API
   end
 end
 end
-require '/demo/summary'
+JS.eval("globalThis.postMessage?.({type:'progress',message:'Rails のビューとルートを準備しています…'})")
+require '/demo/summary' 
 Rails.application.routes.draw do
   get '/map', to: 'summary#map'
   get '/summary', to: 'summary#show'
