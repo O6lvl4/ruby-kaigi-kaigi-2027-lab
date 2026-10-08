@@ -4,7 +4,7 @@ import { initRailsVM } from 'wasmify-rails';
 const module=await WebAssembly.compile(await readFile('public/base-app.wasm'));
 const vm=await initRailsVM(module,{skipInitialize:true,async:true,env:['SUMMARY_ONLY=1']});
 const files={};
-for(const [target,path] of Object.entries({'/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/map_guide.rb':'src/ruby/map_guide.rb','/demo/map_places.json':'src/ruby/map_places.json','/demo/views/summary/_map_cards.html.erb':'src/ruby/views/summary/_map_cards.html.erb','/demo/views/summary/_schematic_map.html.erb':'src/ruby/views/summary/_schematic_map.html.erb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'}))files[target]=await readFile(path,'utf8');
+for(const [target,path] of Object.entries({'/demo/public_reference_data.json':'src/ruby/public_reference_data.json','/demo/views/summary/_references.html.erb':'src/ruby/views/summary/_references.html.erb','/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/map_guide.rb':'src/ruby/map_guide.rb','/demo/map_places.json':'src/ruby/map_places.json','/demo/views/summary/_map_cards.html.erb':'src/ruby/views/summary/_map_cards.html.erb','/demo/views/summary/_schematic_map.html.erb':'src/ruby/views/summary/_schematic_map.html.erb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'}))files[target]=await readFile(path,'utf8');
 globalThis.appFiles=JSON.stringify(files);
 await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
 async function get(path,accept){globalThis.railsRequest=JSON.stringify({method:'GET',path,accept});return JSON.parse((await vm.evalAsync('$dispatch.call')).toString());}
@@ -33,3 +33,16 @@ for(const scenario of ['arrival','venue','night']){
 }
 const invalidMap=await get('/map.json?scenario=unknown','application/json');assert.equal(invalidMap.status,422);
 console.log('PASS Rails scenarios emit matching ERB place cards and source-backed GeoJSON with schematic-only lines');
+const references=json.body.references;
+assert.equal(references.restaurantSection.restaurants.length,4);
+assert.deepEqual(references.archiveSection.years.map(x=>x.year),[2026,2025,2024,2023,2022]);
+assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='ajidokoro-shu').groupCapacity,null);
+assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='torihisa').groupCapacity,20);
+assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='takasago').totalSeats,163);
+assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='takasago').groupCapacity,50);
+assert.equal((html.body.match(/data-restaurant-id=/g)||[]).length,4);
+assert.equal((html.body.match(/data-archive-year=/g)||[]).length,5);
+assert.match(html.body,/id="dining"/);assert.match(html.body,/id="archive"/);
+for(const restaurant of references.restaurantSection.restaurants){assert.ok(html.body.includes(restaurant.name));assert.ok(html.body.includes(restaurant.sourceUrl));}
+for(const event of references.archiveSection.years){for(const key of ['url','scheduleUrl','eventsUrl'])assert.ok(html.body.includes(event[key]));}
+console.log('PASS real Rails ERB and JSON expose four source-backed restaurants and five official archives');

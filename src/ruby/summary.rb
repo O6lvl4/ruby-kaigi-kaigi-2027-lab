@@ -52,6 +52,7 @@ class SummaryController < ActionController::Base
 
   def show
     @snapshot = PreparationSnapshot.current
+    @references = JSON.parse(File.read('/demo/public_reference_data.json'))
     @guide = MiyazakiMapGuide.select(params[:scenario])
     @runtime = { ruby: RUBY_VERSION, rails: Rails.version, platform: RUBY_PLATFORM, renderer: 'ActionView::ERB', controller: self.class.name }
     response.set_header('X-Summary-Renderer', 'Rails-ActionView-ERB')
@@ -59,7 +60,7 @@ class SummaryController < ActionController::Base
     response.set_header('X-Rails-Version', Rails.version)
     respond_to do |format|
       format.html { render template: 'summary/show', layout: false }
-      format.json { render json: { snapshot: @snapshot, runtime: @runtime, map: @guide } }
+      format.json { render json: { snapshot: @snapshot, runtime: @runtime, map: @guide, references: @references } }
     end
   end
 

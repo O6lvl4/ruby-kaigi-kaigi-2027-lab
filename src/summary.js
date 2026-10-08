@@ -1,3 +1,4 @@
+import { initDiningGuide } from './dining.js';
 import './map.css';
 import {saveStage,stageLabel} from './runtime-status.js';
 const $ = id => document.getElementById(id);
@@ -123,6 +124,7 @@ async function start() {
     lastStep='Rails の生成完了。実行用メモリを解放しました';checkpoint('booting',lastStep);
     // Only our trusted Rails ERB template can supply this response. No external HTML is accepted.
     $('rails-root').innerHTML = response.body;
+    initDiningGuide();
     $('rails-root').hidden = false;
     $('boot-panel').hidden = true;
     window.summaryApp.lastResponse = response;

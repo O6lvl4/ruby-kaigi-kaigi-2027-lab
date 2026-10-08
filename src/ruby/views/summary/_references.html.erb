@@ -1,0 +1,27 @@
+<% dining = @references.fetch('restaurantSection'); archive = @references.fetch('archiveSection') %>
+<section id="dining" class="section reference-section" aria-labelledby="dining-title">
+  <div class="section-label"><span>05</span><h2 id="dining-title"><%= dining.fetch('title') %></h2></div>
+  <p class="section-intro"><%= dining.fetch('intro') %></p>
+  <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= dining.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
+  <div class="dining-filter"><label for="dining-capacity">集まる人数の目安</label><select id="dining-capacity" aria-describedby="capacity-help"><option value="0">すべての店</option><option value="10">10人以上</option><option value="20">20人以上</option><option value="30">30人以上</option><option value="50">50人以上</option><option value="60">60人以上</option></select><p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。</p></div>
+  <p id="dining-results" class="source" role="status" aria-live="polite">4店を掲載（うち人数要確認 1店）</p>
+  <p id="dining-empty" class="note" hidden>掲載人数の条件に合う店はありません。人数要確認の店は下に残しています。</p>
+  <div class="dining-grid"><% dining.fetch('restaurants').each do |restaurant| %>
+    <article class="dining-card" data-restaurant-id="<%= restaurant.fetch('id') %>" data-group-capacity="<%= restaurant['groupCapacity'] %>">
+      <p class="kicker"><%= restaurant['groupCapacity'] ? 'GROUP DINING' : '人数要確認' %></p><h3><%= restaurant.fetch('name') %></h3><p class="restaurant-address"><%= restaurant.fetch('address') %></p>
+      <dl class="capacity-facts"><div><dt>店全体の総席数</dt><dd><strong><%= restaurant.fetch('totalSeats') %></strong> 席</dd></div><div><dt><%= restaurant.fetch('groupCapacityLabel') %></dt><dd><% if restaurant['groupCapacity'] %><strong><%= restaurant.fetch('groupCapacity') %></strong> 人<% else %><span>人数要確認</span><% end %></dd></div></dl>
+      <p class="restaurant-note"><%= restaurant.fetch('note') %></p>
+      <details><summary>個室・貸切・利用条件</summary><dl class="restaurant-details"><dt>個室</dt><dd><%= restaurant.fetch('privateRoom') %></dd><dt>貸切</dt><dd><%= restaurant.fetch('privateBooking') %></dd><dt>アクセス上の配慮</dt><dd><%= restaurant.fetch('accessibility') %></dd><dt>立食・2027年の空席・料金</dt><dd>未確認。予約前に店舗へ確認してください。</dd></dl></details>
+      <p class="source"><a href="<%= restaurant.fetch('sourceUrl') %>"><%= restaurant.fetch('sourceLabel') %> ↗</a><br>確認日 <time datetime="<%= @references.fetch('checkedAt') %>"><%= @references.fetch('checkedAt') %></time><% if restaurant['sourceUpdatedAt'] %> · 掲載更新 <%= restaurant.fetch('sourceUpdatedAt') %><% end %></p>
+    </article>
+  <% end %></div>
+  <p class="source"><%= dining.fetch('publicationDisclaimer') %> 掲載情報は変更されることがあります。店舗との条件確認・予約は別途必要です。</p>
+</section>
+<section id="archive" class="section reference-section" aria-labelledby="archive-title">
+  <div class="section-label"><span>06</span><h2 id="archive-title"><%= archive.fetch('title') %></h2></div><p class="section-intro"><%= archive.fetch('intro') %></p>
+  <div class="archive-list"><% archive.fetch('years').each do |event| %>
+    <article class="archive-card" data-archive-year="<%= event.fetch('year') %>"><div class="archive-year"><a href="<%= event.fetch('url') %>"><%= event.fetch('year') %> ↗</a><span><%= event.fetch('city') %></span></div><div><h3><%= event.fetch('venue') %></h3><p class="archive-dates"><%= event.fetch('dates') %></p><p class="archive-point"><%= event.fetch('point') %></p><nav class="archive-links" aria-label="RubyKaigi <%= event.fetch('year') %> 公式資料"><a href="<%= event.fetch('scheduleUrl') %>">プログラム ↗</a><a href="<%= event.fetch('eventsUrl') %>">交流イベント ↗</a><% if event['operationsUrl'] %><a href="<%= event.fetch('operationsUrl') %>"><%= event.fetch('operationsLabel') %> ↗</a><% end %></nav></div></article>
+  <% end %></div>
+  <details class="archive-reading"><summary>過去の開催から、どこを読む？</summary><div class="reading-grid"><% archive.fetch('readingPrompts').each do |prompt| %><article><h3><%= prompt.fetch('title') %></h3><p><%= prompt.fetch('fact') %></p><p><strong>読み方の提案：</strong><%= prompt.fetch('inference') %></p><p class="source"><% prompt.fetch('sources').each_with_index do |url, index| %><a href="<%= url %>">公式の実施例 <%= index + 1 %> ↗</a> <% end %></p></article><% end %></div></details>
+  <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= @references.fetch('checkedAt') %>"><%= @references.fetch('checkedAt') %></time></p>
+</section>
