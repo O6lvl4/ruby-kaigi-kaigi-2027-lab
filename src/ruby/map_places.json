@@ -10,7 +10,17 @@
     "description": "空港から会場へは、橘通り3丁目で乗り換えるバス経路が会場公式に案内されています。",
     "precision_note": "県公式観光サイトの施設代表点です。ターミナル入口や乗り場の位置ではありません。",
     "source": "https://miyazaki-ac.jp/access/",
-    "coordinate_source": "https://www.kanko-miyazaki.jp/spot/2108"
+    "coordinate_source": "https://www.kanko-miyazaki.jp/spot/2108",
+    "address": "〒880-0912 宮崎県宮崎市大字赤江 宮崎空港内",
+    "addressLabel": "空港所在地",
+    "addressQualification": "空港公式サイトの所在地表記です。ターミナル入口・送迎場所・駐車場を指定する住所ではありません。",
+    "addressSourceUrl": "https://www.miyazaki-airport.co.jp/access",
+    "addressSourceName": "宮崎ブーゲンビリア空港 公式交通アクセス",
+    "addressSourceType": "official_operator",
+    "googleMapsQuery": "宮崎ブーゲンビリア空港, 宮崎県宮崎市赤江",
+    "googleMapsDestination": "宮崎ブーゲンビリア空港, 宮崎県宮崎市赤江",
+    "googleMapsTargetNote": "施設名と所在地をGoogle Mapsで検索します。入口・乗り場は指定していません。出発地と移動手段はGoogle Maps側で選べます。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "miyazaki_station",
@@ -23,7 +33,18 @@
     "description": "会場へ向かうバスは、西口2番乗り場からの案内です。ニシタチを訪ねる際の起点にもなります。",
     "precision_note": "MapFanの駅代表点です。西口やバス乗り場の正確な位置は公式案内で確認してください。",
     "source": "https://miyazaki-ac.jp/access/",
-    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZGW"
+    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZGW",
+    "address": "〒880-0811 宮崎県宮崎市錦町1-8",
+    "addressLabel": "駅所在地",
+    "addressQualification": "駅構内の市観光案内所の公式住所でも確認できる駅所在地です。西口2番バス乗り場やタクシー乗り場の位置は別途確認してください。",
+    "addressSourceUrl": "https://www.kanko-miyazaki.jp/universal/1237",
+    "addressSourceName": "宮崎県公式観光サイト 宮崎市観光案内所",
+    "addressSourceType": "official_tourism_station_tenant",
+    "addressAdditionalSourceUrl": "https://www.jrkyushu.co.jp/railway/station/1191904_1601.html",
+    "googleMapsQuery": "宮崎駅, 宮崎県宮崎市錦町1-8",
+    "googleMapsDestination": "宮崎駅, 宮崎県宮崎市錦町1-8",
+    "googleMapsTargetNote": "施設名と所在地をGoogle Mapsで検索します。入口・乗り場は指定していません。出発地と移動手段はGoogle Maps側で選べます。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "jingu_station",
@@ -36,7 +57,18 @@
     "description": "会場公式の最寄り駅。劇場までは徒歩約20分、タクシー約5分という案内です。",
     "precision_note": "MapFanの駅代表点です。改札・出口を示すピンではありません。",
     "source": "https://miyazaki-ac.jp/access/",
-    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZTW"
+    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZTW",
+    "address": "宮崎県宮崎市神宮東3丁目1",
+    "addressLabel": "駅所在地（地図掲載住所）",
+    "addressQualification": "Yahoo!マップ掲載の駅所在地です。JR九州の公式駅ページでは番地を確認できなかったため、地図掲載住所として示しています。改札・出口を指定するものではありません。",
+    "addressSourceUrl": "https://map.yahoo.co.jp/v3/place/JY4oO-L2wlo",
+    "addressSourceName": "Yahoo!マップ 宮崎神宮駅（ゼンリン・駅すぱあと等）",
+    "addressSourceType": "map_provider_fallback",
+    "addressAdditionalSourceUrl": "https://www.jrkyushu.co.jp/railway/station/1191906_1601.html",
+    "googleMapsQuery": "宮崎神宮駅, 宮崎県宮崎市神宮東3丁目1",
+    "googleMapsDestination": "宮崎神宮駅, 宮崎県宮崎市神宮東3丁目1",
+    "googleMapsTargetNote": "施設名と所在地をGoogle Mapsで検索します。入口・乗り場は指定していません。出発地と移動手段はGoogle Maps側で選べます。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "bunkakoen",
@@ -49,7 +81,18 @@
     "description": "会場公式が案内する下車停留所。ここから劇場までは徒歩約1分の案内です。",
     "precision_note": "Yahoo!マップのバス停代表点です。進行方向別の乗り場位置は現地・公式案内で確認してください。",
     "source": "https://miyazaki-ac.jp/access/",
-    "coordinate_source": "https://map.yahoo.co.jp/v3/place/OTmXrf2IF3U"
+    "coordinate_source": "https://map.yahoo.co.jp/v3/place/OTmXrf2IF3U",
+    "address": "宮崎県宮崎市神宮2丁目2付近",
+    "addressLabel": "バス停周辺の住所",
+    "addressQualification": "Yahoo!マップのバス停代表点周辺です。宮崎交通は1番・2番のりばを案内しているため、乗車方向と現地の停留所表示を確認してください。建物や入口の住所ではありません。",
+    "addressSourceUrl": "https://map.yahoo.co.jp/v3/place/OTmXrf2IF3U",
+    "addressSourceName": "Yahoo!マップ 文化公園前／宮崎交通",
+    "addressSourceType": "map_provider_fallback",
+    "addressAdditionalSourceUrl": "https://www.miyakoh.co.jp/bus/rosen/50on/6_HaList_3.html",
+    "googleMapsQuery": "文化公園前 バス停, 宮崎県宮崎市神宮2丁目2",
+    "googleMapsDestination": "31.934075180637,131.42122346021",
+    "googleMapsTargetNote": "経路リンクは既存のバス停代表点付近への案内です。方向別の乗り場・安全な乗降場所を示しません。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "tachibana",
@@ -62,7 +105,17 @@
     "description": "空港から会場へ向かうバスの乗換地点として、会場公式が案内しています。",
     "precision_note": "交差点調査の代表座標です。特定のバス乗り場を示していません。",
     "source": "https://miyazaki-ac.jp/access/",
-    "coordinate_source": "https://www.sonpo.or.jp/about/useful/kousaten/2022/45/4501.html"
+    "coordinate_source": "https://www.sonpo.or.jp/about/useful/kousaten/2022/45/4501.html",
+    "address": "宮崎県宮崎市橘通東3丁目4-12付近",
+    "addressLabel": "交差点周辺の参考住所",
+    "addressQualification": "日本損害保険協会が交差点の参考住所として掲載する地点の付近です。特定の建物・バス乗り場・タクシー乗降場所を指定しません。",
+    "addressSourceUrl": "https://www.sonpo.or.jp/about/useful/kousaten/2022/45/4501.html",
+    "addressSourceName": "日本損害保険協会 橘通三丁目交差点",
+    "addressSourceType": "primary_intersection_survey",
+    "googleMapsQuery": "橘通三丁目交差点, 宮崎市",
+    "googleMapsDestination": "31.91662,131.4232951",
+    "googleMapsTargetNote": "経路リンクは既存の交差点代表点付近への案内です。バス停や安全な乗降場所は現地で確認してください。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "venue",
@@ -75,7 +128,18 @@
     "description": "RubyKaigi 2027の公式サイトに掲載された会場です。開催日は2027年4月14日〜16日。",
     "precision_note": "Yahoo!マップの施設代表点です。イベント受付や利用入口を示していません。",
     "source": "https://rubykaigi.org/2027/",
-    "coordinate_source": "https://map.yahoo.co.jp/v3/place/gP1cvq1qLOg"
+    "coordinate_source": "https://map.yahoo.co.jp/v3/place/gP1cvq1qLOg",
+    "address": "〒880-8557 宮崎県宮崎市船塚3丁目210番地",
+    "addressLabel": "施設住所",
+    "addressQualification": "メディキット県民文化センター（宮崎県立芸術劇場）の施設住所です。RubyKaigiの受付・当日の利用入口・駐車場入口は公式案内で確認してください。",
+    "addressSourceUrl": "https://www.sun.pref.miyazaki.lg.jp/facilities_view/44.html",
+    "addressSourceName": "宮崎県 みやざき学び応援ネット 施設情報",
+    "addressSourceType": "official_prefecture",
+    "addressAdditionalSourceUrl": "https://miyazaki-ac.jp/wp-content/uploads/2021/12/guide.pdf",
+    "googleMapsQuery": "メディキット県民文化センター 宮崎県立芸術劇場, 宮崎県宮崎市船塚3丁目210番地",
+    "googleMapsDestination": "メディキット県民文化センター 宮崎県立芸術劇場, 宮崎県宮崎市船塚3丁目210番地",
+    "googleMapsTargetNote": "施設名と所在地をGoogle Mapsで検索します。入口・乗り場は指定していません。出発地と移動手段はGoogle Maps側で選べます。",
+    "checkedAt": "2026-10-08"
   },
   {
     "id": "nishitachi",
@@ -90,6 +154,16 @@
     "source": "https://www.miyazaki-city.tourism.or.jp/spot/10046",
     "coordinate_source": "https://nishitachi-museum.com/map/",
     "coordinate_method": "Median of 78 unique public-map POI coordinates; representative area point, not a venue or boundary",
-    "coordinate_map": "https://www.google.com/maps/d/embed?mid=1lhB4C3u2KveCyX3903d0f8XXxYjcKgw&hl=ja&ehbc=2E312F"
+    "coordinate_map": "https://www.google.com/maps/d/embed?mid=1lhB4C3u2KveCyX3903d0f8XXxYjcKgw&hl=ja&ehbc=2E312F",
+    "address": "宮崎県宮崎市中心部（ニシタチ）",
+    "addressLabel": "エリア所在地",
+    "addressQualification": "市観光協会が案内する繁華街エリアです。単一の施設住所はなく、既存ピンはエリアの参考点です。訪問する店が決まったら店舗の住所を目的地にしてください。",
+    "addressSourceUrl": "https://www.miyazaki-city.tourism.or.jp/spot/10046",
+    "addressSourceName": "宮崎市観光協会 公式観光サイト ニシタチ",
+    "addressSourceType": "official_tourism_area",
+    "googleMapsQuery": "ニシタチ, 宮崎市",
+    "googleMapsDestination": "31.91462205,131.4212245",
+    "googleMapsTargetNote": "経路リンクは既存の繁華街エリア参考点付近への案内です。店舗・駐車場・安全な乗降場所を示しません。",
+    "checkedAt": "2026-10-08"
   }
 ]

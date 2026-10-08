@@ -4,7 +4,7 @@ import { initRailsVM } from 'wasmify-rails';
 const module=await WebAssembly.compile(await readFile('public/base-app.wasm'));
 const vm=await initRailsVM(module,{skipInitialize:true,async:true,env:['SUMMARY_ONLY=1']});
 const files={};
-for(const [target,path] of Object.entries({'/demo/public_reference_data.json':'src/ruby/public_reference_data.json','/demo/views/summary/_references.html.erb':'src/ruby/views/summary/_references.html.erb','/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/map_guide.rb':'src/ruby/map_guide.rb','/demo/map_places.json':'src/ruby/map_places.json','/demo/views/summary/_map_cards.html.erb':'src/ruby/views/summary/_map_cards.html.erb','/demo/views/summary/_schematic_map.html.erb':'src/ruby/views/summary/_schematic_map.html.erb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'}))files[target]=await readFile(path,'utf8');
+for(const [target,path] of Object.entries({'/demo/guide_links.rb':'src/ruby/guide_links.rb','/demo/views/summary/_destination_links.html.erb':'src/ruby/views/summary/_destination_links.html.erb','/demo/public_reference_data.json':'src/ruby/public_reference_data.json','/demo/views/summary/_references.html.erb':'src/ruby/views/summary/_references.html.erb','/demo/application.rb':'src/ruby/application.rb','/demo/summary.rb':'src/ruby/summary.rb','/demo/map_guide.rb':'src/ruby/map_guide.rb','/demo/map_places.json':'src/ruby/map_places.json','/demo/views/summary/_map_cards.html.erb':'src/ruby/views/summary/_map_cards.html.erb','/demo/views/summary/_schematic_map.html.erb':'src/ruby/views/summary/_schematic_map.html.erb','/demo/views/summary/show.html.erb':'src/ruby/views/summary/show.html.erb','/demo/vendor/pglite_adapter.rb':'src/ruby/vendor/pglite_adapter.rb','/demo/vendor/pglite_shims/pg.rb':'src/ruby/vendor/pglite_shims/pg.rb'}))files[target]=await readFile(path,'utf8');
 globalThis.appFiles=JSON.stringify(files);
 await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }; load '/demo/application.rb'`);
 async function get(path,accept){globalThis.railsRequest=JSON.stringify({method:'GET',path,accept});return JSON.parse((await vm.evalAsync('$dispatch.call')).toString());}
@@ -72,3 +72,20 @@ for(const venue of venues){
  }
 }
 console.log('PASS expanded data provenance, unknown/conflicting capacities, seated-vs-standing and hotel room distinctions');
+assert.equal(venues.filter(venue=>venue.coordinates?.length===2).length,20);
+for(const venue of venues){
+ assert.ok(venue.coordinates.every(Number.isFinite));
+ assert.ok(venue.coordinateSourceUrl.startsWith('https://'));
+ assert.ok(venue.coordinatePrecision.length>0);
+ const query=new URL('https://www.google.com/maps/search/');
+ query.searchParams.set('api','1');query.searchParams.set('query',`${venue.name} ${venue.address}`);
+ assert.ok(html.body.includes(query.href.replaceAll('&','&amp;')));
+ assert.equal(venue.thumbnail,null,'No unverified photo may be presented as a venue photo');
+}
+for(const place of json.body.map.all_places){
+ assert.ok(place.address.length>0);assert.ok(place.addressQualification.length>0);
+ assert.ok(place.addressSourceUrl.startsWith('https://'));
+}
+assert.match(html.body,/id="site-navigation"/);assert.match(html.body,/id="dining-area"/);assert.match(html.body,/id="dining-map-panel"/);
+assert.ok(!html.body.includes('origin='));
+console.log('PASS all 27 destinations have qualified addresses; 20 dining pins and origin-free Maps links are Rails-rendered');
