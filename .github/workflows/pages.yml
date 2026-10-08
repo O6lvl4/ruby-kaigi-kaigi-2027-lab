@@ -30,7 +30,7 @@ jobs:
         run: npm test
       - name: Build for project subpath
         env:
-          VITE_BASE_PATH: /ruby-kaigi-lab/
+          VITE_BASE_PATH: /ruby-kaigi-kaigi-2027-lab/
           VITE_BUILD_ID: ${{ github.sha }}
         run: npm run build
       - name: Check artifact size
@@ -41,8 +41,8 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Browser persistence test without isolation headers
         env:
-          DEMO_URL: http://127.0.0.1:4173/ruby-kaigi-lab/
-          VITE_BASE_PATH: /ruby-kaigi-lab/
+          DEMO_URL: http://127.0.0.1:4173/ruby-kaigi-kaigi-2027-lab/
+          VITE_BASE_PATH: /ruby-kaigi-kaigi-2027-lab/
         run: |
           npm run preview -- --port 4173 > evidence/preview.log 2>&1 &
           SERVER_PID=$!

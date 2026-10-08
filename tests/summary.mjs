@@ -30,6 +30,8 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.equal(ruby.body.runtime.controller,'SummaryController');assert.equal(ruby.body.runtime.renderer,'ActionView::ERB');assert.equal(ruby.body.snapshot.routes.length,3);
    assert.equal(ruby.body.snapshot.checked_on,'2026-10-08');
    assert.ok(requests.some(x=>x.includes('base-app.wasm')),'Homepage must execute the Ruby Wasm runtime');
+   assert.ok(requests.some(x=>new URL(x).pathname===new URL('base-app.wasm',base).pathname),'Ruby Wasm must load under the configured Pages project path');
+   for(const asset of requests.filter(x=>new URL(x).origin===new URL(base).origin && /\.(?:js|css|wasm)(?:\?|$)/.test(x)))assert.ok(new URL(asset).pathname.startsWith(new URL(base).pathname),'Same-origin assets must stay under the Pages project path');
    assert.ok(!requests.some(x=>/postgres.*\.(wasm|data)|duckdb.*\.wasm/.test(x)),'Read mode must not boot unrelated database engines');
    assert.deepEqual(errors,[]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    const requestsBeforeReading=requests.length;
