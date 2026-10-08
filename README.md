@@ -15,7 +15,7 @@ RubyKaigiKaigi 2027は、RubyKaigi 2027 宮崎開催の公開情報を読むた�
 
 GitHub Actions が Node/Wasm テスト、プロジェクト用サブパスのビルド、COOP/COEP なしの Chromium E2E を通過してから Pages に配信します。配信後は公開 URL に対して再度フォーム保存・再読み込み・ブラウザ終了/再起動をテストします。
 
-公開 URL: https://o6lvl4.github.io/ruby-kaigi-lab/
+公開 URL: https://o6lvl4.github.io/ruby-kaigi-kaigi-2027-lab/
 
 技術デモの DB のデータは各閲覧者のブラウザ内に保存され、GitHub へ送信されません。初回ロードは大きいため Wi-Fi とデスクトップ Chrome を推奨します。DuckDB は単一スレッド版を使い、SharedArrayBuffer や特殊なレスポンスヘッダーを要求しません。
 
