@@ -14,6 +14,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   assert.equal(await page.locator('#check-results li').count(),3);
   assert.match(await page.locator('#check-status').innerText(),/地図は起動していません/);
   assert.ok(requests.some(u=>u.includes('base-app.wasm?release=28acbb22')));
+  assert.ok(requests.some(u=>new URL(u).pathname===new URL('base-app.wasm',base).pathname),'Diagnostic runtime must use the configured Pages project path');
   assert.ok(!requests.some(u=>/cyberjapandata|postgres|duckdb/i.test(u)),'Isolated Rails check must not load map or databases');
   const second=await context.newPage();await second.goto(new URL('runtime-check.html',base).href);
   assert.match(await second.locator('#saved-stage').innerText(),/Ruby・Rails・本文生成が完了/);

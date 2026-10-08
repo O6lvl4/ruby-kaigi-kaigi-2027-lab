@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
-// GitHub Pages project sites live under /ruby-kaigi-lab/.
+// GitHub Pages project sites live under /ruby-kaigi-kaigi-2027-lab/.
 // Neither the dev nor preview server adds COOP/COEP: CI tests Pages conditions.
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || '/',
