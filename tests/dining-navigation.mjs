@@ -3,6 +3,26 @@ import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 const base=process.env.DEMO_URL||'http://127.0.0.1:5173/';
 const results=[];await mkdir('evidence',{recursive:true});
+async function verifyBlockedTiles(browser, viewport, label){
+ const context=await browser.newContext({viewport});
+ let blockedTiles=0;
+ await context.route('**/cyberjapandata.gsi.go.jp/**',route=>{blockedTiles++;return route.abort();});
+ const page=await context.newPage();
+ try{
+  await page.goto(base);
+  await page.waitForFunction(()=>window.summaryApp?.mapReady||window.summaryApp?.error,null,{timeout:180000});
+  assert.equal(await page.evaluate(()=>window.summaryApp.error),null);
+  const dining=page.locator('#dining');
+  await dining.locator('[data-dining-view="map"]').click();
+  await page.waitForFunction(()=>document.querySelectorAll('[data-dining-pin]').length===20);
+  await page.waitForFunction(()=>document.getElementById('dining-map-status').textContent.includes('読み込めません'),null,{timeout:30000});
+  assert.ok(blockedTiles>0,'Tile failure must be injected before any cached image is loaded');
+  await dining.locator('#dining-map-choice').selectOption('ogura-honten');
+  assert.equal(await dining.locator('[data-dining-detail-id="ogura-honten"] a[href*="travelmode=walking"]').count(),1);
+  assert.equal(page.workers().length,0);
+ }catch(error){await page.screenshot({path:`evidence/dining-tile-failure-${label}.png`}).catch(()=>{});throw error;}
+ finally{await context.close();}
+}
 for(const [engineName,engine]of Object.entries({chromium,webkit})){
  const browser=await engine.launch();
  try{for(const [size,viewport]of Object.entries({desktop:{width:1360,height:1000},mobile:{width:390,height:844}})){
@@ -74,10 +94,8 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
    await dining.locator('[data-dining-view="map"]').click();await page.waitForFunction(()=>document.querySelectorAll('[data-dining-pin]').length===20);
   }
   await dining.locator('[data-dining-view="list"]').click();
-  await context.route('**/cyberjapandata.gsi.go.jp/**',route=>route.abort());
-  await dining.locator('[data-dining-view="map"]').click();await page.waitForFunction(()=>document.querySelectorAll('[data-dining-pin]').length===20);
-  await page.waitForFunction(()=>document.getElementById('dining-map-status').textContent.includes('読み込めません'),null,{timeout:30000});
-  await dining.locator('#dining-map-choice').selectOption('ogura-honten');assert.equal(await dining.locator('[data-dining-detail-id="ogura-honten"] a[href*="travelmode=walking"]').count(),1);
+  // A fresh context prevents WebKit's image memory cache from bypassing late fault injection.
+  await verifyBlockedTiles(browser,viewport,`${engineName}-${size}`);
   assert.equal(page.workers().length,0);assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);
   assert.equal(requests.filter(u=>u.includes('base-app.wasm')).length,initialWasm);
   assert.equal(await page.evaluate(()=>window.geolocationCalls),0);
