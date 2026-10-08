@@ -1,40 +1,42 @@
-import { chromium, webkit } from 'playwright';
-import { mkdir, writeFile } from 'node:fs/promises';
+import {chromium,webkit} from 'playwright';
+import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const url=process.env.DEMO_URL || 'http://127.0.0.1:5173/';
+const url=process.env.DEMO_URL||'http://127.0.0.1:5173/';
 const results=[];await mkdir('evidence',{recursive:true});
-async function ready(page){await page.waitForFunction(()=>window.summaryApp?.mapReady || window.summaryApp?.error || window.summaryApp?.mapError,null,{timeout:180000});assert.equal(await page.evaluate(()=>window.summaryApp.mapReady),true);}
-for(const [engineName,engine] of Object.entries({chromium,webkit})){
- const browser=await engine.launch({headless:true});
+async function ready(page){await page.waitForFunction(()=>window.summaryApp?.mapReady||window.summaryApp?.error||window.summaryApp?.mapError,null,{timeout:180000});assert.equal(await page.evaluate(()=>window.summaryApp.mapReady),true);}
+for(const [engineName,engine]of Object.entries({chromium,webkit})){
+ const browser=await engine.launch();
  try{
-  const context=await browser.newContext({viewport:{width:1360,height:1000}});const page=await context.newPage();
+  const context=await browser.newContext({viewport:{width:1360,height:1000}}),page=await context.newPage(),requests=[],errors=[];
+  page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);await ready(page);
-  await page.waitForFunction(()=>['loaded','error'].includes(window.summaryApp.mapTileStatus),null,{timeout:30000});
-  assert.equal(await page.evaluate(()=>window.summaryApp.mapTileStatus),'loaded','Normal map must actually load background tiles');
+  assert.equal(await page.locator('#schematic-map [data-map-node]').count(),7);assert.equal(page.workers().length,0);
+  assert.ok(!requests.some(u=>/cyberjapandata|real-map-/.test(u)),'Default schematic must not load Leaflet or tiles');
+  await page.evaluate(()=>{window.originalPoints=[...document.querySelectorAll('[data-map-node]')];window.originalAnchors=window.originalPoints.map(n=>[n.dataset.mapNode,n.querySelector('circle').getAttribute('cx'),n.querySelector('circle').getAttribute('cy')]);});
   await page.screenshot({path:`evidence/map-${engineName}-desktop.png`,fullPage:true});
   for(const key of ['arrival','venue','night']){
-   await page.locator(`[data-map-scenario="${key}"]`).click();await page.waitForFunction(k=>window.summaryApp.mapState?.key===k,key);
-   const state=await page.evaluate(()=>window.summaryApp.mapState);const ids=await page.locator('[data-place-id]').evaluateAll(nodes=>nodes.map(n=>n.dataset.placeId));
-   const points=state.geojson.features.filter(f=>f.geometry.type==='Point');assert.deepEqual(ids,points.map(p=>p.id));assert.equal(await page.locator('.guide-marker').count(),points.length);
+   await page.locator(`[data-map-scenario="${key}"]`).click();await page.waitForFunction(k=>window.summaryApp.mapState.key===k,key);
+   const state=await page.evaluate(()=>window.summaryApp.mapState),points=state.geojson.features.filter(f=>f.geometry.type==='Point');assert.equal(points.length,7);
+   assert.deepEqual(await page.locator('[data-place-id]').evaluateAll(ns=>ns.map(n=>n.dataset.placeId)),state.placeIds);
    assert.equal(state.renderer,'Rails-ActionView-ERB');assert.equal(state.controller,'SummaryController');
-   assert.ok(state.geojson.features.filter(f=>f.geometry.type==='LineString').every(f=>f.properties.kind==='schematic'));
-   const first=points[0];await page.locator(`[data-map-place="${first.id}"]`).click();assert.equal(await page.evaluate(()=>window.summaryApp.mapSelected),first.id);assert.equal(await page.locator(`[data-map-place="${first.id}"]`).getAttribute('aria-pressed'),'true');
-   await page.locator('#fit-map').click();await page.locator(`.guide-marker[title="${first.properties.name}"]`).click();assert.equal(await page.locator(`[data-place-id="${first.id}"]`).getAttribute('class'),'location-card is-selected');
-   results.push({engine:engineName,scenario:key,status:'PASS',railsDataMatchesCards:true,linkedSelection:true,schematicOnly:true});
-   console.log('PASS map/card Rails consistency and linked selection',engineName,key);
-
+   assert.equal(await page.evaluate(()=>window.originalPoints.every(n=>n.isConnected)),true);
+   assert.deepEqual(await page.locator('[data-map-node]').evaluateAll(ns=>ns.map(n=>[n.dataset.mapNode,n.querySelector('circle').getAttribute('cx'),n.querySelector('circle').getAttribute('cy')])),await page.evaluate(()=>window.originalAnchors));
+   const first=state.placeIds[0];await page.locator(`[data-map-place="${first}"]`).click();assert.equal(await page.evaluate(()=>window.summaryApp.mapSelected),first);
+   await page.locator(`[data-map-node="${first}"]`).press('Enter');assert.equal(await page.locator(`[data-map-place="${first}"]`).getAttribute('aria-pressed'),'true');
+   results.push({engine:engineName,scenario:key,allSevenPersistent:true,sameAnchors:true,railsCardsMatch:true});
   }
-  await page.evaluate(()=>{for(let i=0;i<30;i++)document.querySelector(`[data-map-scenario="${['arrival','venue','night'][i%3]}"]`).click();});
-  await page.waitForFunction(()=>window.summaryApp.mapState?.key==='night');assert.equal(await page.locator('[data-place-id]').count(),3);
-  assert.equal(await page.locator('.leaflet-container').count(),1);console.log('PASS rapid scenario changes settle on latest request with one map',engineName);
-  await page.setViewportSize({width:390,height:844});await page.locator('#fit-map').click();await page.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();
-  const mobile=await browser.newContext({viewport:{width:390,height:844}});const mobilePage=await mobile.newPage();await mobilePage.goto(url);await ready(mobilePage);await mobilePage.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await mobilePage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await mobilePage.screenshot({path:`evidence/map-${engineName}-mobile.png`,fullPage:true});await mobile.close();
-  const failed=await browser.newContext({viewport:{width:390,height:844}});const fallback=await failed.newPage();await failed.route('https://cyberjapandata.gsi.go.jp/**',route=>route.abort('failed'));
-  await fallback.goto(url);await ready(fallback);await fallback.waitForFunction(()=>window.summaryApp.mapTileStatus==='error');
-  assert.ok(await fallback.locator('#map-sidebar').isVisible());assert.equal(await fallback.locator('[data-place-id]').count(),4);assert.match(await fallback.locator('#map-status').innerText(),/読み込めません/);
-  await fallback.locator('[data-map-scenario="night"]').click();await fallback.waitForFunction(()=>window.summaryApp.mapState.key==='night');assert.equal(await fallback.locator('[data-place-id]').count(),3);
-  await fallback.screenshot({path:`evidence/map-${engineName}-tile-failure.png`,fullPage:true});results.push({engine:engineName,status:'PASS',tileFailureKeepsRailsCards:true,scenarioSwitchWorks:true});console.log('PASS map tile-failure text fallback',engineName);await failed.close();
+  await page.locator('[data-map-mode="actual"]').click();await page.waitForFunction(()=>['loaded','error'].includes(window.summaryApp.mapTileStatus),null,{timeout:30000});assert.equal(await page.evaluate(()=>window.summaryApp.mapTileStatus),'loaded');assert.equal(await page.locator('.guide-marker').count(),7);
+  await page.evaluate(()=>window.originalMarkers=[...document.querySelectorAll('.guide-marker')]);
+  for(const key of ['arrival','venue','night']){await page.locator(`[data-map-scenario="${key}"]`).click();await page.waitForFunction(k=>window.summaryApp.mapState.key===k,key);assert.equal(await page.locator('.guide-marker').count(),7);assert.equal(await page.evaluate(()=>window.originalMarkers.every(n=>n.isConnected)),true);}
+  await page.locator('[data-map-mode="schematic"]').click();assert.equal(await page.locator('.leaflet-container').count(),0);assert.equal(await page.locator('#real-map').locator('*').count(),0);
+  const before=await page.locator('*').count();
+  for(let i=0;i<12;i++){await page.locator(`[data-map-scenario="${['arrival','venue','night'][i%3]}"]`).click();await page.evaluate(()=>window.scrollTo(0,600));await page.evaluate(()=>window.scrollTo(0,0));}
+  for(let i=0;i<3;i++){await page.locator('[data-map-mode="actual"]').click();await page.waitForFunction(()=>window.summaryApp.mapMetrics.realMapInstances===1);await page.locator('[data-map-mode="schematic"]').click();assert.equal(await page.locator('.leaflet-container').count(),0);}
+  assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);assert.equal(await page.evaluate(()=>window.summaryApp.mapMetrics.cachedScenarios),3);assert.equal(await page.evaluate(()=>window.summaryApp.mapMetrics.realMapInstances),0);assert.equal(page.workers().length,0);assert.ok(await page.locator('*').count()<=before+20);
+  await page.waitForTimeout(20000);assert.equal(await page.locator('[data-map-node]').count(),7);assert.equal(page.workers().length,0);assert.deepEqual(errors,[]);
+  console.log('PASS persistent7-point schematic/real maps, bounded repeated switches/scroll and20s observation',engineName);await context.close();
+  const mobile=await browser.newContext({viewport:{width:390,height:844}}),mp=await mobile.newPage();await mp.goto(url);await ready(mp);assert.ok(await mp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await mp.screenshot({path:`evidence/map-${engineName}-mobile.png`,fullPage:true});await mobile.close();
+  const blocked=await browser.newContext({viewport:{width:390,height:844}}),bp=await blocked.newPage();await blocked.route('https://cyberjapandata.gsi.go.jp/**',r=>r.abort('failed'));await bp.goto(url);await ready(bp);await bp.locator('[data-map-mode="actual"]').click();await bp.waitForFunction(()=>window.summaryApp.mapTileStatus==='error');await bp.locator('[data-map-mode="schematic"]').click();assert.equal(await bp.locator('[data-map-node]').count(),7);assert.equal(await bp.locator('#schematic-layer').isVisible(),true);assert.equal(await bp.locator('[data-place-id]').count(),4);await blocked.close();console.log('PASS real-tile failure returns to Rails schematic and cards',engineName);
  }finally{await browser.close();}
 }
 await writeFile('evidence/map-results.json',JSON.stringify({url,results},null,2));
-

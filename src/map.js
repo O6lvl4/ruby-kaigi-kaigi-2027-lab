@@ -1,101 +1,79 @@
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import './map.css';
+import {saveStage} from './runtime-status.js';
 
 export async function initMapGuide(request) {
-  const container=document.getElementById('miyazaki-map');
-  const sidebar=document.getElementById('map-sidebar');
-  const status=document.getElementById('map-status');
-  if(!container || !sidebar) return;
-  const map=L.map(container,{fadeAnimation:false,zoomAnimation:false,scrollWheelZoom:false,minZoom:11,maxZoom:17,zoomControl:true,preferCanvas:false});
-  map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
-  map.zoomControl.setPosition('topright');
-  let tileErrors=0, tileLoads=0, revision=0, selectedId=null, current=null, disposed=false, switching=false, desiredKey=null;
-  const markers=new Map();
-  const layer=L.layerGroup().addTo(map);
-  const tile=L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{
-    minZoom:11,maxZoom:17,keepBuffer:1,updateWhenIdle:true,
-    attribution:'<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>'
-  });
-  function updateTileStatus(){
-    if(tileErrors){ status.textContent='背景地図の一部を読み込めませんでした。地点カード・公式出典・概略線はそのまま確認できます。';status.classList.add('map-warning');window.summaryApp.mapTileStatus='error'; }
-    else if(tileLoads){status.textContent='地点とカードを選ぶと、同じ場所がハイライトされます。';status.classList.remove('map-warning');window.summaryApp.mapTileStatus='loaded';}
+  const root=document.querySelector('.map-workspace'),sidebar=document.getElementById('map-sidebar'),status=document.getElementById('map-status');
+  const svg=document.getElementById('schematic-map'),schematic=document.getElementById('schematic-layer'),actual=document.getElementById('real-map');
+  if(!root||!svg)return;
+  const cache=new Map(),bindings=[];
+  let current,disposed=false,switching=false,desiredKey=null,mode='schematic',realMap=null,modeVersion=0,cameraBox=null;
+  window.summaryApp.mapMetrics={scenarioRequests:0,cachedScenarios:0,realMapInstances:0};
+  const checkpoint=stage=>saveStage({build:window.summaryApp.build,state:'ready',stage,at:new Date().toISOString(),source:'map-interaction'});
+  function bind(node,type,handler){node.addEventListener(type,handler);bindings.push(()=>node.removeEventListener(type,handler));}
+  function sizeLabels(){
+    const box=svg.viewBox.baseVal,rect=svg.getBoundingClientRect();if(!rect.width||!rect.height)return;
+    const scale=Math.min(rect.width/box.width,rect.height/box.height);if(!scale)return;
+    const label=(rect.width<600?13:14)/scale;
+    svg.style.setProperty('--label-size',`${label}px`);svg.style.setProperty('--context-size',`${11/scale}px`);svg.style.setProperty('--number-size',`${12/scale}px`);
+    for(const node of svg.querySelectorAll('[data-map-node]')){const circle=node.querySelector('.point-ring'),hit=node.querySelector('.point-hit');const x=Number(circle.getAttribute('cx')),y=Number(circle.getAttribute('cy')),size=Math.max(90,44/scale);circle.setAttribute('r',String(Math.max(18,12/scale)));hit.setAttribute('x',String(x-size/2));hit.setAttribute('y',String(y-size/2));hit.setAttribute('width',String(size));hit.setAttribute('height',String(size));}
   }
-  tile.on('tileload',()=>{tileLoads++;updateTileStatus();});
-  tile.on('tileerror',()=>{tileErrors++;updateTileStatus();});
-  tile.addTo(map);
-  function selectPlace(id,fromMarker=false){
-    const marker=markers.get(id);if(!marker)return;
-    selectedId=id;
-    for(const [key,item] of markers){item.getElement()?.classList.toggle('place-marker-active',key===id);}
-    for(const card of sidebar.querySelectorAll('[data-place-id]')){
-      const active=card.dataset.placeId===id;card.classList.toggle('is-selected',active);
-      card.querySelector('[data-map-place]')?.setAttribute('aria-pressed',String(active));
-      if(active && fromMarker)card.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
-    }
-    map.setView(marker.getLatLng(),Math.max(map.getZoom(),15),{animate:false});marker.openTooltip();
-    window.summaryApp.mapSelected=id;
+  function setCamera(box){
+    cameraBox=box.slice();let [x,y,w,h]=box;const rect=svg.getBoundingClientRect();
+    if(rect.width&&rect.height){const ratio=rect.width/rect.height;if(w/h>ratio){const nh=w/ratio;y-=(nh-h)/2;h=nh;}else{const nw=h*ratio;x-=(nw-w)/2;w=nw;}}
+    if(h<=900)y=Math.max(0,Math.min(900-h,y));if(w<=1000)x=Math.max(0,Math.min(1000-w,x));
+    svg.setAttribute('viewBox',[x,y,w,h].join(' '));sizeLabels();
   }
-  function fit(){
-    if(!current)return;
-    const coords=current.geojson.features.filter(f=>f.geometry.type==='Point').map(f=>[f.geometry.coordinates[1],f.geometry.coordinates[0]]);
-    if(coords.length)map.fitBounds(L.latLngBounds(coords),{padding:[35,35],maxZoom:16,animate:false});
+  const observer=new ResizeObserver(()=>cameraBox?setCamera(cameraBox):sizeLabels());observer.observe(svg);
+  function selectPlace(id){
+    const place=current?.all_places.find(p=>p.id===id);if(!place)return;
+    for(const node of svg.querySelectorAll('[data-map-node]'))node.classList.toggle('is-selected',node.dataset.mapNode===id);
+    for(const card of sidebar.querySelectorAll('[data-place-id]')){const selected=card.dataset.placeId===id;card.classList.toggle('is-selected',selected);card.querySelector('[data-map-place]')?.setAttribute('aria-pressed',String(selected));}
+    realMap?.select(id);window.summaryApp.mapSelected=id;
+    const note=document.getElementById('selected-place-note');note.textContent=`${place.name}：${place.description}`;note.hidden=false;
+    checkpoint(`地点を選択：${place.name}`);
   }
   function apply(data){
     if(data.renderer!=='Rails-ActionView-ERB'||data.controller!=='SummaryController')throw new Error('Rails map response could not be verified');
-    current=data;selectedId=null;layer.clearLayers();markers.clear();
-    sidebar.innerHTML=data.html;sidebar.dataset.scenario=data.key;
-    for(const button of document.querySelectorAll('[data-map-scenario]'))button.setAttribute('aria-pressed',String(button.dataset.mapScenario===data.key));
+    const ids=[...svg.querySelectorAll('[data-map-node]')].map(n=>n.dataset.mapNode);
     const points=data.geojson.features.filter(f=>f.geometry.type==='Point');
-    const cardIds=[...sidebar.querySelectorAll('[data-place-id]')].map(x=>x.dataset.placeId);
-    if(JSON.stringify(cardIds)!==JSON.stringify(points.map(x=>x.id)))throw new Error('Map and Rails cards do not match');
-    for(const feature of data.geojson.features){
-      if(feature.geometry.type==='LineString'){
-        L.polyline(feature.geometry.coordinates.map(c=>[c[1],c[0]]),{color:'#a3293d',weight:3,dashArray:'7 9',opacity:.72,interactive:false}).addTo(layer);
-      }
-    }
-    for(const feature of points){
-      const p=feature.properties;
-      const icon=L.divIcon({className:feature.id==='bunkakoen'?'guide-marker guide-marker-offset':'guide-marker',html:`<span>${Number(p.number)}</span>`,iconSize:[36,36],iconAnchor:[18,18]});
-      const marker=L.marker([feature.geometry.coordinates[1],feature.geometry.coordinates[0]],{icon,title:p.name,keyboard:true,riseOnHover:true}).addTo(layer);
-      const text=document.createElement('span');text.textContent=p.name;
-      marker.bindTooltip(text,{direction:'top',offset:[0,-16],opacity:1});
-      marker.on('click',()=>selectPlace(feature.id,true));markers.set(feature.id,marker);
-    }
-    for(const button of sidebar.querySelectorAll('[data-map-place]'))button.addEventListener('click',()=>selectPlace(button.dataset.mapPlace));
-    map.invalidateSize({animate:false});fit();
-    window.summaryApp.mapState={key:data.key,geojson:data.geojson,placeIds:cardIds,controller:data.controller,renderer:data.renderer};
-    window.summaryApp.mapReady=true;
-    status.textContent='背景地図を読み込んでいます。地点カードは利用できます。';updateTileStatus();
+    if(ids.length!==7||JSON.stringify([...ids].sort())!==JSON.stringify(points.map(p=>p.id).sort()))throw new Error('Persistent map and Rails locations do not match');
+    current=data;sidebar.innerHTML=data.html;sidebar.dataset.scenario=data.key;
+    if(JSON.stringify([...sidebar.querySelectorAll('[data-place-id]')].map(n=>n.dataset.placeId))!==JSON.stringify(data.selected_ids))throw new Error('Rails selected cards do not match');
+    for(const node of svg.querySelectorAll('[data-map-node]')){const index=data.selected_ids.indexOf(node.dataset.mapNode);node.classList.toggle('is-in-scenario',index>=0);node.classList.remove('is-selected');node.querySelector('[data-map-number]').textContent=index<0?'':String(index+1);}
+    for(const path of svg.querySelectorAll('[data-route-scenario]'))path.classList.toggle('is-active',path.dataset.routeScenario===data.key);
+    setCamera(data.schematic.view_box);
+    for(const button of root.querySelectorAll('[data-map-scenario]'))button.setAttribute('aria-pressed',String(button.dataset.mapScenario===data.key));
+    document.getElementById('selected-place-note').hidden=true;realMap?.update(data);
+    window.summaryApp.mapState={key:data.key,geojson:data.geojson,placeIds:data.selected_ids,allPlaceIds:ids,controller:data.controller,renderer:data.renderer};
+    window.summaryApp.mapReady=true;window.summaryApp.mapMetrics.cachedScenarios=cache.size;
+    if(mode==='schematic')status.textContent='全7地点を同じ地図に配置しています。選んだ導線を強調しています。';
+    checkpoint(`導線を表示：${data.label}（${mode==='schematic'?'模式図':'実地図'}）`);
   }
   async function loadScenario(key){
-    desiredKey=key;
-    if(switching)return;
-    switching=true;
-    try {
-      while(desiredKey && !disposed){
-        const next=desiredKey;desiredKey=null;
-        status.textContent='Rails で地点と導線を切り替えています…';
-        try{
-          const result=await request(`/map.json?scenario=${encodeURIComponent(next)}`);
-          if(disposed)return;
-          if(desiredKey)continue;
-          if(result.status!==200)throw new Error('Scenario request failed');
-          apply(result.body);
-        }catch(error){
-          if(disposed)return;
-          if(desiredKey)continue;
-          status.textContent='地図データを更新できませんでした。表示中の地点カードと公式の出典を確認してください。';status.classList.add('map-warning');
-          window.summaryApp.mapError=error.message;
-        }
-      }
-    } finally { switching=false; }
+    desiredKey=key;if(switching)return;switching=true;
+    try{while(desiredKey&&!disposed){const next=desiredKey;desiredKey=null;
+      try{let data=cache.get(next);if(!data){status.textContent='Rails で導線を確認しています…';window.summaryApp.mapMetrics.scenarioRequests++;const result=await request(`/map.json?scenario=${encodeURIComponent(next)}`);if(result.status!==200)throw new Error('Scenario request failed');data=result.body;if(cache.size<3)cache.set(next,data);}
+        if(disposed)return;if(desiredKey)continue;apply(data);
+      }catch(error){if(disposed)return;if(desiredKey)continue;status.textContent='導線を更新できませんでした。現在の地図と出典を確認してください。';window.summaryApp.mapError=error.message;}
+    }}finally{switching=false;}
   }
-  for(const button of document.querySelectorAll('[data-map-scenario]'))button.addEventListener('click',()=>loadScenario(button.dataset.mapScenario));
-  document.getElementById('fit-map').addEventListener('click',fit);
-  map.on('resize',fit);
-  window.summaryApp.mapReady=false;
-  await loadScenario(sidebar.dataset.scenario || 'arrival');
-  return () => { disposed=true;desiredKey=null;map.remove(); };
+  async function setMode(next){
+    const version=++modeVersion;mode=next;window.summaryApp.mapMode=next;
+    realMap?.dispose();realMap=null;window.summaryApp.mapMetrics.realMapInstances=0;
+    for(const button of root.querySelectorAll('[data-map-mode]'))button.setAttribute('aria-pressed',String(button.dataset.mapMode===next));
+    schematic.hidden=next!=='schematic';actual.hidden=next!=='actual';document.getElementById('actual-map-license').hidden=next!=='actual';
+    if(next==='schematic'){sizeLabels();status.textContent='全7地点を同じ地図に配置しています。縮尺は実際と異なります。';checkpoint('模式図を表示');return;}
+    status.textContent='実地図を読み込んでいます…';checkpoint('実地図を読み込み中');
+    try{const {createRealMap}=await import('./real-map.js');if(disposed||version!==modeVersion)return;
+      realMap=createRealMap(actual,selectPlace,tileStatus=>{if(disposed||version!==modeVersion)return;window.summaryApp.mapTileStatus=tileStatus;status.classList.toggle('map-warning',tileStatus==='error');status.textContent=tileStatus==='error'?'背景地図を読み込めませんでした。模式図と地点カードは利用できます。':tileStatus==='loaded'?'実地図に全7地点を配置しています。破線は概略線です。':'背景地図を読み込んでいます…';});
+      window.summaryApp.mapMetrics.realMapInstances=1;realMap.update(current);
+    }catch(error){if(disposed||version!==modeVersion)return;status.textContent='実地図を起動できませんでした。模式図と地点カードをご利用ください。';window.summaryApp.mapTileStatus='error';}
+  }
+  bind(root,'click',event=>{const scenario=event.target.closest('[data-map-scenario]');if(scenario){loadScenario(scenario.dataset.mapScenario);return;}const toggle=event.target.closest('[data-map-mode]');if(toggle){if(toggle.dataset.mapMode!==mode)setMode(toggle.dataset.mapMode);return;}const point=event.target.closest('[data-map-node]');if(point){selectPlace(point.dataset.mapNode);return;}const card=event.target.closest('[data-map-place]');if(card)selectPlace(card.dataset.mapPlace);});
+  bind(svg,'keydown',event=>{const point=event.target.closest('[data-map-node]');if(point&&(event.key==='Enter'||event.key===' ')){event.preventDefault();selectPlace(point.dataset.mapNode);}});
+  bind(document.getElementById('fit-map'),'click',()=>{setCamera(current.schematic.overview);realMap?.fit(true);checkpoint('全7地点を全体表示');});
+  bind(document,'visibilitychange',()=>checkpoint(document.hidden?'タブが非表示になりました':'タブに戻りました'));
+  window.summaryApp.mapMode='schematic';window.summaryApp.mapReady=false;
+  await loadScenario(sidebar.dataset.scenario||'arrival');
+  return()=>{observer.disconnect();disposed=true;desiredKey=null;modeVersion++;realMap?.dispose();realMap=null;for(const unbind of bindings)unbind();cache.clear();window.summaryApp.mapMetrics.realMapInstances=0;};
 }
-

@@ -22,6 +22,9 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.match(proof.response.body,/data-controller="SummaryController"/);
    assert.match(proof.response.body,/2027年4月14日〜16日/);assert.ok(!proof.response.body.includes('<%'));
    assert.equal(await page.locator('#rails-root main[data-renderer="rails-erb"]').count(),1);
+   assert.equal(await page.evaluate(()=>window.summaryApp.runtimeReleased),true);
+   assert.equal(page.workers().length,0,'Read-only Rails worker must be terminated before interactions');
+   assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);
    assert.equal(await page.locator('#rails-root form,#rails-root input').count(),0);
    const ruby=await page.evaluate(()=>window.summaryApp.request('/summary.json'));
    assert.equal(ruby.body.runtime.controller,'SummaryController');assert.equal(ruby.body.runtime.renderer,'ActionView::ERB');assert.equal(ruby.body.snapshot.routes.length,3);
