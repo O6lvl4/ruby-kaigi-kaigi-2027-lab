@@ -3,6 +3,7 @@ import {saveStage,stageLabel} from './runtime-status.js';
 const $ = id => document.getElementById(id);
 let worker, sequence = 0, generation = 0;
 const pending = new Map();
+const renderedResponses = new Map();
 let lastStep = 'starting';
 let lastDiagnostic = '';
 let timeout, mapDispose, booting = false;
@@ -26,6 +27,10 @@ function rpc(type, extra = {}) {
   });
 }
 function request(path, accept = 'application/json') {
+  const key=`${accept} ${path}`;
+  if(renderedResponses.has(key))return Promise.resolve(renderedResponses.get(key));
+  if(!worker)return Promise.reject(new Error('この読み取り結果は事前生成されていません'));
+  window.summaryApp.railsRequestCount++;
   return rpc('request', { request: { method: 'GET', path, accept } });
 }
 function dispose() {
@@ -64,6 +69,9 @@ async function start() {
   $('boot-panel').hidden = false;
   $('rails-root').hidden = true;
   $('rails-root').replaceChildren();
+  renderedResponses.clear();
+  window.summaryApp.runtimeReleased=false;
+  window.summaryApp.railsRequestCount=0;
   $('boot-error').hidden = true;
   $('retry').hidden = true;
   $('diagnostics').hidden = true;
@@ -102,6 +110,17 @@ async function start() {
     const response = await request('/summary', 'text/html');
     if (run !== generation) return;
     if (response.status !== 200 || response.headers['x-summary-renderer'] !== 'Rails-ActionView-ERB' || response.headers['x-ruby-platform'] !== 'wasm32-wasi' || typeof response.body !== 'string') throw new Error('Rails のまとめレスポンスを確認できませんでした');
+    renderedResponses.set('text/html /summary',response);
+    lastStep='Rails で3つの導線を生成しています';checkpoint('booting',lastStep);$('boot-status').textContent=lastStep;
+    for(const path of ['/summary.json','/map.json?scenario=arrival','/map.json?scenario=venue','/map.json?scenario=night']){
+      const generated=await request(path);
+      if(generated.status!==200)throw new Error('Rails の導線生成に失敗しました');
+      renderedResponses.set(`application/json ${path}`,generated);
+    }
+    if(run!==generation)return;
+    // The guide is read-only. Keep only bounded real Rails results, then release the VM before interactions.
+    worker.terminate();worker=null;window.summaryApp.runtimeReleased=true;
+    lastStep='Rails の生成完了。実行用メモリを解放しました';checkpoint('booting',lastStep);
     // Only our trusted Rails ERB template can supply this response. No external HTML is accepted.
     $('rails-root').innerHTML = response.body;
     $('rails-root').hidden = false;

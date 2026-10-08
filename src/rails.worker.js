@@ -4,6 +4,7 @@ import summarySource from './ruby/summary.rb?raw';
 import mapSource from './ruby/map_guide.rb?raw';
 import mapPlaces from './ruby/map_places.json?raw';
 import mapCards from './ruby/views/summary/_map_cards.html.erb?raw';
+import schematicMap from './ruby/views/summary/_schematic_map.html.erb?raw';
 import summaryView from './ruby/views/summary/show.html.erb?raw';
 import adapterSource from './ruby/vendor/pglite_adapter.rb?raw';
 import pgSource from './ruby/vendor/pglite_shims/pg.rb?raw';
@@ -29,7 +30,7 @@ async function loadApplication(summaryOnly=true) {
   if(applicationLoaded)return;
   if(!vm)throw new Error('Ruby is not initialized');
   progress('Ruby の起動完了。Rails のファイルを準備しています…');
-  self.appFiles = JSON.stringify({ '/demo/application.rb': appSource, '/demo/summary.rb': summarySource, '/demo/map_guide.rb': mapSource, '/demo/map_places.json': mapPlaces, '/demo/views/summary/_map_cards.html.erb': mapCards, '/demo/views/summary/show.html.erb': summaryView, '/demo/vendor/pglite_adapter.rb': adapterSource, '/demo/vendor/pglite_shims/pg.rb': pgSource });
+  self.appFiles = JSON.stringify({ '/demo/application.rb': appSource, '/demo/summary.rb': summarySource, '/demo/map_guide.rb': mapSource, '/demo/map_places.json': mapPlaces, '/demo/views/summary/_map_cards.html.erb': mapCards, '/demo/views/summary/_schematic_map.html.erb': schematicMap, '/demo/views/summary/show.html.erb': summaryView, '/demo/vendor/pglite_adapter.rb': adapterSource, '/demo/vendor/pglite_shims/pg.rb': pgSource });
   await vm.evalAsync(`require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }`);
   self.appFiles = null;
   progress('Rails ライブラリを読み込んでいます…');
