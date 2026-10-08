@@ -33,19 +33,24 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.ok(!requests.some(x=>/postgres.*\.(wasm|data)|duckdb.*\.wasm/.test(x)),'Read mode must not boot unrelated database engines');
    assert.deepEqual(errors,[]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    const requestsBeforeReading=requests.length;
-   assert.equal(await page.locator('[data-restaurant-id]').count(),4);
-   assert.deepEqual(await page.locator('#dining-capacity option').evaluateAll(options=>options.map(x=>x.value)),['0','10','20','30','50','60']);
+   const restaurants=ruby.body.references.restaurantSection.restaurants;
+   assert.equal(await page.locator('[data-restaurant-id]').count(),restaurants.length);
+   assert.deepEqual(await page.locator('#dining-capacity option').evaluateAll(options=>options.map(x=>x.value)),['0','10','20','30','50','60','100']);
    assert.equal(await page.locator('[data-archive-year]').count(),5);
    await page.locator('a[href="#dining"]').click();
-   await page.locator('#dining-capacity').selectOption('30');
-   assert.deepEqual(await page.locator('[data-restaurant-id]:visible').evaluateAll(cards=>cards.map(x=>x.dataset.restaurantId)),['ajidokoro-shu','anbai','takasago']);
-   await page.locator('#dining-capacity').selectOption('50');
-   assert.equal(await page.locator('[data-restaurant-id]:visible').count(),3);
-   await page.locator('#dining-capacity').selectOption('60');
-   assert.deepEqual(await page.locator('[data-restaurant-id]:visible').evaluateAll(cards=>cards.map(x=>x.dataset.restaurantId)),['ajidokoro-shu']);
-   assert.equal(await page.locator('#dining-empty').isVisible(),true);
-   await page.locator('#dining-capacity').selectOption('0');
-   assert.equal(await page.locator('[data-restaurant-id]:visible').count(),4);
+   for(const minimum of [10,20,30,50,60,100,0]){
+     await page.locator('#dining-capacity').selectOption(String(minimum));
+     const expected=restaurants.filter(r=>r.groupCapacity===null || r.groupCapacity>=minimum).map(r=>r.id);
+     assert.deepEqual(await page.locator('[data-restaurant-id]:visible').evaluateAll(cards=>cards.map(x=>x.dataset.restaurantId)),expected);
+     assert.equal(await page.locator('#dining-empty').isVisible(),minimum>0 && !restaurants.some(r=>r.groupCapacity!==null && r.groupCapacity>=minimum));
+     assert.equal(await page.locator('[data-restaurant-id="ajidokoro-shu"]').isVisible(),true);
+     if(minimum>20)assert.equal(await page.locator('[data-restaurant-id="torihisa"]').isVisible(),false);
+   }
+   assert.equal(await page.locator('[data-restaurant-id]:visible').count(),restaurants.length);
+   for(const restaurant of restaurants){
+     const card=page.locator(`[data-restaurant-id="${restaurant.id}"]`);
+     assert.equal(await card.locator(`a[href="${restaurant.sourceUrl}"]`).count(),1);
+   }
    await page.locator('[data-restaurant-id="torihisa"] summary').click();
    assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(),/2027年の空席/);
    await page.screenshot({path:`evidence/dining-${name}-${size}.png`,fullPage:true});

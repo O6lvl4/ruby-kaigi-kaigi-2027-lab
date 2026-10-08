@@ -34,15 +34,41 @@ for(const scenario of ['arrival','venue','night']){
 const invalidMap=await get('/map.json?scenario=unknown','application/json');assert.equal(invalidMap.status,422);
 console.log('PASS Rails scenarios emit matching ERB place cards and source-backed GeoJSON with schematic-only lines');
 const references=json.body.references;
-assert.equal(references.restaurantSection.restaurants.length,4);
+assert.equal(references.restaurantSection.restaurants.length,20);
+assert.deepEqual(references,JSON.parse(await readFile('src/ruby/public_reference_data.json','utf8')));
 assert.deepEqual(references.archiveSection.years.map(x=>x.year),[2026,2025,2024,2023,2022]);
 assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='ajidokoro-shu').groupCapacity,null);
 assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='torihisa').groupCapacity,20);
 assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='takasago').totalSeats,163);
 assert.equal(references.restaurantSection.restaurants.find(x=>x.id==='takasago').groupCapacity,50);
-assert.equal((html.body.match(/data-restaurant-id=/g)||[]).length,4);
+assert.equal((html.body.match(/data-restaurant-id=/g)||[]).length,20);
 assert.equal((html.body.match(/data-archive-year=/g)||[]).length,5);
 assert.match(html.body,/id="dining"/);assert.match(html.body,/id="archive"/);
 for(const restaurant of references.restaurantSection.restaurants){assert.ok(html.body.includes(restaurant.name));assert.ok(html.body.includes(restaurant.sourceUrl));}
 for(const event of references.archiveSection.years){for(const key of ['url','scheduleUrl','eventsUrl'])assert.ok(html.body.includes(event[key]));}
-console.log('PASS real Rails ERB and JSON expose four source-backed restaurants and five official archives');
+console.log('PASS real Rails ERB and JSON expose twenty source-backed dining venues and five official archives');
+
+const venues=references.restaurantSection.restaurants;
+assert.equal(new Set(venues.map(v=>v.id)).size,20);
+assert.equal(venues.filter(v=>v.venueType==='hotel_banquet').length,4);
+assert.equal(venues.find(v=>v.id==='rikyu').groupCapacity,null);
+assert.equal(venues.find(v=>v.id==='ebisuya-ichibangai').groupCapacity,40);
+assert.equal(venues.find(v=>v.id==='take-miyazaki').groupCapacity,65);
+assert.equal(venues.find(v=>v.id==='take-miyazaki').standingCapacity,80);
+assert.equal(venues.find(v=>v.id==='uruwashi').totalSeats,null);
+assert.match(html.body,/20件を掲載/);assert.match(html.body,/ホテル宴会場/);
+for(const venue of venues){
+ for(const key of ['totalSeats','groupCapacity','standingCapacity'])assert.ok(venue[key]===null || (Number.isInteger(venue[key]) && venue[key]>0));
+ assert.ok(venue.sourceUrl.startsWith('https://'));
+ if(venue.openingHours)assert.ok(html.body.includes(venue.openingHours));
+ for(const fieldSource of Object.values(venue.fieldSources)){
+   const url=venue[fieldSource] || fieldSource;
+   assert.ok(typeof url==='string' && url.startsWith('https://'),`Missing provenance ${venue.id}/${fieldSource}`);
+   assert.ok(html.body.includes(url),`Missing visible provenance link ${venue.id}/${fieldSource}`);
+ }
+ if(venue.venueType==='hotel_banquet'){
+   assert.equal(venue.totalSeats,null);
+   assert.ok(venue.roomOptions.some(room=>room.seatedMax===venue.groupCapacity));
+ }
+}
+console.log('PASS expanded data provenance, unknown/conflicting capacities, seated-vs-standing and hotel room distinctions');
