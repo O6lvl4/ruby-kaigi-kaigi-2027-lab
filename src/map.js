@@ -10,7 +10,7 @@ export async function initMapGuide(request) {
   const map=L.map(container,{fadeAnimation:false,zoomAnimation:false,scrollWheelZoom:false,minZoom:11,maxZoom:17,zoomControl:true,preferCanvas:false});
   map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
   map.zoomControl.setPosition('topright');
-  let tileErrors=0, tileLoads=0, revision=0, selectedId=null, current=null;
+  let tileErrors=0, tileLoads=0, revision=0, selectedId=null, current=null, disposed=false, switching=false, desiredKey=null;
   const markers=new Map();
   const layer=L.layerGroup().addTo(map);
   const tile=L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',{
@@ -69,22 +69,33 @@ export async function initMapGuide(request) {
     status.textContent='背景地図を読み込んでいます。地点カードは利用できます。';updateTileStatus();
   }
   async function loadScenario(key){
-    const own=++revision;status.textContent='Rails で地点と導線を切り替えています…';
-    try{
-      const result=await request(`/map.json?scenario=${encodeURIComponent(key)}`);
-      if(own!==revision)return;
-      if(result.status!==200)throw new Error('Scenario request failed');
-      apply(result.body);
-    }catch(error){
-      if(own!==revision)return;
-      status.textContent='地図データを更新できませんでした。表示中の地点カードと公式の出典を確認してください。';status.classList.add('map-warning');
-      window.summaryApp.mapError=error.message;
-    }
+    desiredKey=key;
+    if(switching)return;
+    switching=true;
+    try {
+      while(desiredKey && !disposed){
+        const next=desiredKey;desiredKey=null;
+        status.textContent='Rails で地点と導線を切り替えています…';
+        try{
+          const result=await request(`/map.json?scenario=${encodeURIComponent(next)}`);
+          if(disposed)return;
+          if(desiredKey)continue;
+          if(result.status!==200)throw new Error('Scenario request failed');
+          apply(result.body);
+        }catch(error){
+          if(disposed)return;
+          if(desiredKey)continue;
+          status.textContent='地図データを更新できませんでした。表示中の地点カードと公式の出典を確認してください。';status.classList.add('map-warning');
+          window.summaryApp.mapError=error.message;
+        }
+      }
+    } finally { switching=false; }
   }
   for(const button of document.querySelectorAll('[data-map-scenario]'))button.addEventListener('click',()=>loadScenario(button.dataset.mapScenario));
   document.getElementById('fit-map').addEventListener('click',fit);
   map.on('resize',fit);
   window.summaryApp.mapReady=false;
   await loadScenario(sidebar.dataset.scenario || 'arrival');
+  return () => { disposed=true;desiredKey=null;map.remove(); };
 }
 

@@ -16,6 +16,7 @@ const json=await get('/summary.json','application/json');
 assert.equal(json.status,200);assert.equal(json.body.runtime.controller,'SummaryController');assert.equal(json.body.runtime.renderer,'ActionView::ERB');assert.equal(json.body.runtime.platform,'wasm32-wasi');assert.equal(json.body.snapshot.routes.length,3);assert.equal(json.body.snapshot.checked_on,'2026-10-08');
 console.log('PASS Rails JSON route exposes the same Ruby snapshot and actual runtime');
 assert.equal(typeof globalThis.pglite4rails,'undefined');
+assert.equal((await vm.evalAsync('defined?(ActiveRecord::Base).to_s')).toString(),'');
 console.log('PASS reading-mode Rails boots and renders without opening the lab database');
 await vm.evalAsync(`$original_snapshot = PreparationSnapshot.method(:current); class << PreparationSnapshot; def current; $original_snapshot.call.merge(venue: 'RUBY_DYNAMIC_SENTINEL <script>bad</script>'); end; end`);
 const changed=await get('/summary','text/html');
