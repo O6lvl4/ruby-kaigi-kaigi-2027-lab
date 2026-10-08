@@ -46,6 +46,7 @@ class PreparationSnapshot
 end
 
 require '/demo/map_guide'
+require '/demo/guide_links'
 
 class SummaryController < ActionController::Base
   prepend_view_path '/demo/views'
