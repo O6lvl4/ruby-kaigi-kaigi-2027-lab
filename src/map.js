@@ -7,7 +7,7 @@ export async function initMapGuide(request) {
   const sidebar=document.getElementById('map-sidebar');
   const status=document.getElementById('map-status');
   if(!container || !sidebar) return;
-  const map=L.map(container,{scrollWheelZoom:false,minZoom:11,maxZoom:17,zoomControl:true,preferCanvas:false});
+  const map=L.map(container,{fadeAnimation:false,zoomAnimation:false,scrollWheelZoom:false,minZoom:11,maxZoom:17,zoomControl:true,preferCanvas:false});
   map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
   map.zoomControl.setPosition('topright');
   let tileErrors=0, tileLoads=0, revision=0, selectedId=null, current=null;
@@ -56,7 +56,7 @@ export async function initMapGuide(request) {
     }
     for(const feature of points){
       const p=feature.properties;
-      const icon=L.divIcon({className:'guide-marker',html:`<span>${Number(p.number)}</span>`,iconSize:[36,36],iconAnchor:[18,18]});
+      const icon=L.divIcon({className:feature.id==='bunkakoen'?'guide-marker guide-marker-offset':'guide-marker',html:`<span>${Number(p.number)}</span>`,iconSize:[36,36],iconAnchor:[18,18]});
       const marker=L.marker([feature.geometry.coordinates[1],feature.geometry.coordinates[0]],{icon,title:p.name,keyboard:true,riseOnHover:true}).addTo(layer);
       const text=document.createElement('span');text.textContent=p.name;
       marker.bindTooltip(text,{direction:'top',offset:[0,-16],opacity:1});
@@ -83,6 +83,7 @@ export async function initMapGuide(request) {
   }
   for(const button of document.querySelectorAll('[data-map-scenario]'))button.addEventListener('click',()=>loadScenario(button.dataset.mapScenario));
   document.getElementById('fit-map').addEventListener('click',fit);
+  map.on('resize',fit);
   window.summaryApp.mapReady=false;
   await loadScenario(sidebar.dataset.scenario || 'arrival');
 }

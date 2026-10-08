@@ -24,7 +24,8 @@ for(const [engineName,engine] of Object.entries({chromium,webkit})){
    console.log('PASS map/card Rails consistency and linked selection',engineName,key);
 
   }
-  await page.setViewportSize({width:390,height:844});await page.locator('#fit-map').click();await page.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`evidence/map-${engineName}-mobile.png`,fullPage:true});await context.close();
+  await page.setViewportSize({width:390,height:844});await page.locator('#fit-map').click();await page.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();
+  const mobile=await browser.newContext({viewport:{width:390,height:844}});const mobilePage=await mobile.newPage();await mobilePage.goto(url);await ready(mobilePage);await mobilePage.waitForFunction(()=>window.summaryApp.mapTileStatus==='loaded',null,{timeout:30000});assert.ok(await mobilePage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await mobilePage.screenshot({path:`evidence/map-${engineName}-mobile.png`,fullPage:true});await mobile.close();
   const failed=await browser.newContext({viewport:{width:390,height:844}});const fallback=await failed.newPage();await failed.route('https://cyberjapandata.gsi.go.jp/**',route=>route.abort('failed'));
   await fallback.goto(url);await ready(fallback);await fallback.waitForFunction(()=>window.summaryApp.mapTileStatus==='error');
   assert.ok(await fallback.locator('#map-sidebar').isVisible());assert.equal(await fallback.locator('[data-place-id]').count(),4);assert.match(await fallback.locator('#map-status').innerText(),/読み込めません/);
