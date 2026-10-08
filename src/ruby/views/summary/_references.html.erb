@@ -3,16 +3,21 @@
   <div class="section-label"><span>05</span><h2 id="dining-title"><%= dining.fetch('title') %></h2></div>
   <p class="section-intro"><%= dining.fetch('intro') %></p>
   <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= dining.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
-  <div class="dining-filter"><label for="dining-capacity">集まる人数の目安</label><select id="dining-capacity" aria-describedby="capacity-help"><option value="0">すべての店</option><option value="10">10人以上</option><option value="20">20人以上</option><option value="30">30人以上</option><option value="50">50人以上</option><option value="60">60人以上</option></select><p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。</p></div>
-  <p id="dining-results" class="source" role="status" aria-live="polite">4店を掲載（うち人数要確認 1店）</p>
-  <p id="dining-empty" class="note" hidden>掲載人数の条件に合う店はありません。人数要確認の店は下に残しています。</p>
+  <div class="dining-filter"><label for="dining-capacity">集まる人数の目安</label><select id="dining-capacity" aria-describedby="capacity-help"><option value="0">すべての候補</option><option value="10">10人以上</option><option value="20">20人以上</option><option value="30">30人以上</option><option value="50">50人以上</option><option value="60">60人以上</option><option value="100">100人以上</option></select><p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。ホテルは表示中の部屋だけで判定します。</p></div>
+  <p id="dining-results" class="source" role="status" aria-live="polite"><%= dining.fetch('restaurants').length %>件を掲載（うち人数要確認 <%= dining.fetch('restaurants').count { |restaurant| restaurant['groupCapacity'].nil? } %>件）</p>
+  <p id="dining-empty" class="note" hidden>掲載人数の条件に合う候補はありません。人数要確認の候補は下に残しています。</p>
   <div class="dining-grid"><% dining.fetch('restaurants').each do |restaurant| %>
     <article class="dining-card" data-restaurant-id="<%= restaurant.fetch('id') %>" data-group-capacity="<%= restaurant['groupCapacity'] %>">
-      <p class="kicker"><%= restaurant['groupCapacity'] ? 'GROUP DINING' : '人数要確認' %></p><h3><%= restaurant.fetch('name') %></h3><p class="restaurant-address"><%= restaurant.fetch('address') %></p>
-      <dl class="capacity-facts"><div><dt>店全体の総席数</dt><dd><strong><%= restaurant.fetch('totalSeats') %></strong> 席</dd></div><div><dt><%= restaurant.fetch('groupCapacityLabel') %></dt><dd><% if restaurant['groupCapacity'] %><strong><%= restaurant.fetch('groupCapacity') %></strong> 人<% else %><span>人数要確認</span><% end %></dd></div></dl>
+      <p class="kicker"><%= restaurant['venueType'] == 'hotel_banquet' ? 'ホテル宴会場' : '飲食店' %> · <%= restaurant['groupCapacity'] ? '掲載人数あり' : '人数要確認' %></p><h3><%= restaurant.fetch('name') %></h3><p class="restaurant-address"><%= restaurant.fetch('address') %></p>
+      <dl class="capacity-facts"><div><dt><%= restaurant['venueType'] == 'hotel_banquet' ? '施設全体の総席数' : '店全体の総席数' %></dt><dd><% if restaurant['totalSeats'] %><strong><%= restaurant.fetch('totalSeats') %></strong> 席<% else %><span>未確認</span><% end %></dd></div><div><dt><%= restaurant.fetch('groupCapacityLabel') %></dt><dd><% if restaurant['groupCapacity'] %><strong><%= restaurant.fetch('groupCapacity') %></strong> 人<% else %><span>人数要確認</span><% end %></dd></div></dl>
       <p class="restaurant-note"><%= restaurant.fetch('note') %></p>
-      <details><summary>個室・貸切・利用条件</summary><dl class="restaurant-details"><dt>個室</dt><dd><%= restaurant.fetch('privateRoom') %></dd><dt>貸切</dt><dd><%= restaurant.fetch('privateBooking') %></dd><dt>アクセス上の配慮</dt><dd><%= restaurant.fetch('accessibility') %></dd><dt>立食・2027年の空席・料金</dt><dd>未確認。予約前に店舗へ確認してください。</dd></dl></details>
-      <p class="source"><a href="<%= restaurant.fetch('sourceUrl') %>"><%= restaurant.fetch('sourceLabel') %> ↗</a><br>確認日 <time datetime="<%= @references.fetch('checkedAt') %>"><%= @references.fetch('checkedAt') %></time><% if restaurant['sourceUpdatedAt'] %> · 掲載更新 <%= restaurant.fetch('sourceUpdatedAt') %><% end %></p>
+      <details><summary>営業時間・個室・貸切・利用条件</summary><dl class="restaurant-details">
+        <% if restaurant['cuisine'] %><dt>料理・利用の目安</dt><dd><%= restaurant.fetch('cuisine') %></dd><% end %>
+        <dt>営業時間</dt><dd><%= restaurant['openingHours'] || '未確認。利用日・人数に合わせてお問い合わせください。' %></dd>
+        <dt>定休日</dt><dd><%= restaurant['closedDays'] || '未確認' %></dd>
+        <dt>立食の掲載人数</dt><dd><% if restaurant['standingCapacity'] %><%= restaurant.fetch('standingCapacity') %>人（<%= restaurant['standingCapacityLabel'] || (restaurant['venueType'] == 'hotel_banquet' ? '表示中の部屋。会場・利用条件は要確認' : '掲載目安。利用条件は要確認') %>）<% else %>未確認<% end %></dd><dt>個室</dt><dd><%= restaurant.fetch('privateRoom') %></dd><dt>貸切</dt><dd><%= restaurant.fetch('privateBooking') %></dd><dt>アクセス上の配慮</dt><dd><%= restaurant.fetch('accessibility') %></dd><dt>2027年の空席・料金</dt><dd>未確認。予約前に店舗へ確認してください。</dd></dl></details>
+      <p class="source"><a href="<%= restaurant.fetch('sourceUrl') %>"><%= restaurant.fetch('sourceLabel') %> ↗</a><br>確認日 <time datetime="<%= @references.fetch('checkedAt') %>"><%= @references.fetch('checkedAt') %></time><% if restaurant['sourceUpdatedAt'] %> · 掲載更新 <%= restaurant.fetch('sourceUpdatedAt') %><% end %>
+        <% restaurant.fetch('fieldSources', {}).values.flatten.map { |value| restaurant[value] || value }.select { |value| value.is_a?(String) && value.start_with?('https://') && value != restaurant.fetch('sourceUrl') }.uniq.each_with_index do |url, index| %><br><a href="<%= url %>">補足の出典 <%= index + 1 %> ↗</a><% end %></p>
     </article>
   <% end %></div>
   <p class="source"><%= dining.fetch('publicationDisclaimer') %> 掲載情報は変更されることがあります。店舗との条件確認・予約は別途必要です。</p>

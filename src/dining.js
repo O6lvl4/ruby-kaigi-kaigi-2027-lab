@@ -15,8 +15,8 @@ export function initDiningGuide() {
       if (!known) unknown++;
     }
     document.getElementById('dining-results').textContent = minimum
-      ? `掲載上限が${minimum}人以上の店 ${matches}店 · 人数要確認 ${unknown}店（別枠で表示）`
-      : `${matches + unknown}店を掲載（うち人数要確認 ${unknown}店）`;
+      ? `掲載上限が${minimum}人以上の候補 ${matches}件 · 人数要確認 ${unknown}件（別枠で表示）`
+      : `${matches + unknown}件を掲載（うち人数要確認 ${unknown}件）`;
     document.getElementById('dining-empty').hidden = minimum === 0 || matches > 0;
   };
   select.addEventListener('change', update);
