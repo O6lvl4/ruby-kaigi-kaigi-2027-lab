@@ -32,6 +32,35 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.ok(requests.some(x=>x.includes('base-app.wasm')),'Homepage must execute the Ruby Wasm runtime');
    assert.ok(!requests.some(x=>/postgres.*\.(wasm|data)|duckdb.*\.wasm/.test(x)),'Read mode must not boot unrelated database engines');
    assert.deepEqual(errors,[]);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   assert.equal(await page.locator('[data-restaurant-id]').count(),4);
+   assert.equal(await page.locator('[data-archive-year]').count(),5);
+   await page.locator('a[href="#dining"]').click();
+   await page.locator('#dining-capacity').selectOption('30');
+   assert.deepEqual(await page.locator('[data-restaurant-id]:visible').evaluateAll(cards=>cards.map(x=>x.dataset.restaurantId)),['ajidokoro-shu','anbai','takasago']);
+   await page.locator('#dining-capacity').selectOption('50');
+   assert.equal(await page.locator('[data-restaurant-id]:visible').count(),3);
+   await page.locator('#dining-capacity').selectOption('60');
+   assert.deepEqual(await page.locator('[data-restaurant-id]:visible').evaluateAll(cards=>cards.map(x=>x.dataset.restaurantId)),['ajidokoro-shu']);
+   assert.equal(await page.locator('#dining-empty').isVisible(),true);
+   await page.locator('#dining-capacity').selectOption('0');
+   assert.equal(await page.locator('[data-restaurant-id]:visible').count(),4);
+   await page.locator('[data-restaurant-id="torihisa"] summary').click();
+   assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(),/2027年の空席/);
+   await page.screenshot({path:`evidence/dining-${name}-${size}.png`,fullPage:true});
+   await page.locator('a[href="#archive"]').click();
+   for(const event of ruby.body.references.archiveSection.years){
+     const card=page.locator(`[data-archive-year="${event.year}"]`);
+     assert.equal(await card.locator(`a[href="${event.scheduleUrl}"]`).count(),1);
+     assert.equal(await card.locator(`a[href="${event.eventsUrl}"]`).count(),1);
+   }
+   await page.locator('.archive-reading > summary').click();
+   assert.equal(await page.locator('.reading-grid article').count(),3);
+   const requestsBeforeReading=requests.length;
+   for(let i=0;i<3;i++){await page.locator('#dining').scrollIntoViewIfNeeded();await page.locator('#archive').scrollIntoViewIfNeeded();}
+   assert.equal(page.workers().length,0);
+   assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);
+   assert.equal(requests.length,requestsBeforeReading,'Reading/filtering must not fetch more data');
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await page.locator('a[href="#pending"]').click();assert.equal(new URL(page.url()).hash,'#pending');
    await page.screenshot({path:`evidence/summary-${name}-${size}.png`,fullPage:true});
    await page.reload();await ready(page);assert.equal(await page.locator('#rails-root main[data-platform="wasm32-wasi"]').count(),1);
