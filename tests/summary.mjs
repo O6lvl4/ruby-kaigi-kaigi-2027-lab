@@ -6,6 +6,8 @@ const results=[];await mkdir('evidence',{recursive:true});
 async function ready(page){
  await page.waitForFunction(()=>window.summaryApp?.ready || window.summaryApp?.error,null,{timeout:180000});
  if(!await page.evaluate(()=>window.summaryApp.ready))throw new Error(await page.locator('#boot-error').textContent());
+ await page.waitForFunction(()=>window.summaryApp.mapReady || window.summaryApp.mapError,null,{timeout:30000});
+ assert.equal(await page.evaluate(()=>window.summaryApp.mapReady),true);
 }
 for(const [name,engine] of Object.entries({chromium,webkit})){
  const browser=await engine.launch({headless:true});
@@ -38,7 +40,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   await context.route('**/base-app.wasm',route=>route.abort('failed'));
   await page.goto(base);await page.locator('#boot-error').waitFor({state:'visible',timeout:30000});
   assert.equal(await page.locator('#rails-root').isVisible(),false);
-  assert.equal(await page.getByRole('heading',{name:'いま分かっていること。',exact:true}).count(),0);
+  assert.equal(await page.locator('#rails-root main').count(),0);
   await page.locator('#diagnostics summary').click();assert.match(await page.locator('#diagnostic-text').innerText(),/"stage"/);
   await page.locator('#copy-diagnostics').click();await page.waitForFunction(()=>document.getElementById('copy-status').textContent.length>0);assert.ok((await page.locator('#copy-status').innerText()).length>0);
   await page.screenshot({path:`evidence/summary-${name}-error.png`,fullPage:true});
@@ -47,7 +49,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   results.push({engine:name,status:'PASS',blockedRubyShowsError:true,noStaticFallback:true,diagnostics:true,retry:true});
   console.log('PASS truthful failure and successful retry',name);await context.close();
   const nojs=await browser.newContext({javaScriptEnabled:false});const nojsPage=await nojs.newPage();await nojsPage.goto(base);
-  assert.equal(await nojsPage.getByRole('heading',{name:'いま分かっていること。',exact:true}).count(),0);
+  assert.equal(await nojsPage.locator('#rails-root main').count(),0);
   assert.match(await nojsPage.locator('noscript').innerText(),/JavaScript/);await nojs.close();
   console.log('PASS JS-disabled mode explicitly requires Rails/Wasm rather than pretending success',name);
  }finally{await browser.close();}

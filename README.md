@@ -112,3 +112,19 @@ npm run test:e2e         # 別ページの技術デモを検証
 - tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
 
 固定 Ruby/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
+
+## 地図で読む宮崎
+
+大きな2D地図と地点カードで「宮崎に着く」「会場へ行く」「夜の街へ」を切り替えます。`GET /map.json?scenario=arrival|venue|night` はブラウザ内の Rails が処理し、同じ絞り込み済みデータから ActionView ERB のカードと GeoJSON を返します。地点をクリックするとカードも連動します。
+
+- 地図：Leaflet 1.9.4 と地理院タイル（淡色地図）。WebGL・APIキー・現在地取得は使いません
+- 地図の出典表示と重ね合わせの説明を画面内に表示します。タイルをまとめて保存する機能やオフライン一括取得はありません
+- 線は地点を結ぶ概略線です。道路形状、歩行ナビ、ライブ交通、徒歩圏半径を表しません
+- 7地点の座標・出典・代表点としての精度は `src/ruby/map_places.json` に記録します
+- 駅は施設代表点、文化公園前はバス停周辺、橘通り3丁目は交差点・乗換エリアの参考点です。乗車方向別の停留所位置は断定しません
+- ニシタチは地元団体の公開マップ78地点の座標中央値から求めた参考点です。公式の境界や特定店舗を意味しません
+- タイルが読み込めない場合も、同じ Rails 生成の地点カード・移動説明・公式出典を読み続けられます
+
+地図の資料： https://maps.gsi.go.jp/development/ichiran.html / https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html 。国土地理院の背景地図に独自の地点と概略線を重ねたもので、国土地理院作成の移動案内ではありません。
+
+地図のブラウザ検証： `node tests/map.mjs`（Chromium / WebKit、3つの見方、カード連動、タイル読込失敗時のテキスト継続）。

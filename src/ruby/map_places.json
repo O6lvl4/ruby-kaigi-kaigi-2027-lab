@@ -1,0 +1,95 @@
+[
+  {
+    "id": "airport",
+    "name": "宮崎空港",
+    "category": "到着地点",
+    "coordinates": [
+      131.4487581,
+      31.8800908
+    ],
+    "description": "空港から会場へは、橘通り3丁目で乗り換えるバス経路が会場公式に案内されています。",
+    "precision_note": "県公式観光サイトの施設代表点です。ターミナル入口や乗り場の位置ではありません。",
+    "source": "https://miyazaki-ac.jp/access/",
+    "coordinate_source": "https://www.kanko-miyazaki.jp/spot/2108"
+  },
+  {
+    "id": "miyazaki_station",
+    "name": "宮崎駅",
+    "category": "駅・バスの起点",
+    "coordinates": [
+      131.4319876,
+      31.915846
+    ],
+    "description": "会場へ向かうバスは、西口2番乗り場からの案内です。ニシタチを訪ねる際の起点にもなります。",
+    "precision_note": "MapFanの駅代表点です。西口やバス乗り場の正確な位置は公式案内で確認してください。",
+    "source": "https://miyazaki-ac.jp/access/",
+    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZGW"
+  },
+  {
+    "id": "jingu_station",
+    "name": "宮崎神宮駅",
+    "category": "会場の最寄り駅",
+    "coordinates": [
+      131.4306521,
+      31.9386354
+    ],
+    "description": "会場公式の最寄り駅。劇場までは徒歩約20分、タクシー約5分という案内です。",
+    "precision_note": "MapFanの駅代表点です。改札・出口を示すピンではありません。",
+    "source": "https://miyazaki-ac.jp/access/",
+    "coordinate_source": "https://mapfan.com/spots/SCH%2CJ%2CZTW"
+  },
+  {
+    "id": "bunkakoen",
+    "name": "文化公園前",
+    "category": "バス停周辺",
+    "coordinates": [
+      131.42122346021,
+      31.934075180637
+    ],
+    "description": "会場公式が案内する下車停留所。ここから劇場までは徒歩約1分の案内です。",
+    "precision_note": "Yahoo!マップのバス停代表点です。進行方向別の乗り場位置は現地・公式案内で確認してください。",
+    "source": "https://miyazaki-ac.jp/access/",
+    "coordinate_source": "https://map.yahoo.co.jp/v3/place/OTmXrf2IF3U"
+  },
+  {
+    "id": "tachibana",
+    "name": "橘通り3丁目",
+    "category": "交差点・乗換エリア",
+    "coordinates": [
+      131.4232951,
+      31.91662
+    ],
+    "description": "空港から会場へ向かうバスの乗換地点として、会場公式が案内しています。",
+    "precision_note": "交差点調査の代表座標です。特定のバス乗り場を示していません。",
+    "source": "https://miyazaki-ac.jp/access/",
+    "coordinate_source": "https://www.sonpo.or.jp/about/useful/kousaten/2022/45/4501.html"
+  },
+  {
+    "id": "venue",
+    "name": "メディキット県民文化センター",
+    "category": "RubyKaigi 2027 会場",
+    "coordinates": [
+      131.41976221,
+      31.93313912
+    ],
+    "description": "RubyKaigi 2027の公式サイトに掲載された会場です。開催日は2027年4月14日〜16日。",
+    "precision_note": "Yahoo!マップの施設代表点です。イベント受付や利用入口を示していません。",
+    "source": "https://rubykaigi.org/2027/",
+    "coordinate_source": "https://map.yahoo.co.jp/v3/place/gP1cvq1qLOg"
+  },
+  {
+    "id": "nishitachi",
+    "name": "ニシタチ",
+    "category": "繁華街エリアの参考点",
+    "coordinates": [
+      131.4212245,
+      31.91462205
+    ],
+    "description": "宮崎市の繁華街エリア。市観光協会は宮崎駅から徒歩約13分と案内しています。",
+    "precision_note": "地元団体の公開マップに掲載された78地点の座標中央値から求めた参考点です。公式のエリア境界や特定店舗ではありません。",
+    "source": "https://www.miyazaki-city.tourism.or.jp/spot/10046",
+    "coordinate_source": "https://nishitachi-museum.com/map/",
+    "coordinate_method": "Median of 78 unique public-map POI coordinates; representative area point, not a venue or boundary",
+    "coordinate_map": "https://www.google.com/maps/d/embed?mid=1lhB4C3u2KveCyX3903d0f8XXxYjcKgw&hl=ja&ehbc=2E312F"
+  }
+]

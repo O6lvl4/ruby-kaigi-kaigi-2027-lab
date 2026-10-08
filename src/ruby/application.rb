@@ -65,6 +65,7 @@ end
 end
 require '/demo/summary'
 Rails.application.routes.draw do
+  get '/map', to: 'summary#map'
   get '/summary', to: 'summary#show'
   get '/', to: 'summary#show'
   unless ENV['SUMMARY_ONLY'] == '1'

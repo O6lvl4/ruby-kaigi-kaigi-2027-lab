@@ -52,6 +52,7 @@ jobs:
             sleep 1
           done
           node tests/summary.mjs
+          node tests/map.mjs
           npm run test:e2e
       - name: Upload verification evidence
         if: always()
@@ -102,6 +103,7 @@ jobs:
           DEMO_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
           node tests/summary.mjs
+          node tests/map.mjs
           npm run test:e2e
       - name: Upload live-browser evidence
         if: always()
