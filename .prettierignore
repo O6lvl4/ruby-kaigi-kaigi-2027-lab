@@ -1,0 +1,8 @@
+experiments/
+evidence/
+dist/
+public/
+db/data/
+package-lock.json
+*.html
+*.md

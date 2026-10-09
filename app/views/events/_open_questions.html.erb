@@ -1,0 +1,19 @@
+<section id="pending" class="section">
+  <%= section_label '03', safe_join(['まだ分からない', tag.br, 'こと']) %>
+  <div class="section-body">
+    <p class="section-intro">確認日の公式トップページには、以下の詳細は見当たりませんでした。「開催しない」「募集しない」という意味ではありません。</p>
+    <ul class="pending-list">
+      <% event.open_questions.each do |question| %>
+        <li>
+          <div><h3><%= question.title %></h3><p><%= question.detail %></p></div>
+          <span class="status">公式トップで未確認</span>
+        </li>
+      <% end %>
+    </ul>
+    <p class="source">確認範囲：<a href="<%= event.official_url %>">RubyKaigi 2027 公式トップ</a>（<%= event.checked_on_label %>）。新しい発表は公式情報を優先してください。</p>
+    <aside class="ownership">
+      <h3>担当・期限について</h3>
+      <p>この公開情報の範囲では、準備作業の担当者や個別の期限は確認できていません。割り当て済み・対応済みとしては扱っていません。</p>
+    </aside>
+  </div>
+</section>

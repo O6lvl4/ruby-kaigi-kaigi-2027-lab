@@ -1,0 +1,16 @@
+<article class="archive-card" data-archive-year="<%= edition.year %>">
+  <div class="archive-year">
+    <a href="<%= edition.url %>"><%= edition.year %> ↗</a>
+    <span><%= edition.city %></span>
+  </div>
+  <div>
+    <h3><%= edition.venue %></h3>
+    <p class="archive-dates"><%= edition.dates %></p>
+    <p class="archive-point"><%= edition.point %></p>
+    <nav class="archive-links" aria-label="RubyKaigi <%= edition.year %> 公式資料">
+      <a href="<%= edition.schedule_url %>">プログラム ↗</a>
+      <a href="<%= edition.events_url %>">交流イベント ↗</a>
+      <% if edition.operations_url %><a href="<%= edition.operations_url %>"><%= edition.operations_label %> ↗</a><% end %>
+    </nav>
+  </div>
+</article>

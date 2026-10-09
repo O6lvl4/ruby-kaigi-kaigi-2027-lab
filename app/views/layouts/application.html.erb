@@ -1,0 +1,12 @@
+<a class="skip" href="#main-content">本文へ</a>
+<div class="page">
+  <%= render 'layouts/site_header' %>
+  <main id="main-content" tabindex="-1"
+        data-renderer="rails-erb"
+        data-platform="<%= RUBY_PLATFORM %>"
+        data-controller="<%= controller.class.name %>"
+        data-page-title="<%= page_title %>">
+    <%= yield %>
+  </main>
+  <%= render 'layouts/site_footer' %>
+</div>

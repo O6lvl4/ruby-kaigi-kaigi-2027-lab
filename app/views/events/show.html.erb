@@ -1,0 +1,16 @@
+<% content_for :title, '開催・アクセス' %>
+<nav class="contents" aria-label="このページの目次">
+  <span>ON THIS PAGE</span>
+  <a href="#overview">開催の基本</a>
+  <a href="#access">会場とアクセス</a>
+  <a href="#pending">まだ分からないこと</a>
+  <a href="#next">次に確認すること</a>
+  <a href="#sources-title">情報源</a>
+</nav>
+<%= render 'facts', event: @event %>
+<div class="editorial-grid">
+  <%= render 'access', event: @event %>
+  <%= render 'open_questions', event: @event %>
+</div>
+<%= render 'proposed_checks', event: @event %>
+<%= render 'sources', event: @event %>

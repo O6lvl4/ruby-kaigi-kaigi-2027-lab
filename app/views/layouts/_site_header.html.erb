@@ -1,0 +1,26 @@
+<header class="masthead">
+  <%= link_to root_path, class: 'brand' do %>
+    <span class="brand-symbol" aria-hidden="true">◇</span>
+    <span>RubyKaigiKaigi <b>2027</b><small>MIYAZAKI FIELD GUIDE</small></span>
+  <% end %>
+  <button type="button" id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" hidden>
+    メニュー <span aria-hidden="true">☰</span>
+  </button>
+  <nav id="site-navigation" class="site-navigation" aria-label="サイト案内">
+    <% site_pages.each do |label, path| %>
+      <%= nav_link_to label, path %>
+    <% end %>
+    <details class="header-archives">
+      <summary>過去の公式サイト</summary>
+      <div>
+        <% Edition.all.each do |edition| %>
+          <%= external_link_to "#{edition.year} · #{edition.city}", edition.url %>
+        <% end %>
+      </div>
+    </details>
+  </nav>
+  <div class="edition">
+    <strong>14—16 APR 2027</strong>
+    <span>宮崎・メディキット県民文化センター</span>
+  </div>
+</header>
