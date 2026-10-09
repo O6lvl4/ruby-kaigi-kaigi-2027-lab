@@ -7,6 +7,7 @@
     <a href="<%= map_scenario.source %>">公式の移動案内 ↗</a>
   </details>
 </div>
+<%= render 'map_scenarios/road_routes', map_scenario: %>
 <div class="location-cards" id="location-cards">
   <% map_scenario.places.each_with_index do |place, index| %>
     <article class="location-card" data-place-id="<%= place.id %>">

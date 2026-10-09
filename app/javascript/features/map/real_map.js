@@ -1,8 +1,10 @@
-// The real map: all seven places on GSI tiles, with the scenario's schematic lines.
-import { addPin, addSchematicLine, createGsiMap, fitPoints, layerGroup } from '../../lib/gsi_map.js';
+// The real map: all seven places on GSI tiles, with the scenario's road-following
+// routes (precomputed from OpenStreetMap) for the chosen travel mode.
+import { addPin, addRouteLine, createGsiMap, fitPoints, layerGroup } from '../../lib/gsi_map.js';
 
 const points = scenario => scenario.geojson.features.filter(feature => feature.geometry.type === 'Point');
-const lines = scenario => scenario.geojson.features.filter(feature => feature.geometry.type === 'LineString');
+const roads = (scenario, mode) =>
+  scenario.geojson.features.filter(feature => feature.properties.kind === 'road' && feature.properties.mode === mode);
 
 export function createRealMap(container, onSelect, onStatus) {
   const gsi = createGsiMap(container, { maxZoom: 17, zoomControl: true, onStatus });
@@ -10,6 +12,7 @@ export function createRealMap(container, onSelect, onStatus) {
   const routes = layerGroup(gsi.map);
   const markers = new Map();
   let current = null;
+  let travelMode = 'driving';
   let disposed = false;
 
   function addMarkers(scenario) {
@@ -29,20 +32,18 @@ export function createRealMap(container, onSelect, onStatus) {
   function fit(all = false) {
     if (!current || disposed) return;
     const shown = points(current).filter(feature => all || current.selected_ids.includes(feature.id));
-    fitPoints(
-      gsi.map,
-      shown.map(feature => feature.geometry.coordinates),
-      { padding: 45 }
-    );
+    const routeCoordinates = all ? [] : roads(current, travelMode).flatMap(feature => feature.geometry.coordinates);
+    fitPoints(gsi.map, [...shown.map(feature => feature.geometry.coordinates), ...routeCoordinates], { padding: 45 });
   }
 
-  function update(scenario) {
+  function update(scenario, mode = travelMode) {
     if (disposed) return;
     current = scenario;
+    travelMode = mode;
     if (markers.size === 0) addMarkers(scenario);
     for (const feature of points(scenario)) styleMarker(markers.get(feature.id).getElement(), feature, scenario);
     routes.clearLayers();
-    for (const line of lines(scenario)) addSchematicLine(routes, line.geometry.coordinates);
+    for (const road of roads(scenario, mode)) addRouteLine(routes, road.geometry.coordinates, mode);
     fit();
   }
 

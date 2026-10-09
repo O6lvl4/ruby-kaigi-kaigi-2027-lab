@@ -89,7 +89,28 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.locator('.guide-marker').count(), 7);
       assert.equal(await page.evaluate(() => window.originalMarkers.every(n => n.isConnected)), true);
     }
+    // Road-following routes: 徒歩 / 車 switch the drawn line and the highlighted distance rows.
+    assert.equal(await page.locator('#travel-mode-switch').isVisible(), true);
+    assert.equal(await page.locator('[data-legend="actual"]').isVisible(), true);
+    for (const mode of ['walking', 'driving']) {
+      await page.locator(`[data-travel-mode="${mode}"]`).click();
+      await page.waitForFunction(m => window.guideApp.mapTravelMode === m, mode);
+      assert.equal(await page.locator(`[data-travel-mode="${mode}"]`).getAttribute('aria-pressed'), 'true');
+      assert.ok((await page.locator(`.road-route [data-route-mode="${mode}"].is-current`).count()) > 0);
+      const vertices = await page.evaluate(() =>
+        [...document.querySelectorAll('#real-map path.leaflet-interactive, #real-map svg path')].map(
+          p => (p.getAttribute('d') || '').split(/[LM]/).length
+        )
+      );
+      assert.ok(Math.max(...vertices) > 5, `The ${mode} route follows roads, not a straight segment`);
+      const dashed = await page.evaluate(() =>
+        [...document.querySelectorAll('#real-map svg path')].some(p => p.getAttribute('stroke-dasharray'))
+      );
+      assert.equal(dashed, mode === 'walking', 'Walking is dotted and driving is solid');
+    }
+    assert.match(await page.locator('.road-routes').innerText(), /OpenStreetMap/);
     await page.locator('[data-map-mode="schematic"]').click();
+    assert.equal(await page.locator('#travel-mode-switch').isVisible(), false);
     assert.equal(await page.locator('.leaflet-container').count(), 0);
     assert.equal(await page.locator('#real-map').locator('*').count(), 0);
     const before = await page.locator('*').count();
