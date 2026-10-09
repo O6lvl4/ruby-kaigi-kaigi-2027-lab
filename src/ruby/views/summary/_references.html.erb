@@ -1,5 +1,5 @@
 <% dining = @references.fetch('restaurantSection'); archive = @references.fetch('archiveSection') %>
-<section id="dining" class="section reference-section" aria-labelledby="dining-title">
+<% part = local_assigns.fetch(:part) %><% if part == :dining %><section id="dining" class="section reference-section" aria-labelledby="dining-title">
   <div class="section-label"><span>05</span><h2 id="dining-title"><%= dining.fetch('title') %></h2></div>
   <p class="section-intro"><%= dining.fetch('intro') %></p>
   <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= dining.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
@@ -26,12 +26,12 @@
     </article>
   <% end %></div>
   <p class="source"><%= dining.fetch('publicationDisclaimer') %> 掲載情報は変更されることがあります。店舗との条件確認・予約は別途必要です。</p>
-</section>
-<section id="archive" class="section reference-section" aria-labelledby="archive-title">
+</section><% end %>
+<% if part == :archive %><section id="archive" class="section reference-section" aria-labelledby="archive-title">
   <div class="section-label"><span>06</span><h2 id="archive-title"><%= archive.fetch('title') %></h2></div><p class="section-intro"><%= archive.fetch('intro') %></p>
   <div class="archive-list"><% archive.fetch('years').each do |event| %>
     <article class="archive-card" data-archive-year="<%= event.fetch('year') %>"><div class="archive-year"><a href="<%= event.fetch('url') %>"><%= event.fetch('year') %> ↗</a><span><%= event.fetch('city') %></span></div><div><h3><%= event.fetch('venue') %></h3><p class="archive-dates"><%= event.fetch('dates') %></p><p class="archive-point"><%= event.fetch('point') %></p><nav class="archive-links" aria-label="RubyKaigi <%= event.fetch('year') %> 公式資料"><a href="<%= event.fetch('scheduleUrl') %>">プログラム ↗</a><a href="<%= event.fetch('eventsUrl') %>">交流イベント ↗</a><% if event['operationsUrl'] %><a href="<%= event.fetch('operationsUrl') %>"><%= event.fetch('operationsLabel') %> ↗</a><% end %></nav></div></article>
   <% end %></div>
   <details class="archive-reading"><summary>過去の開催から、どこを読む？</summary><div class="reading-grid"><% archive.fetch('readingPrompts').each do |prompt| %><article><h3><%= prompt.fetch('title') %></h3><p><%= prompt.fetch('fact') %></p><p><strong>読み方の提案：</strong><%= prompt.fetch('inference') %></p><p class="source"><% prompt.fetch('sources').each_with_index do |url, index| %><a href="<%= url %>">公式の実施例 <%= index + 1 %> ↗</a> <% end %></p></article><% end %></div></details>
   <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= @references.fetch('checkedAt') %>"><%= @references.fetch('checkedAt') %></time></p>
-</section>
+</section><% end %>

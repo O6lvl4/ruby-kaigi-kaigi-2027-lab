@@ -9,6 +9,10 @@ async function ready(page){
  await page.waitForFunction(()=>window.summaryApp.mapReady || window.summaryApp.mapError,null,{timeout:30000});
  assert.equal(await page.evaluate(()=>window.summaryApp.mapReady),true);
 }
+async function go(page,hash){
+ if(await page.locator('#menu-toggle').isVisible())await page.locator('#menu-toggle').click();
+ await page.locator(`#site-navigation a[href="${hash}"]`).click();await page.waitForFunction(h=>location.hash===h,hash);
+}
 for(const [name,engine] of Object.entries({chromium,webkit})){
  const browser=await engine.launch({headless:true});
  try{
@@ -39,7 +43,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    assert.equal(await page.locator('[data-restaurant-id]').count(),restaurants.length);
    assert.deepEqual(await page.locator('#dining-capacity option').evaluateAll(options=>options.map(x=>x.value)),['0','10','20','30','50','60','100']);
    assert.equal(await page.locator('[data-archive-year]').count(),5);
-   await page.locator('.contents a[href="#dining"]').click();
+   await go(page,'#dining');
    for(const minimum of [10,20,30,50,60,100,0]){
      await page.locator('#dining-capacity').selectOption(String(minimum));
      const expected=restaurants.filter(r=>r.groupCapacity===null || r.groupCapacity>=minimum).map(r=>r.id);
@@ -57,7 +61,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    await page.locator('[data-restaurant-id="torihisa"] summary').click();
    assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(),/2027年の空席/);
    await page.screenshot({path:`evidence/dining-${name}-${size}.png`,fullPage:true});
-   await page.locator('.contents a[href="#archive"]').click();
+   await go(page,'#archive');
    for(const event of ruby.body.references.archiveSection.years){
      const card=page.locator(`[data-archive-year="${event.year}"]`);
      assert.equal(await card.locator(`a[href="${event.scheduleUrl}"]`).count(),1);
@@ -65,12 +69,12 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
    }
    await page.locator('.archive-reading > summary').click();
    assert.equal(await page.locator('.reading-grid article').count(),3);
-   for(let i=0;i<3;i++){await page.locator('#dining').scrollIntoViewIfNeeded();await page.locator('#archive').scrollIntoViewIfNeeded();}
+   for(let i=0;i<3;i++){await go(page,'#dining');await page.locator('#dining').scrollIntoViewIfNeeded();await go(page,'#archive');await page.locator('#archive').scrollIntoViewIfNeeded();}
    assert.equal(page.workers().length,0);
    assert.equal(await page.evaluate(()=>window.summaryApp.railsRequestCount),5);
    assert.equal(requests.length,requestsBeforeReading,'Reading/filtering must not fetch more data');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-   await page.locator('a[href="#pending"]').click();assert.equal(new URL(page.url()).hash,'#pending');
+   await go(page,'#overview');assert.equal(await page.locator('#dining').isVisible(),false);await page.locator('.contents a[href="#pending"]').click();assert.equal(new URL(page.url()).hash,'#pending');
    await page.screenshot({path:`evidence/summary-${name}-${size}.png`,fullPage:true});
    await page.reload();await ready(page);assert.equal(await page.locator('#rails-root main[data-platform="wasm32-wasi"]').count(),1);
    results.push({engine:name,viewport:size,status:'PASS',rubyWasm:true,railsController:'SummaryController',erb:true,jsonRoute:true,reload:true});

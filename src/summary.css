@@ -14,3 +14,13 @@
 .dining-filter-group{display:flex;align-items:center;gap:10px}.dining-toolbar .dining-filter-group label{white-space:nowrap}@media(max-width:767px){.dining-filter-group{display:grid;gap:4px;flex:1;min-width:0}.dining-filter-group select{width:100%}.dining-toolbar .dining-filter-group label{font-size:10px}}
 
 .dining-pin-unknown:not(.dining-pin-muted) span{background:#e4bb64;color:#352a18;border-style:dashed}
+/* Header-routed pages: one guide topic per screen. */
+.site-page[hidden]{display:none}
+.site-navigation>a[aria-current="page"]{color:var(--ruby);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.page-next{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:40px 0 56px;background:var(--line);border:1px solid var(--line)}
+.page-next a{display:block;padding:22px 24px;background:var(--paper);text-decoration:none;font-size:15px;font-weight:600}
+.page-next a::after{content:" →";color:var(--ruby)}
+.page-next a span{display:block;margin-top:6px;font-size:11px;font-weight:400;color:var(--muted)}
+.page-next a:hover{background:var(--tint)}
+@media(max-width:767px){.page-next{grid-template-columns:1fr;margin:28px 0 40px}.page-next a{padding:18px 16px}.site-navigation>a[aria-current="page"]{text-decoration:none;border-left:3px solid var(--ruby);padding-left:10px}}
+@media print{.page-next{display:none}}

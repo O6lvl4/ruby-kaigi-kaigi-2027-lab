@@ -9,7 +9,7 @@ async function verifyBlockedTiles(browser, viewport, label){
  await context.route('**/cyberjapandata.gsi.go.jp/**',route=>{blockedTiles++;return route.abort();});
  const page=await context.newPage();
  try{
-  await page.goto(base);
+  await page.goto(new URL('#dining',base).href);
   await page.waitForFunction(()=>window.summaryApp?.mapReady||window.summaryApp?.error,null,{timeout:180000});
   assert.equal(await page.evaluate(()=>window.summaryApp.error),null);
   const dining=page.locator('#dining');
@@ -39,7 +39,8 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
   assert.equal(await page.evaluate(()=>window.summaryApp.error),null);
   const initialWasm=requests.filter(u=>u.includes('base-app.wasm')).length;
   assert.ok(!requests.some(u=>u.includes('cyberjapandata')));
-  assert.equal(await page.locator('#site-navigation a[href="https://aid-on.org"]').count(),1);
+  assert.equal(await page.locator('#site-navigation a[href*="aid-on"]').count(),0);
+  assert.equal(await page.locator('[data-page="map"]').isVisible(),true);assert.equal(await page.locator('#dining').isVisible(),false);
   if(size==='mobile'){
    await page.locator('#menu-toggle').click();assert.equal(await page.locator('#site-navigation').isVisible(),true);
    await page.screenshot({path:`evidence/mobile-menu-${engineName}.png`});
@@ -48,7 +49,8 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
    await page.locator('#menu-toggle').click();await page.locator('#site-navigation a[href="#dining"]').click();
    await page.waitForFunction(()=>location.hash==='#dining');assert.equal(await page.locator('#site-navigation').isVisible(),false);
    await page.waitForFunction(()=>document.activeElement.id==='dining');
-   await page.goBack();await page.waitForFunction(()=>location.hash==='');
+   assert.equal(await page.locator('[data-page="map"]').isVisible(),false);assert.equal(await page.locator('#site-navigation a[aria-current="page"]').getAttribute('href'),'#dining');
+   await page.goBack();await page.waitForFunction(()=>location.hash==='');await page.waitForFunction(()=>!document.querySelector('[data-page="map"]').hidden);
    await page.goForward();await page.waitForFunction(()=>location.hash==='#dining');
    assert.equal(await page.locator('#site-navigation').isVisible(),false);
   }else{
@@ -58,6 +60,7 @@ for(const [engineName,engine]of Object.entries({chromium,webkit})){
    await page.keyboard.press('Escape');assert.equal(await page.locator('.header-archives').getAttribute('open'),null);
    assert.equal(await page.locator('.header-archives summary').evaluate(el=>el===document.activeElement),true);
   }
+  if(size!=='mobile'){await page.locator('#site-navigation a[href="#dining"]').click();await page.waitForFunction(()=>location.hash==='#dining');}
   const dining=page.locator('#dining');await dining.scrollIntoViewIfNeeded();
   assert.equal(await dining.locator('[data-restaurant-id]').count(),20);
   assert.equal(await dining.locator('.dining-thumbnail').count(),20);

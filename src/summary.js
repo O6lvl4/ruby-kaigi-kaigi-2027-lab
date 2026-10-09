@@ -142,12 +142,12 @@ function releaseRuntime() {
 function mountGuide(response) {
   // Only the verified local Rails ERB response supplies this HTML.
   $('rails-root').innerHTML = response.body;
+  $('rails-root').hidden = false;
+  $('boot-panel').hidden = true;
   navigationDispose = initSiteNavigation($('rails-root'));
   addressDispose = initAddressTools($('rails-root'));
   const references = renderedResponses.get('application/json /summary.json').body.references;
   diningDispose = initDiningGuide(references.restaurantSection.restaurants);
-  $('rails-root').hidden = false;
-  $('boot-panel').hidden = true;
   window.summaryApp.lastResponse = response;
   window.summaryApp.ready = true;
   window.summaryApp.renderer = 'Rails-ActionView-ERB';
@@ -195,7 +195,6 @@ async function start() {
     if (!await initializeCoreMap(run)) return;
     booting = false;
     checkpoint('ready', 'Rails summary and map initialization completed');
-    if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   } catch (error) {
     if (!window.summaryApp.error) fail(error, run);
   }
