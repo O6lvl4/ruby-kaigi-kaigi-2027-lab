@@ -859,3 +859,22 @@
     padding-left: 6px;
   }
 }
+/* Shown briefly when a plain wheel scrolls past a map (lib/gesture_zoom.js). */
+.map-zoom-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 16px;
+  background: rgb(37 42 39 / 55%);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  pointer-events: none;
+}
+.map-zoom-hint[hidden] {
+  display: none;
+}
