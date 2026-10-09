@@ -3,6 +3,7 @@ EnableDefaultLinters: true
 exclude:
   - '**/experiments/**/*'
   - '**/node_modules/**/*'
+  - '**/vendor/**/*'
 linters:
   Rubocop:
     enabled: true
