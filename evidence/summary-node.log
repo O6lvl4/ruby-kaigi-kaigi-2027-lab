@@ -1,0 +1,11 @@
+Initializing Rails application...
+Rails application has been loaded but not initialized
+PASS each guide page is its own Rails route → controller → ActionView ERB with the shared layout
+PASS URL helpers honour the Pages mount point (SCRIPT_NAME)
+PASS Rails JSON exposes the same event snapshot
+PASS reading-mode Rails boots and renders without opening the lab database
+PASS changing the Ruby model changes ERB output and ActionView escapes HTML
+PASS Rails scenarios emit matching ERB place cards and source-backed GeoJSON with schematic-only lines; unknown → 404
+PASS real Rails ERB and JSON expose twenty source-backed dining venues and five official archives
+PASS expanded data provenance, unknown/conflicting capacities, seated-vs-standing and hotel room distinctions
+PASS all 27 destinations have qualified addresses; 20 dining pins and origin-free Maps links are Rails-rendered

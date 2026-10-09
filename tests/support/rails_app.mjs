@@ -10,6 +10,7 @@ const RAILS_ROOT = '/demo';
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);
+    if (path === 'vendor/bundle') continue; // gems installed for the linters, not the app
     if (entry.isDirectory()) yield* walk(path);
     else yield path;
   }
