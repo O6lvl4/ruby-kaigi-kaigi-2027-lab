@@ -10,16 +10,27 @@ export const bootScreen = {
     $('copy-status').textContent = '';
     document.querySelector('#boot-panel h1').textContent = 'まとめを読み込んでいます';
     $('boot-status').textContent = 'Ruby / Rails を読み込んでいます…';
+    $('boot-progress').hidden = false;
+    this.setProgress(0);
   },
 
   progress(message) {
     $('boot-status').textContent = message;
   },
 
+  // fraction: 0–1 of the whole boot (download → Ruby → Rails → pages).
+  setProgress(fraction) {
+    const percent = Math.round(Math.min(1, Math.max(0, fraction)) * 100);
+    const bar = $('boot-progress');
+    bar.setAttribute('aria-valuenow', String(percent));
+    bar.firstElementChild.style.transform = `scaleX(${percent / 100})`;
+  },
+
   failed(message, diagnostic) {
     document.querySelector('#boot-panel h1').textContent = 'まとめを表示できませんでした';
     $('boot-status').textContent = 'Rails/Wasm でまとめを生成できませんでした';
     this.showError(message, diagnostic);
+    $('boot-progress').hidden = true;
     $('rails-root').hidden = true;
     $('boot-panel').hidden = false;
   },

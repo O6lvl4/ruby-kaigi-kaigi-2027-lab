@@ -1,6 +1,5 @@
 // 宮崎の地図: switches between Rails-rendered map scenarios and between the
 // schematic SVG and the real (Leaflet) map, keeping cards and pins in sync.
-import '../../../assets/stylesheets/map.css';
 import { saveStage } from '../../runtime/status.js';
 import { scenarioPath } from './scenarios.js';
 import { SchematicView } from './schematic_view.js';
