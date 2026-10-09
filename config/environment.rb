@@ -6,7 +6,7 @@ WasmRequestBridge.progress('Rails アプリケーションを初期化してい�
 Rails.application.initialize!
 
 unless GUIDE_ONLY
-  ActiveRecord::Base.establish_connection(:wasm)
+  ActiveRecord::Base.establish_connection
   load Rails.root.join('db/schema.rb').to_s unless ActiveRecord::Base.connection.table_exists?(:venues)
 end
 

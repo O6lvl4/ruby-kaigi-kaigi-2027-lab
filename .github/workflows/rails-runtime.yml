@@ -1,10 +1,10 @@
-name: Guide runtime (Ruby 4.0.7 / Rails 8.1.4 Wasm)
+name: Rails runtime (Ruby 4.0.7 / Rails 8.1.4 Wasm)
 on:
   pull_request:
     paths:
       - 'wasm/**'
-      - '.github/workflows/guide-runtime.yml'
-  # Rebuild and publish a new runtime as a Release asset, e.g. tag guide-runtime-r2.
+      - '.github/workflows/rails-runtime.yml'
+  # Rebuild and publish a new runtime as a Release asset, e.g. tag rails-runtime-r3.
   # Then pin its URL and SHA-256 in scripts/fetch-runtime.mjs after review.
   workflow_dispatch:
     inputs:
@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: guide-runtime-${{ github.event.pull_request.number || github.run_id }}
+  group: rails-runtime-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: false
 jobs:
   proof:
@@ -57,7 +57,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: guide-runtime-${{ github.sha }}
+          name: rails-runtime-${{ github.sha }}
           path: |
             wasm/browser
             wasm/evidence
@@ -73,16 +73,16 @@ jobs:
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: guide-runtime-${{ github.sha }}
+          name: rails-runtime-${{ github.sha }}
           path: runtime
-      - name: Publish guide-runtime.wasm with its manifest
+      - name: Publish rails-runtime.wasm with its manifest
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.release_tag }}
         run: |
-          cp runtime/browser/foundation.wasm guide-runtime.wasm
+          cp runtime/browser/foundation.wasm rails-runtime.wasm
           cp runtime/browser/runtime-manifest.json runtime-manifest.json
-          sha256sum guide-runtime.wasm | tee guide-runtime.wasm.sha256
-          gh release create "$TAG" guide-runtime.wasm runtime-manifest.json guide-runtime.wasm.sha256 \
+          sha256sum rails-runtime.wasm | tee rails-runtime.wasm.sha256
+          gh release create "$TAG" rails-runtime.wasm runtime-manifest.json rails-runtime.wasm.sha256 \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$TAG" \
             --notes "Ruby 4.0.7 / Rails 8.1.4 Wasm built by run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID from $GITHUB_SHA."
