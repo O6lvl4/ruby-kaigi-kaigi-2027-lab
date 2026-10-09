@@ -1,0 +1,24 @@
+<section class="road-routes" aria-label="道路に沿った経路の目安">
+  <h3>道路に沿った経路（目安）</h3>
+  <% routes = map_scenario.road_routes.group_by(&:path) %>
+  <% map_scenario.path_places.each_with_index do |places, path| %>
+    <div class="road-route">
+      <p class="road-route-title"><%= places.map(&:name).join(' → ') %></p>
+      <dl>
+        <% routes.fetch(path).each do |route| %>
+          <div data-route-mode="<%= route.mode %>">
+            <dt><%= route.mode_label %></dt>
+            <dd>
+              <%= route.kilometres %> km・約<%= route.minutes %>分
+              <%= external_link_to 'Googleマップ', google_maps_route_url(places, route.mode), class: 'road-route-link' %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+  <% end %>
+  <p class="source">
+    距離・時間は OpenStreetMap の経路検索による目安です。公式の所要時間・乗り場は上の案内を優先してください。バスの経路は車の道路で代用しており、実際の運行経路ではありません。
+    経路データ：<a href="<%= MapRoute.source.fetch('licenseUrl') %>"><%= MapRoute.source.fetch('data') %></a>（<%= MapRoute.source.fetch('license') %>）、<%= MapRoute.source.fetch('name') %>
+  </p>
+</section>

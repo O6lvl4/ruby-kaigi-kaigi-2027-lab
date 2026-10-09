@@ -27,6 +27,11 @@
           <button type="button" data-map-mode="schematic" aria-pressed="true">模式図</button>
           <button type="button" data-map-mode="actual" aria-pressed="false">正確な地図</button>
         </div>
+        <div id="travel-mode-switch" class="travel-mode-switch" aria-label="経路の移動手段" hidden>
+          <% MapRoute::MODES.each do |mode, label| %>
+            <button type="button" data-travel-mode="<%= mode %>" aria-pressed="<%= mode == @scenario.default_travel_mode %>"><%= label %></button>
+          <% end %>
+        </div>
       </div>
       <div class="map-canvas">
         <div id="schematic-layer"><%= render 'schematic_map', scenario: @scenario, scenarios: @scenarios, places: @places %></div>
@@ -35,12 +40,14 @@
         <button type="button" id="fit-map">全<%= @places.size %>地点を見る</button>
       </div>
       <div class="map-caption">
-        <span class="map-legend"><i></i>破線は移動のつながり。距離・道路の形は実際と異なります</span>
+        <span class="map-legend" data-legend="schematic"><i></i>破線は移動のつながり。距離・道路の形は実際と異なります</span>
+        <span class="map-legend map-legend-road" data-legend="actual" hidden><i class="legend-driving"></i>車 <i class="legend-walking"></i>徒歩：OpenStreetMap の道路に沿った経路の目安です</span>
         <p id="map-status" class="map-status" role="status" aria-live="polite">Rails から導線を読み込んでいます…</p>
         <p id="selected-place-note" class="selected-place-note" hidden></p>
       </div>
       <p id="actual-map-license" class="map-license" hidden>
-        <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>に独自の地点・概略線を重ねています。
+        <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>に、独自の地点と
+        <a href="<%= MapRoute.source.fetch('licenseUrl') %>">OpenStreetMap</a>（<%= MapRoute.source.fetch('data') %>、<%= MapRoute.source.fetch('license') %>）から求めた経路を重ねています。
       </p>
     </div>
     <aside id="map-sidebar" class="map-sidebar" aria-live="polite" data-scenario="<%= @scenario.id %>">

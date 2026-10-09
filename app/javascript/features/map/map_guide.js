@@ -19,7 +19,7 @@ const STATUS = {
   scenarioFailed: '導線を更新できませんでした。現在の地図と出典を確認してください。',
   tiles: {
     error: '背景地図を読み込めませんでした。模式図と地点カードは利用できます。',
-    loaded: '実地図に全7地点を配置しています。破線は概略線です。',
+    loaded: '実地図に全7地点と、道路に沿った経路の目安を表示しています。',
     loading: '背景地図を読み込んでいます…'
   }
 };
@@ -43,6 +43,7 @@ class MapGuide {
   #mode = 'schematic';
   #modeVersion = 0;
   #realMap = null;
+  #travelMode = null; // set by the reader; until then each scenario's default
 
   constructor(page, root, svg, request) {
     this.page = page;
@@ -57,7 +58,9 @@ class MapGuide {
       realLayer: $('#real-map'),
       license: $('#actual-map-license'),
       note: $('#selected-place-note'),
-      fit: $('#fit-map')
+      fit: $('#fit-map'),
+      travelSwitch: $('#travel-mode-switch'),
+      legends: page.querySelectorAll('[data-legend]')
     };
     this.metrics = { scenarioRequests: 0, cachedScenarios: 0, realMapInstances: 0 };
   }
@@ -119,13 +122,14 @@ class MapGuide {
     if (this.#disposed || this.#desiredKey) return;
     const placeIds = this.#verify(scenario);
     this.#current = scenario;
+    this.#showTravelMode();
     this.#renderCards(scenario);
     this.schematic.showScenario(scenario);
     for (const button of this.root.querySelectorAll('[data-map-scenario]')) {
       button.setAttribute('aria-pressed', String(button.dataset.mapScenario === scenario.key));
     }
     this.el.note.hidden = true;
-    this.#realMap?.update(scenario);
+    this.#realMap?.update(scenario, this.travelMode);
     Object.assign(window.guideApp, {
       mapReady: true,
       mapState: {
@@ -207,6 +211,8 @@ class MapGuide {
     this.el.schematicLayer.hidden = next !== 'schematic';
     this.el.realLayer.hidden = next !== 'actual';
     this.el.license.hidden = next !== 'actual';
+    this.el.travelSwitch.hidden = next !== 'actual';
+    for (const legend of this.el.legends) legend.hidden = legend.dataset.legend !== next;
     if (next === 'schematic') {
       this.schematic.sizeLabels();
       this.el.status.textContent = STATUS.schematic;
@@ -227,7 +233,7 @@ class MapGuide {
         if (!stale()) this.#reportTileStatus(tileStatus);
       });
       this.metrics.realMapInstances = 1;
-      this.#realMap.update(this.#current);
+      this.#realMap.update(this.#current, this.travelMode);
     } catch {
       if (stale()) return;
       this.el.status.textContent = STATUS.realFailed;
@@ -247,12 +253,39 @@ class MapGuide {
     this.metrics.realMapInstances = 0;
   }
 
+  // --- travel mode (徒歩 / 車) -------------------------------------------------
+
+  get travelMode() {
+    return this.#travelMode || this.#current?.default_travel_mode || 'driving';
+  }
+
+  #setTravelMode(mode) {
+    this.#travelMode = mode;
+    this.#showTravelMode();
+    this.#realMap?.update(this.#current, mode);
+    this.#checkpoint(`経路を表示：${mode === 'walking' ? '徒歩' : '車'}`);
+  }
+
+  // Pressed button and the matching distance/time rows in the Rails-rendered cards.
+  #showTravelMode() {
+    const mode = this.travelMode;
+    for (const button of this.root.querySelectorAll('[data-travel-mode]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.travelMode === mode));
+    }
+    for (const row of this.el.sidebar.querySelectorAll('[data-route-mode]')) {
+      row.classList.toggle('is-current', row.dataset.routeMode === mode);
+    }
+    window.guideApp.mapTravelMode = mode;
+  }
+
   // --- events --------------------------------------------------------------
 
   #onClick = event => {
     const target = selector => event.target.closest(selector);
     const scenario = target('[data-map-scenario]');
     if (scenario) return this.loadScenario(scenario.dataset.mapScenario);
+    const travel = target('[data-travel-mode]');
+    if (travel) return this.#setTravelMode(travel.dataset.travelMode);
     const toggle = target('[data-map-mode]');
     if (toggle) return toggle.dataset.mapMode === this.#mode ? undefined : this.#setMode(toggle.dataset.mapMode);
     const place = target('[data-map-node]')?.dataset.mapNode || target('[data-map-place]')?.dataset.mapPlace;

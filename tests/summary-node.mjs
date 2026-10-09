@@ -6,6 +6,14 @@ import { bootRails } from './support/rails_app.mjs';
 const { vm, get, request } = await bootRails();
 const html = path => get(path, 'text/html');
 const data = async name => JSON.parse(await readFile(`db/data/${name}.json`, 'utf8'));
+// Great-circle distance in metres between two [longitude, latitude] points.
+function metres([lng1, lat1], [lng2, lat2]) {
+  const rad = Math.PI / 180;
+  const a =
+    Math.sin(((lat2 - lat1) * rad) / 2) ** 2 +
+    Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(((lng2 - lng1) * rad) / 2) ** 2;
+  return 2 * 6371000 * Math.asin(Math.sqrt(a));
+}
 const PAGES = {
   '/': 'MapsController',
   '/event': 'EventsController',
@@ -96,12 +104,37 @@ for (const scenario of ['arrival', 'venue', 'night']) {
     if (mapped.body.selected_ids.includes(p.id)) assert.ok(mapped.body.html.includes(`data-place-id="${p.id}"`));
     assert.ok(p.properties.coordinate_source.startsWith('https://'));
   }
-  for (const line of mapped.body.geojson.features.filter(f => f.geometry.type === 'LineString'))
-    assert.equal(line.properties.kind, 'schematic');
+  const lines = mapped.body.geojson.features.filter(f => f.geometry.type === 'LineString');
+  for (const line of lines) assert.ok(['schematic', 'road'].includes(line.properties.kind));
+  const roads = lines.filter(line => line.properties.kind === 'road');
+  const pathCount = lines.filter(line => line.properties.kind === 'schematic').length;
+  assert.equal(roads.length, pathCount * 2, 'Every path has a walking and a driving route');
+  assert.ok(['walking', 'driving'].includes(mapped.body.default_travel_mode));
+  assert.match(mapped.body.route_source.data, /OpenStreetMap/);
+  const byId = Object.fromEntries(points.map(p => [p.id, p.geometry.coordinates]));
+  for (const road of roads) {
+    const coordinates = road.geometry.coordinates;
+    assert.ok(coordinates.length > 20, `${road.id} follows the road network rather than a straight line`);
+    assert.ok(road.properties.distance > 0 && road.properties.duration > 0);
+    const [first, last] = [road.properties.place_ids[0], road.properties.place_ids.at(-1)];
+    assert.ok(metres(coordinates[0], byId[first]) < 100, `${road.id} starts at ${first}`);
+    assert.ok(metres(coordinates.at(-1), byId[last]) < 100, `${road.id} ends at ${last}`);
+    assert.ok(mapped.body.html.includes(`data-route-mode="${road.properties.mode}"`));
+  }
+  for (const url of [...mapped.body.html.matchAll(/href="(https:\/\/www\.google\.com\/maps\/dir\/[^"]+)"/g)].map(m =>
+    m[1].replaceAll('&amp;', '&')
+  )) {
+    const origin = new URL(url).searchParams.get('origin');
+    if (origin !== null)
+      assert.ok(
+        mapped.body.all_places.some(place => origin === (place.googleMapsDestination || place.googleMapsQuery)),
+        `Route origin is a fixed place: ${origin}`
+      );
+  }
 }
 assert.equal((await get('/map/scenarios/unknown.json')).status, 404);
 console.log(
-  'PASS Rails scenarios emit matching ERB place cards and source-backed GeoJSON with schematic-only lines; unknown → 404'
+  'PASS Rails scenarios emit place cards, schematic lines, and OSM walking/driving routes that follow roads between the places; unknown → 404'
 );
 
 const restaurantsJson = await get('/restaurants.json');
@@ -180,7 +213,10 @@ for (const place of await data('places')) {
 }
 assert.match(restaurantsHtml, /id="dining-area"/);
 assert.match(restaurantsHtml, /id="dining-map-panel"/);
-for (const body of Object.values(pages)) assert.ok(!body.includes('origin='));
+// Google Maps links never use the visitor's location: destination-only, or a route from a fixed place.
+for (const body of Object.values(pages)) {
+  for (const match of body.matchAll(/origin=([^&"]*)/g)) assert.ok(decodeURIComponent(match[1]).length > 0);
+}
 console.log(
   'PASS all 27 destinations have qualified addresses; 20 dining pins and origin-free Maps links are Rails-rendered'
 );
