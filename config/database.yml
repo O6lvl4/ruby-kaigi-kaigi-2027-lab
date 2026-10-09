@@ -1,6 +1,9 @@
 # Lab only. The guide boots without Active Record (GUIDE_ONLY=1).
-wasm:
+production:
   adapter: pglite
   database: miyazaki
   js_interface: pglite4rails
   prepared_statements: true
+  # WebAssembly has no threads: one connection, no background reaper.
+  pool: 1
+  reaping_frequency: 0

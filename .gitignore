@@ -1,6 +1,5 @@
 node_modules/
 dist/
-public/base-app.wasm
+public/rails-runtime.wasm
 .test-data/
 upstream-*/
-public/guide-runtime.wasm

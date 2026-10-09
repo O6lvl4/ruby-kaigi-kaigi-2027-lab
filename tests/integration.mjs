@@ -3,7 +3,6 @@ import { resolve } from 'node:path';
 import { createRequire } from 'node:module';
 import assert from 'node:assert/strict';
 import { PGlite } from '@electric-sql/pglite';
-import { registerPGliteWasmInterface } from 'wasmify-rails';
 import { bootRails } from './support/rails_app.mjs';
 const phase = process.argv[2] || 'write';
 const dataDir = process.env.TEST_DATA_DIR;
@@ -11,12 +10,7 @@ if (!dataDir) throw new Error('Set TEST_DATA_DIR to a new test-only directory');
 const db = new PGlite(dataDir, { relaxedDurability: false });
 await db.waitReady;
 await db.exec('SET standard_conforming_strings = on');
-registerPGliteWasmInterface(globalThis, db);
-const { request: railsRequest } = await bootRails({
-  runtime: 'lab',
-  guideOnly: false,
-  database: { adapter: 'pglite' }
-});
+const { request: railsRequest } = await bootRails({ db });
 function request(method, body) {
   return railsRequest(method, '/venues', { body });
 }
@@ -63,7 +57,8 @@ if (phase === 'write') {
 const listed = await request('GET');
 check('Runtime is genuine Ruby/Rails on Wasm', () => {
   assert.equal(listed.body.runtime.platform, 'wasm32-wasi');
-  assert.equal(listed.body.runtime.rails, '8.0.1');
+  assert.equal(listed.body.runtime.rails, '8.1.4');
+  assert.equal(listed.body.runtime.ruby, '4.0.7');
 });
 check(
   phase === 'reopen'

@@ -1,13 +1,13 @@
-// Ruby 4.0.7 + Rails 8.1.4 (built in wasm/, ruby.wasm 2.10.1) for the reading guide.
+// Ruby 4.0.7 + Rails 8.1.4 (built in wasm/, ruby.wasm 2.10.1) for the guide and the lab.
 // The Rails app is mounted read-only at /demo as an in-memory WASI directory, so
 // nothing is written through Ruby and the app needs no runtime rebuild to change.
-import { ConsoleStdout, Directory, File, OpenFile, PreopenDirectory, WASI } from '@bjorn3/browser_wasi_shim-0.4';
-import { RubyVM } from '@ruby/wasm-wasi-2.10';
+import { ConsoleStdout, Directory, File, OpenFile, PreopenDirectory, WASI } from '@bjorn3/browser_wasi_shim';
+import { RubyVM } from '@ruby/wasm-wasi';
 
-// Keep in step with scripts/fetch-runtime.mjs (GUIDE_RUNTIME).
-export const GUIDE_RUNTIME_URL = `${import.meta.env.BASE_URL}guide-runtime.wasm?release=58e96a81`;
+// Keep in step with scripts/fetch-runtime.mjs (RAILS_RUNTIME).
+export const RAILS_RUNTIME_URL = `${import.meta.env.BASE_URL}rails-runtime.wasm?release=b28170cc`;
 // Exact size of the pinned runtime; Content-Length may be the compressed size instead.
-const GUIDE_RUNTIME_BYTES = 40638460;
+const RAILS_RUNTIME_BYTES = 43452267;
 
 const encoder = new TextEncoder();
 
@@ -33,7 +33,7 @@ async function download(url, onRatio) {
   if (!response.ok) throw new Error(`Ruby/Wasm を取得できませんでした（${response.status}）`);
   if (!response.body) return response.arrayBuffer();
   const reader = response.body.getReader();
-  const bytes = new Uint8Array(GUIDE_RUNTIME_BYTES);
+  const bytes = new Uint8Array(RAILS_RUNTIME_BYTES);
   let received = 0;
   let percent = -1;
   for (;;) {
@@ -54,10 +54,10 @@ async function download(url, onRatio) {
 const DOWNLOAD_SHARE = 0.85;
 
 // onProgress(message, ratio): ratio is how far starting Ruby + Rails has got (0–1).
-export async function bootGuideRuntime({ files, mountPoint, env = {}, onProgress = () => {} }) {
+export async function bootRailsRuntime({ files, mountPoint, env = {}, onProgress = () => {} }) {
   const downloading = 'Ruby/Wasm をダウンロードしています…';
   onProgress(downloading, 0);
-  const bytes = await download(GUIDE_RUNTIME_URL, ratio => onProgress(downloading, ratio * DOWNLOAD_SHARE));
+  const bytes = await download(RAILS_RUNTIME_URL, ratio => onProgress(downloading, ratio * DOWNLOAD_SHARE));
   onProgress('Ruby/Wasm を起動しています…', DOWNLOAD_SHARE);
   const module = await WebAssembly.compile(bytes);
   const fds = [
@@ -68,7 +68,7 @@ export async function bootGuideRuntime({ files, mountPoint, env = {}, onProgress
   ];
   const wasi = new WASI(
     [],
-    Object.entries(env).map(([key, value]) => `${key}=${value}`),
+    Object.entries({ RAILS_ENV: 'production', ...env }).map(([key, value]) => `${key}=${value}`),
     fds
   );
   const { vm } = await RubyVM.instantiateModule({ module, wasip1: wasi });

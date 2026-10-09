@@ -24,9 +24,9 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     );
     assert.equal(await page.locator('#check-results li').count(), 3);
     assert.match(await page.locator('#check-status').innerText(), /地図は起動していません/);
-    assert.ok(requests.some(u => u.includes('guide-runtime.wasm?release=58e96a81')));
+    assert.ok(requests.some(u => u.includes('rails-runtime.wasm?release=b28170cc')));
     assert.ok(
-      requests.some(u => new URL(u).pathname === new URL('guide-runtime.wasm', base).pathname),
+      requests.some(u => new URL(u).pathname === new URL('rails-runtime.wasm', base).pathname),
       'Diagnostic runtime must use the configured Pages project path'
     );
     assert.ok(

@@ -5,7 +5,7 @@ require 'digest'
 destination = ARGV.fetch(0)
 # Full lib directories for framework/runtime gems only. Generators, console,
 # tests, documentation, native Linux extensions, and unused clients are absent.
-names = %w[actionpack actionview activesupport base64 builder concurrent-ruby connection_pool erubi i18n logger rack rack-session rack-test railties securerandom tsort tzinfo tzinfo-data uri useragent zeitwerk]
+names = %w[actionpack actionview activemodel activerecord activesupport base64 builder concurrent-ruby connection_pool erubi i18n logger rack rack-session rack-test railties securerandom timeout tsort tzinfo tzinfo-data uri useragent zeitwerk]
 FileUtils.mkdir_p(destination)
 load_paths = []
 manifest = names.map do |name|

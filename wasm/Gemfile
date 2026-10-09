@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 gem 'railties', '= 8.1.4'
 gem 'actionpack', '= 8.1.4'
 gem 'actionview', '= 8.1.4'
+# The lab (lab.html) persists records through Active Record + PGlite.
+gem 'activerecord', '= 8.1.4'
+gem 'activemodel', '= 8.1.4'
 
 # Match the JSON extension shipped in the checksum-pinned Ruby 4.0.7 source.
 gem 'json', '= 2.18.0'

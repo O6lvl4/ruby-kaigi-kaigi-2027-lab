@@ -43,8 +43,6 @@ JS のレイヤーは `.dependency-cruiser.cjs` で検査します（entrypoints
 - tests/summary-node.mjs: 実物 Wasm で各ページのルート・コントローラー・ERB・JSON を検証
 - tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、ページ遷移・直接アクセス・旧アンカー、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
 
-技術デモの固定 Ruby 3.3.3/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、`config/initializers/erubi_wasm_compat.rb` で既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
-
 ## テスト
 
 ```sh

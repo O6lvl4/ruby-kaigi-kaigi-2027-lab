@@ -94,6 +94,16 @@ module PGlite
   end
 end
 
+# Local change: Rails' PostgreSQL adapter activates the native pg gem (`gem "pg"`).
+# In the browser PGlite stands in for it, so register a stand-in spec once.
+unless Gem::Specification.find_all_by_name("pg").any?
+  Gem::Specification.add_spec(Gem::Specification.new { |spec|
+    spec.name = "pg"
+    spec.version = "1.5.9"
+    spec.summary = "PGlite stand-in for the pg gem (no native code)"
+  })
+end
+
 require "active_record/connection_adapters/postgresql_adapter"
 
 module ActiveRecord
