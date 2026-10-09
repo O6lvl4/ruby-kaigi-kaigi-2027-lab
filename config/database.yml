@@ -1,0 +1,6 @@
+# Lab only. The guide boots without Active Record (GUIDE_ONLY=1).
+wasm:
+  adapter: pglite
+  database: miyazaki
+  js_interface: pglite4rails
+  prepared_statements: true

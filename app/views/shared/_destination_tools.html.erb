@@ -1,0 +1,9 @@
+<div class="destination-tools">
+  <div class="destination-links">
+    <%= link_to 'Google Maps ↗', google_maps_search_url(destination), target: '_blank', rel: 'noopener noreferrer' %>
+    <%= link_to '徒歩ルート ↗', google_maps_directions_url(destination, 'walking'), target: '_blank', rel: 'noopener noreferrer' %>
+    <%= link_to '車ルート ↗', google_maps_directions_url(destination, 'driving'), target: '_blank', rel: 'noopener noreferrer' %>
+  </div>
+  <button type="button" class="copy-address" data-copy-address="<%= destination_copy_text(destination) %>">名称・住所をコピー</button>
+  <span class="copy-address-status" role="status" aria-live="polite"></span>
+</div>

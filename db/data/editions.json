@@ -1,0 +1,127 @@
+{
+  "checkedAt": "2026-10-08",
+  "page": {
+    "title": "過去のRubyKaigiを見てみる",
+    "intro": "プログラムだけでなく、食事・交流会・会場への移動の案内も読めます。過去の実施例であり、2027年の決定事項ではありません。"
+  },
+  "editions": [
+    {
+      "year": 2026,
+      "city": "北海道・函館",
+      "dates": "2026年4月22〜24日",
+      "venue": "函館アリーナ・函館市民会館",
+      "url": "https://rubykaigi.org/2026/",
+      "scheduleUrl": "https://rubykaigi.org/2026/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2026/events/",
+      "operationsUrl": "https://rubykaigi.org/2026/onsite/",
+      "operationsLabel": "当日の案内・食事・交通",
+      "point": "複数会場の動線、昼食の提供場所、街と会場をつなぐ交通を読む",
+      "pointSource": "https://rubykaigi.org/2026/onsite/",
+      "fieldSources": {
+        "city": "url",
+        "dates": "url",
+        "venue": "url"
+      }
+    },
+    {
+      "year": 2025,
+      "city": "愛媛・松山",
+      "dates": "2025年4月16〜18日",
+      "venue": "愛媛県県民文化会館",
+      "url": "https://rubykaigi.org/2025/",
+      "scheduleUrl": "https://rubykaigi.org/2025/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2025/events/",
+      "operationsUrl": "https://rubykaigi.org/2025/onsite/",
+      "operationsLabel": "当日の案内・食事",
+      "point": "周辺飲食店の利用案内と、城山公園での公式パーティの実施例を読む",
+      "pointSources": [
+        "https://rubykaigi.org/2025/onsite/",
+        "https://rubykaigi.org/2025/events/"
+      ],
+      "fieldSources": {
+        "city": "url",
+        "dates": "url",
+        "venue": "url"
+      }
+    },
+    {
+      "year": 2024,
+      "city": "沖縄・那覇",
+      "dates": "2024年5月15〜17日",
+      "venue": "那覇文化芸術劇場なはーと",
+      "url": "https://rubykaigi.org/2024/",
+      "scheduleUrl": "https://rubykaigi.org/2024/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2024/events/",
+      "point": "ビーチ会場の公式パーティと、街に分散する交流イベントを読む",
+      "pointSource": "https://rubykaigi.org/2024/events/",
+      "fieldSources": {
+        "city": "url",
+        "dates": "url",
+        "venue": "url"
+      }
+    },
+    {
+      "year": 2023,
+      "city": "長野・松本",
+      "dates": "2023年5月11〜13日",
+      "venue": "まつもと市民芸術館",
+      "url": "https://rubykaigi.org/2023/",
+      "scheduleUrl": "https://rubykaigi.org/2023/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2023/events/",
+      "operationsUrl": "https://rubykaigi.org/2023/matsumoto/",
+      "operationsLabel": "会場・宿泊・アクセス",
+      "point": "公式パーティ、街のアフターパーティ、会期前後の交流イベントを読む",
+      "pointSource": "https://rubykaigi.org/2023/events/",
+      "fieldSources": {
+        "city": "url",
+        "dates": "url",
+        "venue": "url"
+      }
+    },
+    {
+      "year": 2022,
+      "city": "三重",
+      "dates": "2022年9月8〜10日",
+      "venue": "三重県総合文化センター",
+      "url": "https://rubykaigi.org/2022/",
+      "scheduleUrl": "https://rubykaigi.org/2022/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2022/events/",
+      "operationsUrl": "https://rubykaigi.org/2022/venue/",
+      "operationsLabel": "会場・シャトルバス",
+      "point": "津駅と会場を結ぶシャトルバスの乗り場・運行時間・注意事項を読む",
+      "pointSource": "https://rubykaigi.org/2022/venue/",
+      "fieldSources": {
+        "city": "url",
+        "dates": "url",
+        "venue": "url"
+      }
+    }
+  ],
+  "readingPrompts": [
+    {
+      "title": "食べ物と、食べる場所を一緒に考える",
+      "fact": "2025年は会場内の食事スペースが限られるため周辺飲食店を推奨。2026年は弁当・キッチンカーなどの提供場所と食事スペースを案内しています。",
+      "inference": "宮崎でも、提供数に加えて受け取り・着席・移動の流れを考えると参考になります。",
+      "sources": [
+        "https://rubykaigi.org/2025/onsite/",
+        "https://rubykaigi.org/2026/onsite/"
+      ]
+    },
+    {
+      "title": "会場から街への帰り道まで見る",
+      "fact": "2026年はシャトルバスと貸切市電を案内し、初日は公式パーティ参加者を会場へ送る運用でした。",
+      "inference": "昼間の会場と夜の交流会を、移動も含めて読むための実例です。",
+      "sources": [
+        "https://rubykaigi.org/2026/onsite/"
+      ]
+    },
+    {
+      "title": "大きな交流会と小さな集まりを分けて見る",
+      "fact": "2024年のEventsには約700人の公式パーティのほか、25人・28人などのドリンクアップが掲載されています。",
+      "inference": "飲食店を調べるときは、大人数の一会場だけでなく少人数で集まる場所も比べられます。",
+      "sources": [
+        "https://rubykaigi.org/2024/events/"
+      ]
+    }
+  ]
+}

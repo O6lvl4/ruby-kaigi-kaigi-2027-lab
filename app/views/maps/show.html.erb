@@ -1,0 +1,58 @@
+<% content_for :title, '宮崎の地図' %>
+<section id="orientation" class="map-intro">
+  <div>
+    <p class="kicker">MIYAZAKI FIELD GUIDE <span>01 / ORIENTATION</span></p>
+    <h1 id="title">宮崎をつかむ。<br class="mobile-break">会場へ、街へ。</h1>
+    <p>空港から会場、その先の街まで。位置関係と移動の流れを、一枚の地図から。</p>
+  </div>
+  <p class="asof">公開情報からつくる、非公式のガイド<br><span>更新 <%= Event.current.checked_on_label %></span></p>
+</section>
+
+<section class="map-workspace" aria-label="宮崎の地図と移動ガイド">
+  <nav class="scenario-tabs" aria-label="地図の見方">
+    <% @scenarios.each_with_index do |scenario, index| %>
+      <button type="button" data-map-scenario="<%= scenario.id %>" aria-pressed="<%= scenario.id == @scenario.id %>">
+        <span class="scenario-number" aria-hidden="true"><%= list_number(index + 1) %></span>
+        <span><%= scenario.label %></span>
+        <span class="scenario-arrow" aria-hidden="true">↗</span>
+      </button>
+    <% end %>
+  </nav>
+
+  <div class="map-layout">
+    <div class="map-column">
+      <div class="map-view-switch" aria-label="地図の表示方法">
+        <span>模式図・縮尺不同</span>
+        <div>
+          <button type="button" data-map-mode="schematic" aria-pressed="true">模式図</button>
+          <button type="button" data-map-mode="actual" aria-pressed="false">正確な地図</button>
+        </div>
+      </div>
+      <div class="map-canvas">
+        <div id="schematic-layer"><%= render 'schematic_map', scenario: @scenario, scenarios: @scenarios, places: @places %></div>
+        <div id="real-map" role="region" aria-label="全<%= @places.size %>地点を配置した実地図" hidden></div>
+        <span class="map-north" aria-hidden="true">N<span>↑</span></span>
+        <button type="button" id="fit-map">全<%= @places.size %>地点を見る</button>
+      </div>
+      <div class="map-caption">
+        <span class="map-legend"><i></i>破線は移動のつながり。距離・道路の形は実際と異なります</span>
+        <p id="map-status" class="map-status" role="status" aria-live="polite">Rails から導線を読み込んでいます…</p>
+        <p id="selected-place-note" class="selected-place-note" hidden></p>
+      </div>
+      <p id="actual-map-license" class="map-license" hidden>
+        <a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>に独自の地点・概略線を重ねています。
+      </p>
+    </div>
+    <aside id="map-sidebar" class="map-sidebar" aria-live="polite" data-scenario="<%= @scenario.id %>">
+      <%= render @scenario %>
+    </aside>
+  </div>
+  <p class="map-caution">所要時間は現在の公式案内による目安です。2027年開催日の運行・乗り場は、出発前に公式情報をご確認ください。</p>
+</section>
+
+<nav class="page-next" aria-label="ほかのページ">
+  <%= link_to event_path do %>開催の基本とアクセス<span>日程・会場・まだ分からないこと</span><% end %>
+  <%= link_to restaurants_path do %>ごはんと人数<span>宮崎の飲食店<%= Restaurant.all.size %>件</span><% end %>
+  <% first_year, last_year = Edition.year_range %>
+  <%= link_to editions_path do %>過去のRubyKaigi<span><%= first_year %>〜<%= last_year %>年の公式資料</span><% end %>
+</nav>

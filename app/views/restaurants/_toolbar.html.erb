@@ -1,0 +1,27 @@
+<div class="dining-toolbar">
+  <div class="dining-view-switch" aria-label="飲食店の表示方法">
+    <button type="button" data-dining-view="list" aria-pressed="true">一覧</button>
+    <button type="button" data-dining-view="map" aria-pressed="false">地図</button>
+  </div>
+  <div class="dining-filter">
+    <div class="dining-filter-group">
+      <label for="dining-capacity">集まる人数の目安</label>
+      <select id="dining-capacity" aria-describedby="capacity-help">
+        <option value="0">すべての候補</option>
+        <% [10, 20, 30, 50, 60, 100].each do |minimum| %>
+          <option value="<%= minimum %>"><%= minimum %>人以上</option>
+        <% end %>
+      </select>
+    </div>
+    <div class="dining-filter-group">
+      <label for="dining-area">エリア（町名）</label>
+      <select id="dining-area">
+        <option value="all">全エリア</option>
+        <% restaurants.map(&:area).uniq.sort.each do |area| %>
+          <option value="<%= area %>"><%= area %></option>
+        <% end %>
+      </select>
+    </div>
+    <p id="capacity-help">宴会・着席予約の掲載上限で絞ります。総席数からは推定しません。ホテルは表示中の部屋だけで判定します。</p>
+  </div>
+</div>

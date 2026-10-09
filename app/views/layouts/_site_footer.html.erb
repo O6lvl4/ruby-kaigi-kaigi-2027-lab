@@ -1,0 +1,16 @@
+<footer>
+  <%= link_to root_path, class: 'footer-brand' do %>
+    RubyKaigiKaigi 2027 <span>MIYAZAKI FIELD GUIDE</span>
+  <% end %>
+  <div>
+    <p>
+      個人による非公式の公開情報ガイドです。主催者との提携・承認を示すものではありません。<br>
+      情報に変更がある場合は、各公式サイトの案内を優先してください。
+    </p>
+    <details>
+      <summary>このサイトについて / Rails・Wasm</summary>
+      <p>このまとめは、ブラウザ内の Ruby <%= RUBY_VERSION %> / Rails <%= Rails.version %> が ERB ビューから生成しています。読み取り用の全ページを生成した後、Ruby の実行ワーカーは終了し、生成結果だけを保持します。PGlite・DuckDB の書き込み実験は別ページです。</p>
+      <p><a href="<%= static_file_path('lab.html') %>">技術デモを開く</a> <span>初回ロードは大きく、iPhone 実機の動作は未確認です。</span></p>
+    </details>
+  </div>
+</footer>

@@ -1,0 +1,20 @@
+<section id="dining-map-panel" class="dining-map-panel" aria-label="飲食店の地図と選択した候補" hidden>
+  <p id="dining-map-count" class="source"></p>
+  <label class="dining-map-choice-label" for="dining-map-choice">候補から選ぶ（重なったピンも選べます）</label>
+  <select id="dining-map-choice">
+    <option value="">地点を選択</option>
+    <% restaurants.select(&:located?).each do |restaurant| %>
+      <option value="<%= restaurant.id %>"><%= list_number(restaurant.position) %> · <%= restaurant.name %></option>
+    <% end %>
+  </select>
+  <div class="dining-map-layout">
+    <div class="dining-map-column">
+      <div id="dining-map-canvas" class="dining-map-canvas" role="region" aria-label="飲食店の出典確認済み地点"></div>
+      <button type="button" id="dining-map-fit">全地点を見る</button>
+      <p class="source">赤は掲載人数の条件内、黄は人数要確認、淡色は条件外。番号は一覧と共通です。ピンは施設・建物の代表点で、入口や乗降場所ではありません。</p>
+      <p id="dining-map-status" class="source" role="status" aria-live="polite"></p>
+      <p class="source"><a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>に独自の地点を重ねています。</p>
+    </div>
+    <aside id="dining-map-detail" aria-label="選択した飲食店" aria-live="polite"></aside>
+  </div>
+</section>

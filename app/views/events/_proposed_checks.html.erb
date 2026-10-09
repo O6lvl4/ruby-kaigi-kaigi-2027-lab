@@ -1,0 +1,11 @@
+<section id="next" class="section">
+  <%= section_label '04', safe_join(['次に確認する', tag.br, 'こと']) %>
+  <div class="section-body">
+    <p class="section-intro">ここからは準備のための<strong>提案</strong>です。決定事項や、誰かに割り当てられた作業ではありません。</p>
+    <ol class="next-list">
+      <% event.proposed_checks.each do |check| %>
+        <li><h3><%= check.title %></h3><p><%= check.detail %></p></li>
+      <% end %>
+    </ol>
+  </div>
+</section>

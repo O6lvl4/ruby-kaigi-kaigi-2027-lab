@@ -5,57 +5,100 @@ import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
-const profile=await mkdtemp(join(tmpdir(),'miyazaki-wasm-e2e-'));
-const base=process.env.DEMO_URL || 'http://127.0.0.1:5173/';
-const url=new URL('lab.html', base.endsWith('/') ? base : base+'/').href;
-const options={headless:true,viewport:{width:1360,height:1100},...(process.env.CHROMIUM_PATH ? {executablePath:process.env.CHROMIUM_PATH}:{})};
-const results=[];
+const profile = await mkdtemp(join(tmpdir(), 'miyazaki-wasm-e2e-'));
+const base = process.env.DEMO_URL || 'http://127.0.0.1:5173/';
+const url = new URL('lab.html', base.endsWith('/') ? base : base + '/').href;
+const options = {
+  headless: true,
+  viewport: { width: 1360, height: 1100 },
+  ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {})
+};
+const results = [];
 let context;
-const browserLogs=[];
-await mkdir('evidence',{recursive:true});
-async function open(){
- context=await chromium.launchPersistentContext(profile,options);
- const page=await context.newPage();
- page.on('console',msg=>{ browserLogs.push(`${msg.type()}: ${msg.text()}`); console.log('BROWSER',msg.type(),msg.text()); });
- page.on('pageerror',err=>{ browserLogs.push(err.stack); console.error('PAGE ERROR',err); });
- page.on('requestfailed',req=>console.error('FAILED REQUEST',req.url(),req.failure()));
- await page.goto(url);
- await page.waitForFunction(()=>window.demo?.ready || document.querySelector('#status')?.textContent.startsWith('起動エラー'),null,{timeout:180000});
- if (!await page.evaluate(()=>window.demo?.ready)) throw new Error(await page.locator('#status').textContent());
- return page;
+const browserLogs = [];
+await mkdir('evidence', { recursive: true });
+async function open() {
+  context = await chromium.launchPersistentContext(profile, options);
+  const page = await context.newPage();
+  page.on('console', msg => {
+    browserLogs.push(`${msg.type()}: ${msg.text()}`);
+    console.log('BROWSER', msg.type(), msg.text());
+  });
+  page.on('pageerror', err => {
+    browserLogs.push(err.stack);
+    console.error('PAGE ERROR', err);
+  });
+  page.on('requestfailed', req => console.error('FAILED REQUEST', req.url(), req.failure()));
+  await page.goto(url);
+  await page.waitForFunction(
+    () => window.demo?.ready || document.querySelector('#status')?.textContent.startsWith('起動エラー'),
+    null,
+    { timeout: 180000 }
+  );
+  if (!(await page.evaluate(() => window.demo?.ready))) throw new Error(await page.locator('#status').textContent());
+  return page;
 }
-function pass(name){results.push({name,status:'PASS'});console.log('PASS',name);}
-try{
- let page=await open();
- assert.equal(await page.evaluate(()=>crossOriginIsolated),false);pass('Wasm boots without COOP/COEP (Pages-compatible)');
- assert.equal(await page.locator('#count').textContent(),'0');pass('Fresh browser IndexedDB is empty');
- await page.getByLabel('名前',{exact:true}).fill('架空・再起動テスト会場');
- await page.getByRole('button',{name:'Rails で検証して保存'}).click();
- await page.getByText('保存しました。IndexedDB への書き込みが完了しています',{exact:true}).waitFor();
- assert.equal(await page.locator('#count').textContent(),'1');pass('UI creates via Rails and renders stored candidate');
- let snapshot=await page.evaluate(()=>window.demo.snapshot());
- assert.deepEqual(snapshot.summaries,[{category:'venue',count:1,capacity:50,cost:100000}]);pass('DuckDB browser aggregation matches');
- const invalid=await page.evaluate(()=>window.demo.request('POST','/venues',{venue:{name:'',area:'架空',category:'venue',capacity:-1,estimated_cost:-1}}));
- assert.equal(invalid.status,422);pass('Rails rejects invalid browser request');
- const tab2=await context.newPage();await tab2.goto(url);
- await tab2.getByText(/別のタブでこのデモが開いています/).waitFor();pass('Second writer tab is blocked');await tab2.close();
- await mkdir('evidence',{recursive:true});await page.screenshot({path:'evidence/browser-desktop.png',fullPage:true});
- await page.reload();
- await page.waitForFunction(()=>window.demo?.ready,null,{timeout:180000});
- assert.equal(await page.locator('#count').textContent(),'1');pass('Reload restores IndexedDB record');
- await context.close(); // Actually terminates the persistent Chromium instance.
- page=await open();
- snapshot=await page.evaluate(()=>window.demo.snapshot());
- assert.equal(snapshot.records.length,1);assert.equal(snapshot.records[0].name,'架空・再起動テスト会場');pass('Full browser close/relaunch preserves IndexedDB record');
- assert.deepEqual(snapshot.summaries,[{category:'venue',count:1,capacity:50,cost:100000}]);pass('DuckDB aggregate reconstructs after browser reopen');
- await page.setViewportSize({width:390,height:844});
- assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));pass('Mobile layout has no horizontal overflow');
- await page.screenshot({path:'evidence/browser-mobile.png',fullPage:true});
- await writeFile('evidence/browser-results.json',JSON.stringify({status:'PASS',url,profile,results,browserLogs},null,2));
- } catch(error) {
- results.push({name:error.message,status:'FAIL'});
- const page=context?.pages().at(-1);
- if(page) await page.screenshot({path:'evidence/browser-failure.png',fullPage:true}).catch(()=>{});
- await writeFile('evidence/browser-results.json',JSON.stringify({status:'FAIL',url,results,browserLogs},null,2));
- throw error;
-}finally{await context?.close();}
+function pass(name) {
+  results.push({ name, status: 'PASS' });
+  console.log('PASS', name);
+}
+try {
+  let page = await open();
+  assert.equal(await page.evaluate(() => crossOriginIsolated), false);
+  pass('Wasm boots without COOP/COEP (Pages-compatible)');
+  assert.equal(await page.locator('#count').textContent(), '0');
+  pass('Fresh browser IndexedDB is empty');
+  await page.getByLabel('名前', { exact: true }).fill('架空・再起動テスト会場');
+  await page.getByRole('button', { name: 'Rails で検証して保存' }).click();
+  await page.getByText('保存しました。IndexedDB への書き込みが完了しています', { exact: true }).waitFor();
+  assert.equal(await page.locator('#count').textContent(), '1');
+  pass('UI creates via Rails and renders stored candidate');
+  let snapshot = await page.evaluate(() => window.demo.snapshot());
+  assert.deepEqual(snapshot.summaries, [{ category: 'venue', count: 1, capacity: 50, cost: 100000 }]);
+  pass('DuckDB browser aggregation matches');
+  const invalid = await page.evaluate(() =>
+    window.demo.request('POST', '/venues', {
+      venue: { name: '', area: '架空', category: 'venue', capacity: -1, estimated_cost: -1 }
+    })
+  );
+  assert.equal(invalid.status, 422);
+  pass('Rails rejects invalid browser request');
+  const tab2 = await context.newPage();
+  await tab2.goto(url);
+  await tab2.getByText(/別のタブでこのデモが開いています/).waitFor();
+  pass('Second writer tab is blocked');
+  await tab2.close();
+  await mkdir('evidence', { recursive: true });
+  await page.screenshot({ path: 'evidence/browser-desktop.png', fullPage: true });
+  await page.reload();
+  await page.waitForFunction(() => window.demo?.ready, null, { timeout: 180000 });
+  assert.equal(await page.locator('#count').textContent(), '1');
+  pass('Reload restores IndexedDB record');
+  await context.close(); // Actually terminates the persistent Chromium instance.
+  page = await open();
+  snapshot = await page.evaluate(() => window.demo.snapshot());
+  assert.equal(snapshot.records.length, 1);
+  assert.equal(snapshot.records[0].name, '架空・再起動テスト会場');
+  pass('Full browser close/relaunch preserves IndexedDB record');
+  assert.deepEqual(snapshot.summaries, [{ category: 'venue', count: 1, capacity: 50, cost: 100000 }]);
+  pass('DuckDB aggregate reconstructs after browser reopen');
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  pass('Mobile layout has no horizontal overflow');
+  await page.screenshot({ path: 'evidence/browser-mobile.png', fullPage: true });
+  await writeFile(
+    'evidence/browser-results.json',
+    JSON.stringify({ status: 'PASS', url, profile, results, browserLogs }, null, 2)
+  );
+} catch (error) {
+  results.push({ name: error.message, status: 'FAIL' });
+  const page = context?.pages().at(-1);
+  if (page) await page.screenshot({ path: 'evidence/browser-failure.png', fullPage: true }).catch(() => {});
+  await writeFile(
+    'evidence/browser-results.json',
+    JSON.stringify({ status: 'FAIL', url, results, browserLogs }, null, 2)
+  );
+  throw error;
+} finally {
+  await context?.close();
+}
