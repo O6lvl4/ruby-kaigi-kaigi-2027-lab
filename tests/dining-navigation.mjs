@@ -84,7 +84,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
           timeout: 180000
         });
         assert.equal(await page.evaluate(() => window.guideApp.error), null);
-        const initialWasm = requests.filter(u => u.includes('guide-runtime.wasm')).length;
+        const initialWasm = requests.filter(u => u.includes('rails-runtime.wasm')).length;
         assert.ok(!requests.some(u => u.includes('cyberjapandata')));
         assert.equal(await page.locator('#site-navigation a[href*="aid-on"]').count(), 0);
         assert.equal(await page.locator('.map-workspace').count(), 1);
@@ -196,7 +196,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
         await verifyBlockedTiles(browser, viewport, `${engineName}-${size}`);
         assert.equal(page.workers().length, 0);
         assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 8);
-        assert.equal(requests.filter(u => u.includes('guide-runtime.wasm')).length, initialWasm);
+        assert.equal(requests.filter(u => u.includes('rails-runtime.wasm')).length, initialWasm);
         assert.equal(await page.evaluate(() => window.geolocationCalls), 0);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
         assert.deepEqual(errors, []);

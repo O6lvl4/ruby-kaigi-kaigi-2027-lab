@@ -1,10 +1,10 @@
-# Guide runtime: Ruby 4.0.7 / Rails 8.1.4 on Wasm
+# Rails runtime: Ruby 4.0.7 / Rails 8.1.4 on Wasm
 
-Status: **in use by the reading guide** since release `guide-runtime-r1` (built by CI run 37755632117 from commit 076a3d8; Node proof, Chromium and WebKit passed). The lab (lab.html) stays on the older wasmify-rails runtime. Physical iPhone validation is still pending. See [TEST_REPORT.md](TEST_REPORT.md) for the original proof.
+Status: **in use by the reading guide and the lab** since release `rails-runtime-r2` (built by CI run 37881233057; proof passed). Physical iPhone validation is still pending. See [TEST_REPORT.md](TEST_REPORT.md) for the original proof.
 
-The runtime packs Ruby, the pinned framework gems (`/gems`), the browser stand-ins (`/compat`) and this proof app (`/app`, self-test only). The guide's own Rails app is **not** packed: `app/javascript/rails/guide_runtime.js` mounts it at `/demo` when the page boots, and `config/boot.rb` adds `/gems` and `/compat` to the load path.
+The runtime packs Ruby, the pinned framework gems (`/gems`), the browser stand-ins (`/compat`) and this proof app (`/app`, self-test only). The app's own Rails code is **not** packed: `app/javascript/rails/rails_runtime.js` mounts it at `/demo` when the page boots, and `config/boot.rb` adds `/gems` and `/compat` to the load path.
 
-To publish a new runtime, run the **Guide runtime** workflow with a `release_tag` (e.g. `guide-runtime-r2`), review the proof artifact, then pin the Release URL and SHA-256 in `scripts/fetch-runtime.mjs`.
+To publish a new runtime, run the **Rails runtime** workflow with a `release_tag` (e.g. `rails-runtime-r3`), review the proof artifact, then pin the Release URL and SHA-256 in `scripts/rails-runtime.mjs` and the URL and size in `app/javascript/rails/rails_runtime.js`.
 
 ## Targets verified 2026-10-08
 
@@ -12,7 +12,7 @@ To publish a new runtime, run the **Guide runtime** workflow with a `release_tag
 - Rails stable: **8.1.4**, released 2026-09-24. Rails 8.1 requires Ruby >= 3.2.
 - ruby.wasm toolkit: **2.10.1**, commit `cbb1e8440159c55b9c56e5359eb8e12d5a1e742d`.
 - Critical distinction: official `@ruby/4.0-wasm-wasi@2.10.1` embeds **Ruby 4.0.0**, not 4.0.7. Tested RUBY_DESCRIPTION confirms this.
-- The lab keeps the Ruby 3.3.3 / Rails 8.0.1 wasmify-rails runtime (Active Record + PGlite are not part of this build).
+- Active Record and Active Model 8.1.4 are packed for the lab, which reaches PGlite through `vendor/pglite_adapter.rb`. The previous Ruby 3.3.3 / Rails 8.0.1 wasmify-rails runtime is no longer used.
 
 ## Baseline observations (Node on Linux, not Safari)
 

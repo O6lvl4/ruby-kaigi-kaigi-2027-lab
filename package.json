@@ -18,13 +18,11 @@
     "format": "prettier --write . && bundle exec rubocop -a"
   },
   "dependencies": {
-    "@bjorn3/browser_wasi_shim-0.4": "npm:@bjorn3/browser_wasi_shim@0.4.2",
+    "@bjorn3/browser_wasi_shim": "0.4.2",
     "@duckdb/duckdb-wasm": "1.29.1-dev132.0",
     "@electric-sql/pglite": "0.2.17",
-    "@ruby/wasm-wasi": "2.7.0",
-    "@ruby/wasm-wasi-2.10": "npm:@ruby/wasm-wasi@2.10.1",
-    "leaflet": "1.9.4",
-    "wasmify-rails": "0.2.3"
+    "@ruby/wasm-wasi": "2.10.1",
+    "leaflet": "1.9.4"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

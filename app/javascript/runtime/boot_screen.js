@@ -73,7 +73,7 @@ export const bootScreen = {
   }
 };
 
-// Friendlier wording for wasmify-rails' English progress messages.
+// Friendlier wording for any English progress messages.
 export function progressMessage(message) {
   if (/Loading/.test(message)) return 'Ruby/Wasm をダウンロードしています…';
   if (/Instantiating/.test(message)) return 'Ruby/Wasm を起動しています…';

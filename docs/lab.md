@@ -1,10 +1,10 @@
 # 技術デモ（lab.html）
 
-PGlite（IndexedDB）と DuckDB-Wasm に、Rails の検証を通した架空のデータを保存・集計する実験ページです。ガイド本体とは別のランタイム（Ruby 3.3.3 / Rails 8.0.1）で動きます。
+PGlite（IndexedDB）と DuckDB-Wasm に、Rails の検証を通した架空のデータを保存・集計する実験ページです。ガイドと同じ Ruby 4.0.7 / Rails 8.1.4 のランタイムで、Active Record を使います。
 
 ## 技術デモを試す
 
-`npm run dev` で開いたガイドのページ下部の「技術デモを開く」から lab.html を開いてください。技術デモの初回は 79 MiB の Ruby/Rails Wasm に加え、PGlite と DuckDB の Wasm を読み込みます。メモリ消費の小さいデモではありません。
+`npm run dev` で開いたガイドのページ下部の「技術デモを開く」から lab.html を開いてください。技術デモの初回は約43 MB の Ruby/Rails Wasm（ガイドと共通）に加え、PGlite と DuckDB の Wasm を読み込みます。メモリ消費の小さいデモではありません。
 
 1. 架空の名前・種類・人数・概算費用を入力して「Rails で検証して保存」
 2. 候補一覧と種類別の集計を確認
@@ -20,7 +20,7 @@ PGlite（IndexedDB）と DuckDB-Wasm に、Rails の検証を通した架空の�
   → Dedicated Worker のメッセージキュー
   → ruby.wasm 上の Rails.application.call（Rack）
   → ActionController + ActiveRecord の検証・保存
-  → wasmify-rails PGlite adapter
+  → PGlite adapter（vendor/pglite_adapter.rb）
   → PGlite PostgreSQL / idb://rubykaigi-miyazaki-v1
   → Rails GET /venues による読み出し
   → DuckDB-Wasm の独立した分析用コピー
@@ -34,8 +34,8 @@ Rails API を JavaScript で模倣していません。Ruby コードで Rails A
 ## 技術デモの制限
 
 - 本番用途・個人情報・予約・決済向けではありません
-- 技術デモは古い固定 Ruby 3.3.3 / Rails 8.0.1 ベースです。JS 依存の npm audit は 0 件でしたが、内蔵 gem 全体のセキュリティ評価は行っていません
-- upstream runtime の日時パースでクラッシュを確認したため、この最小スキーマは timestamp 列を持ちません
+- JS 依存の npm audit は 0 件でしたが、Wasm に内蔵した gem 全体のセキュリティ評価は行っていません
+- 以前のランタイム（Ruby 3.3.3）で日時パースのクラッシュを確認したため、この最小スキーマは timestamp 列を持ちません（Ruby 4.0.7 では未再検証）
 - 一般用途の PostgreSQL adapter 完全互換性、複雑なトランザクション、マイグレーション運用は未検証です
 - 更新・削除、共有、同期、外部情報取得、公式イベント情報、実在の施設データは含みません
 - オフライン再起動は保証しません。静的サーバーは必要です
