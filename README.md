@@ -4,7 +4,7 @@ RubyKaigiKaigi 2027は、RubyKaigi 2027 宮崎開催の公開情報を読むた�
 
 ガイドの各ページは、ブラウザ内の本物の Ruby/Wasm・Rails で生成します。軽量な初期 HTML は起動中・失敗時の案内だけで、静的なまとめを成功表示として代用しません。ブラウザの Worker → Rack → ルーティング → 各コントローラー → ActionView（レイアウト＋ERB）→ HTML レスポンス、という経路です。構成は「アーキテクチャ」の節を参照してください。
 
-起動には約62 MiB の Ruby/Wasm が必要です。失敗時はエラー詳細・再試行・診断情報のコピーを表示します。読み取りモードでは技術デモの PGlite DB を開かず、DuckDB も起動しません。PGlite・DuckDB の実験は lab.html に残しています。iPhone 実機の互換性は未検証です。
+ガイドは **Ruby 4.0.7 / Rails 8.1.4** で動きます。起動には約41 MB の Ruby/Wasm が必要です。失敗時はエラー詳細・再試行・診断情報のコピーを表示します。読み取りモードでは技術デモの PGlite DB を開かず、DuckDB も起動しません。PGlite・DuckDB の実験は lab.html に残しています。iPhone 実機の互換性は未検証です。
 
 - 公開版に含めるのは出典と確認日を明示した公開情報だけです（飲食店は公式サイト・掲載情報を区別）
 - 担当者、会議内容、非公開メール、未確定の期限、架空の進捗を掲載しません
@@ -58,7 +58,22 @@ Rails API を JavaScript で模倣していません。Ruby コードで Rails A
 
 ## ランタイムの由来
 
-ネイティブ Ruby や Wasm のコンパイル環境を要求しないよう、palkan の公式サンプルで公開されている実物の app.wasm をベースにしています。付属の取得スクリプトは HTTPS と SHA-256 を検証し、そのバイナリに含まれる Ruby / Rails と依存 gem を使用します。公式サンプルのブログは起動せず、同梱した Ruby アプリを仮想ファイルシステムの /demo に読み込んで起動します。
+ランタイムは2つあり、`npm run setup:runtime`（`scripts/fetch-runtime.mjs`）が SHA-256 を検証してから `public/` に置きます。ハッシュが一致しないものは実行しません。
+
+### ガイド：Ruby 4.0.7 / Rails 8.1.4（`public/guide-runtime.wasm`）
+
+`wasm/` のレシピで、チェックサム固定の Ruby 4.0.7 ソースと ruby.wasm 2.10.1 から CI でビルドし、GitHub Release（`guide-runtime-r1`）に置いています。Wasm に入っているのは Ruby と gem（railties・actionpack・actionview 8.1.4 ほか）だけで、アプリ本体は起動時にメモリ上の `/demo` としてマウントします。そのためアプリを変更してもランタイムの再ビルドは不要です。
+
+- 配布元: https://github.com/O6lvl4/ruby-kaigi-kaigi-2027-lab/releases/tag/guide-runtime-r1
+- SHA-256: 58e96a8136fd5d7d3e4404bec051e50064bf53c3714688219c7234ee256a416a（40,638,460 bytes）
+- JS bridge: @ruby/wasm-wasi 2.10.1（`@ruby/wasm-wasi-2.10` の別名で導入）
+- HTML サニタイズ（Nokogiri）とソケットは含みません。サニタイズ呼び出しは例外で止まり、生の入力を返しません。ERB の通常のエスケープは有効です
+- 新しいランタイムは `Guide runtime` ワークフローを手動実行（`release_tag` を指定）して公開し、レビュー後に `scripts/fetch-runtime.mjs` の URL とハッシュを更新します
+- Node でのテストには Node 24.19 以上が必要です（Node 22 の V8 ではこの Wasm がクラッシュすることを確認）
+
+### 技術デモ：Ruby 3.3.3 / Rails 8.0.1（`public/base-app.wasm`）
+
+技術デモ（lab.html）は ActiveRecord と PGlite を使うため、従来どおり palkan の公式サンプルで公開されている実物の app.wasm をベースにしています。付属の取得スクリプトは HTTPS と SHA-256 を検証し、そのバイナリに含まれる Ruby / Rails と依存 gem を使用します。公式サンプルのブログは起動せず、同梱した Ruby アプリを仮想ファイルシステムの /demo に読み込んで起動します。
 
 - 出典: https://github.com/palkan/rails-15min-blog-on-wasm
 - 配布元: https://rails-blog-on-wasm.vladem.com/app.wasm
@@ -67,6 +82,8 @@ Rails API を JavaScript で模倣していません。Ruby コードで Rails A
 - 実測: Ruby 3.3.3 / Rails 8.0.1 / wasm32-wasi
 - JS bridge: @ruby/wasm-wasi 2.7.0 / wasmify-rails 0.2.3
 - PGlite 0.2.17 / DuckDB-Wasm npm 1.29.1-dev132.0（エンジン v1.2.2）
+
+アプリのコードは両方のランタイムで共通です。違いは `config/boot.rb`（gem の読み込み場所）と、lab の Ruby 3.3.3 だけに必要な Erubi 互換パッチに閉じ込めています。
 
 ソース ZIP には第三者の巨大な Wasm バイナリや node_modules は含めません。取得先の内容が変わるとスクリプトは停止します。ハッシュを確認せず書き換えないでください。これは固定済み配布物を使う再現可能なセットアップで、Ruby/Wasm の完全なソース再ビルドを保証するものではありません。
 
@@ -98,7 +115,7 @@ npm run test:e2e         # 別ページの技術デモを検証
 ## 技術デモの制限
 
 - 本番用途・個人情報・予約・決済向けではありません
-- 古い固定 Ruby/Rails ベースです。JS 依存の npm audit は 0 件でしたが、内蔵 gem 全体のセキュリティ評価は行っていません
+- 技術デモは古い固定 Ruby 3.3.3 / Rails 8.0.1 ベースです。JS 依存の npm audit は 0 件でしたが、内蔵 gem 全体のセキュリティ評価は行っていません
 - upstream runtime の日時パースでクラッシュを確認したため、この最小スキーマは timestamp 列を持ちません
 - 一般用途の PostgreSQL adapter 完全互換性、複雑なトランザクション、マイグレーション運用は未検証です
 - 更新・削除、共有、同期、外部情報取得、公式イベント情報、実在の施設データは含みません
@@ -152,7 +169,7 @@ JS のレイヤーは `.dependency-cruiser.cjs` で検査します（entrypoints
 - tests/summary-node.mjs: 実物 Wasm で各ページのルート・コントローラー・ERB・JSON を検証
 - tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、ページ遷移・直接アクセス・旧アンカー、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
 
-固定 Ruby/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、`config/initializers/erubi_wasm_compat.rb` で既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
+技術デモの固定 Ruby 3.3.3/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、`config/initializers/erubi_wasm_compat.rb` で既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
 
 ## 地図で読む宮崎
 

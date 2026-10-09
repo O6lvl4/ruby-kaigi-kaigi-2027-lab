@@ -1,7 +1,7 @@
 ---
 EnableDefaultLinters: true
 exclude:
-  - '**/experiments/**/*'
+  - '**/wasm/**/*'
   - '**/node_modules/**/*'
   - '**/vendor/**/*'
 linters:

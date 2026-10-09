@@ -35,6 +35,9 @@ assert.match(pages['/event'], /2027年4月14日〜16日/);
 assert.match(pages['/event'], /バス 約60分/);
 assert.equal((pages['/'].match(/data-map-node=/g) || []).length, 7);
 assert.match(pages['/'], /id="schematic-map"/);
+assert.equal((await vm.evalAsync('RUBY_VERSION')).toString(), '4.0.7');
+assert.equal((await vm.evalAsync('Rails.version')).toString(), '8.1.4');
+assert.match(pages['/'], /Ruby 4\.0\.7 \/ Rails 8\.1\.4/, 'The footer reports the runtime that rendered it');
 console.log('PASS each guide page is its own Rails route → controller → ActionView ERB with the shared layout');
 
 const mounted = (

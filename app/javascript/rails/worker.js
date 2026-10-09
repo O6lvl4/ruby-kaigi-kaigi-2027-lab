@@ -1,34 +1,53 @@
 // Runs Ruby/Wasm + Rails off the main thread. Messages: boot, probe_rails, request, close.
-// Modes: 'guide' (reading pages, no database), 'probe' (Ruby only), 'lab' (Rails + PGlite).
-import { initRailsVM, registerPGliteWasmInterface } from 'wasmify-rails';
+// Modes:
+//   'guide' reading pages on Ruby 4.0.7 + Rails 8.1.4 (./guide_runtime.js), no database
+//   'probe' the same runtime, Ruby only until probe_rails (runtime-check.html)
+//   'lab'   Rails 8.0 + Active Record + PGlite on the wasmify-rails runtime
 import { appFiles, RAILS_ROOT } from './app_files.js';
+import { bootGuideRuntime } from './guide_runtime.js';
 
-const WASM_URL = `${import.meta.env.BASE_URL}base-app.wasm?release=28acbb22`;
+const LAB_RUNTIME_URL = `${import.meta.env.BASE_URL}base-app.wasm?release=28acbb22`;
 
 let vm;
 let db;
 let applicationLoaded = false;
 const progress = message => postMessage({ type: 'progress', message });
 
-async function openLabDatabase() {
-  const { PGlite } = await import('@electric-sql/pglite');
+async function bootLab() {
+  const [{ PGlite }, { initRailsVM, registerPGliteWasmInterface }] = await Promise.all([
+    import('@electric-sql/pglite'),
+    import('wasmify-rails')
+  ]);
   progress('PGlite / IndexedDB を起動中…');
   db = new PGlite('idb://rubykaigi-miyazaki-v1', { relaxedDurability: false });
   await db.waitReady;
   await db.exec('SET standard_conforming_strings = on');
   registerPGliteWasmInterface(self, db);
-}
-
-async function boot(mode) {
-  const guideOnly = mode !== 'lab';
-  if (!guideOnly) await openLabDatabase();
-  vm = await initRailsVM(WASM_URL, {
+  vm = await initRailsVM(LAB_RUNTIME_URL, {
     skipInitialize: true,
     async: true,
-    env: guideOnly ? ['GUIDE_ONLY=1'] : [],
+    env: [],
     database: { adapter: 'pglite' },
     progressCallback: progress
   });
+  progress('Ruby の起動完了。Rails のファイルを準備しています…');
+  // wasmify's VM has its own writable FS: copy the app in through Ruby.
+  self.appFiles = JSON.stringify(appFiles);
+  await vm.evalAsync(
+    `require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }`
+  );
+  self.appFiles = null;
+}
+
+async function boot(mode) {
+  if (mode === 'lab') await bootLab();
+  else
+    vm = await bootGuideRuntime({
+      files: appFiles,
+      mountPoint: RAILS_ROOT,
+      env: { GUIDE_ONLY: '1' },
+      onProgress: progress
+    });
   if (mode !== 'probe') await loadApplication();
   const railsLoaded = (await vm.evalAsync('defined?(Rails).to_s')).toString() !== '';
   return { ready: true, railsLoaded };
@@ -37,12 +56,6 @@ async function boot(mode) {
 async function loadApplication() {
   if (applicationLoaded) return;
   if (!vm) throw new Error('Ruby is not initialized');
-  progress('Ruby の起動完了。Rails のファイルを準備しています…');
-  self.appFiles = JSON.stringify(appFiles);
-  await vm.evalAsync(
-    `require 'json'; require 'fileutils'; JSON.parse(JS.global[:appFiles].to_s).each { |path, content| FileUtils.mkdir_p(File.dirname(path)); File.write(path, content) }`
-  );
-  self.appFiles = null;
   progress('Rails ライブラリを読み込んでいます…');
   await vm.evalAsync(`load '${RAILS_ROOT}/config/environment.rb'`);
   applicationLoaded = true;

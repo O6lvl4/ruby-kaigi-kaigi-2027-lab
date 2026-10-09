@@ -12,7 +12,11 @@ const db = new PGlite(dataDir, { relaxedDurability: false });
 await db.waitReady;
 await db.exec('SET standard_conforming_strings = on');
 registerPGliteWasmInterface(globalThis, db);
-const { request: railsRequest } = await bootRails({ guideOnly: false, database: { adapter: 'pglite' } });
+const { request: railsRequest } = await bootRails({
+  runtime: 'lab',
+  guideOnly: false,
+  database: { adapter: 'pglite' }
+});
 function request(method, body) {
   return railsRequest(method, '/venues', { body });
 }
