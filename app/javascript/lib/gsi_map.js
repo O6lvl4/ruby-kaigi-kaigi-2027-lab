@@ -58,10 +58,14 @@ export function addPin(map, coordinates, { name, className, html, size, tooltipO
   return marker;
 }
 
-export function addSchematicLine(layer, coordinates) {
-  L.polyline(coordinates.map(toLatLng), { color: '#a3293d', weight: 3, dashArray: '7 9', interactive: false }).addTo(
-    layer
-  );
+// Road-following route: solid for driving, dotted for walking (as Google Maps draws them).
+const ROUTE_STYLES = {
+  driving: { color: '#a3293d', weight: 5, opacity: 0.85 },
+  walking: { color: '#397b83', weight: 5, opacity: 0.9, dashArray: '1 9', lineCap: 'round' }
+};
+
+export function addRouteLine(layer, coordinates, mode) {
+  L.polyline(coordinates.map(toLatLng), { ...ROUTE_STYLES[mode], smoothFactor: 0.5, interactive: false }).addTo(layer);
 }
 
 export const layerGroup = map => L.layerGroup().addTo(map);

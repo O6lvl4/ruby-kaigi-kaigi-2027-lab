@@ -16,6 +16,17 @@ module DestinationsHelper
     "https://www.google.com/maps/dir/?api=1&destination=#{URI.encode_www_form_component(target)}&travelmode=#{mode}"
   end
 
+  # Google Maps directions through fixed places (never the visitor's location),
+  # e.g. 宮崎駅 → 文化公園前 → 文化センター on foot.
+  def google_maps_route_url(places, mode)
+    raise ArgumentError, 'Unsupported travel mode' unless TRAVEL_MODES.include?(mode)
+
+    *stops, last = places.map { |place| place.google_maps_destination || maps_query(place) }
+    query = { api: 1, origin: stops.first, destination: last, travelmode: mode }
+    query[:waypoints] = stops.drop(1).join('|') if stops.size > 1
+    "https://www.google.com/maps/dir/?#{URI.encode_www_form(query)}"
+  end
+
   def destination_copy_text(destination)
     [destination.name, destination.address, destination.address_qualification || destination.address_note].compact.join("\n")
   end

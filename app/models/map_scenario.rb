@@ -8,7 +8,7 @@ class MapScenario < StaticRecord
   OVERVIEW_CAMERA = [0, 0, 1000, 900].freeze
 
   attribute :label, :title, :description, :guidance, :source, :place_ids, :paths,
-            :schematic_routes, :camera
+            :schematic_routes, :camera, :default_travel_mode
 
   def self.find_or_default(id)
     find(id.presence || DEFAULT_ID)
@@ -29,7 +29,18 @@ class MapScenario < StaticRecord
   end
 
   def geojson
-    { type: 'FeatureCollection', features: point_features + line_features }
+    { type: 'FeatureCollection', features: point_features + line_features + road_routes.map(&:to_geojson) }
+  end
+
+  # Walking and driving routes along each path, following the road network.
+  def road_routes
+    MapRoute.for(self)
+  end
+
+  # Places of each path, in travel order.
+  def path_places
+    by_id = places.index_by(&:id)
+    paths.map { |ids| by_id.values_at(*ids) }
   end
 
   # Shape consumed by app/javascript/features/map/map_guide.js.
@@ -41,6 +52,8 @@ class MapScenario < StaticRecord
       all_places: Place.all.map(&:as_json),
       selected_ids: place_ids,
       schematic: { view_box: camera, overview: OVERVIEW_CAMERA },
+      route_source: MapRoute.source,
+      default_travel_mode:,
       geojson:
     }
   end

@@ -30,7 +30,8 @@
         35,
         930,
         835
-      ]
+      ],
+      "defaultTravelMode": "driving"
     },
     {
       "id": "venue",
@@ -65,7 +66,8 @@
         70,
         890,
         550
-      ]
+      ],
+      "defaultTravelMode": "driving"
     },
     {
       "id": "night",
@@ -93,7 +95,8 @@
         380,
         830,
         300
-      ]
+      ],
+      "defaultTravelMode": "walking"
     }
   ]
 }

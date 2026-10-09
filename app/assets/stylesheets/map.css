@@ -790,3 +790,72 @@
     padding-bottom: 9px;
   }
 }
+/* Road-following routes on the real map: travel mode switch, legend and summaries. */
+.travel-mode-switch {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+}
+.travel-mode-switch[hidden],
+.map-legend[hidden] {
+  display: none;
+}
+.map-legend-road i.legend-driving {
+  border-top: 3px solid var(--ruby);
+}
+.map-legend-road i.legend-walking {
+  margin-left: 10px;
+  border-top: 4px dotted #397b83;
+}
+.road-routes {
+  margin: 0 0 22px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--line);
+}
+.road-routes h3 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.road-route-title {
+  margin: 10px 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.road-route dl {
+  margin: 0;
+}
+.road-route dl > div {
+  display: flex;
+  gap: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.road-route dl > div.is-current {
+  background: var(--tint);
+}
+.road-route dt {
+  flex: 0 0 2.5em;
+  color: var(--ruby);
+  font-weight: 600;
+}
+.road-route dd {
+  margin: 0;
+}
+.road-route-link {
+  margin-left: 6px;
+  font-size: 11px;
+}
+.road-routes .source {
+  margin-top: 10px;
+  font-size: 10px;
+}
+@media (max-width: 767px) {
+  .map-view-switch {
+    padding: 0 10px;
+  }
+  .travel-mode-switch {
+    margin-left: 6px;
+    padding-left: 6px;
+  }
+}
