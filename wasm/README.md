@@ -1,6 +1,10 @@
-# Latest stable Ruby/Rails Wasm foundation experiment
+# Guide runtime: Ruby 4.0.7 / Rails 8.1.4 on Wasm
 
-Status: self-contained Node Wasm proof PASSED; browser CI and physical iPhone gate pending. See [TEST_REPORT.md](TEST_REPORT.md). This is not an iPhone fix or a production runtime.
+Status: **in use by the reading guide** since release `guide-runtime-r1` (built by CI run 37755632117 from commit 076a3d8; Node proof, Chromium and WebKit passed). The lab (lab.html) stays on the older wasmify-rails runtime. Physical iPhone validation is still pending. See [TEST_REPORT.md](TEST_REPORT.md) for the original proof.
+
+The runtime packs Ruby, the pinned framework gems (`/gems`), the browser stand-ins (`/compat`) and this proof app (`/app`, self-test only). The guide's own Rails app is **not** packed: `app/javascript/rails/guide_runtime.js` mounts it at `/demo` when the page boots, and `config/boot.rb` adds `/gems` and `/compat` to the load path.
+
+To publish a new runtime, run the **Guide runtime** workflow with a `release_tag` (e.g. `guide-runtime-r2`), review the proof artifact, then pin the Release URL and SHA-256 in `scripts/fetch-runtime.mjs`.
 
 ## Targets verified 2026-10-08
 
@@ -8,7 +12,7 @@ Status: self-contained Node Wasm proof PASSED; browser CI and physical iPhone ga
 - Rails stable: **8.1.4**, released 2026-09-24. Rails 8.1 requires Ruby >= 3.2.
 - ruby.wasm toolkit: **2.10.1**, commit `cbb1e8440159c55b9c56e5359eb8e12d5a1e742d`.
 - Critical distinction: official `@ruby/4.0-wasm-wasi@2.10.1` embeds **Ruby 4.0.0**, not 4.0.7. Tested RUBY_DESCRIPTION confirms this.
-- Existing public runtime remains Ruby 3.3.3 / Rails 8.0.1. Its production code is untouched by this experiment.
+- The lab keeps the Ruby 3.3.3 / Rails 8.0.1 wasmify-rails runtime (Active Record + PGlite are not part of this build).
 
 ## Baseline observations (Node on Linux, not Safari)
 

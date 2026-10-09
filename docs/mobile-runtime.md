@@ -2,6 +2,10 @@
 
 This page still executes genuine Ruby/Rails in a browser worker. Linux Chromium and WebKit checks are not physical iPhone Safari validation. A reported iPhone Safari termination remains unconfirmed on a device; the hardening below must not be described as a proven iPhone fix.
 
+## Guide runtime switch (2026-10-09)
+
+The reading guide now runs on the Ruby 4.0.7 / Rails 8.1.4 runtime built in `wasm/` (40,638,460 bytes, release `guide-runtime-r1`) instead of the 65,019,499-byte Ruby 3.3.3 module. In the Node proof the new build used about 94 MiB of linear memory after booting Rails, largely because Ruby's shape cache is no longer reserved through emulated mmap. That is a measurement on Linux, not iPhone Safari validation; the device gate below still applies. The lab keeps the older runtime.
+
 ## Bounded changes (2026-10-08)
 
 - Reading mode no longer requires ActiveRecord, its railtie, or the PGlite adapter. The separate writing lab retains all of them.

@@ -1,7 +1,10 @@
-# Narrow compatibility shim for the pinned Ruby 3.3.3/Wasm build.
-# Erubi's MatchData#begin/#end offsets corrupt template text in this build.
+# Narrow compatibility shim for the lab's pinned Ruby 3.3.3/Wasm build only.
+# Erubi's MatchData#begin/#end offsets corrupt template text in that build.
 # Equivalent pre/post-match lengths avoid that native offset path without
 # replacing Rails, ActionView, ERB execution, or output escaping.
+# The guide runtime (Ruby 4.0.7) renders correctly without it (tests/summary-node.mjs).
+return unless RUBY_VERSION.start_with?('3.3.')
+
 require 'erubi'
 
 erubi_path = $LOADED_FEATURES.find { |feature| feature.end_with?('/erubi.rb') }

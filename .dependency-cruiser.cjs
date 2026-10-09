@@ -51,7 +51,7 @@ module.exports = {
   ],
   options: {
     doNotFollow: { path: 'node_modules' },
-    exclude: { path: '^(experiments|dist|node_modules)' },
+    exclude: { path: '^(wasm|dist|node_modules)' },
     moduleSystems: ['es6'],
     tsPreCompilationDeps: false
   }

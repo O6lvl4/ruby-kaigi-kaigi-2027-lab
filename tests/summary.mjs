@@ -57,11 +57,11 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(restaurantsJson.headers['x-renderer'], 'Rails-ActionView-ERB');
       assert.equal(restaurantsJson.body.checkedAt, '2026-10-08');
       assert.ok(
-        requests.some(x => x.includes('base-app.wasm')),
+        requests.some(x => x.includes('guide-runtime.wasm')),
         'Homepage must execute the Ruby Wasm runtime'
       );
       assert.ok(
-        requests.some(x => new URL(x).pathname === new URL('base-app.wasm', base).pathname),
+        requests.some(x => new URL(x).pathname === new URL('guide-runtime.wasm', base).pathname),
         'Ruby Wasm must load under the configured Pages project path'
       );
       for (const asset of requests.filter(
@@ -173,7 +173,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     // A blocked Ruby download must show an error, never a static success substitute.
     const context = await browser.newContext();
     const page = await context.newPage();
-    await context.route('**/base-app.wasm*', route => route.abort('failed'));
+    await context.route('**/guide-runtime.wasm*', route => route.abort('failed'));
     await page.goto(base);
     await page.locator('#boot-error').waitFor({ state: 'visible', timeout: 30000 });
     assert.equal(await page.locator('#rails-root').isVisible(), false);
@@ -184,7 +184,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await page.waitForFunction(() => document.getElementById('copy-status').textContent.length > 0);
     assert.ok((await page.locator('#copy-status').innerText()).length > 0);
     await page.screenshot({ path: `evidence/summary-${name}-error.png`, fullPage: true });
-    await context.unroute('**/base-app.wasm*');
+    await context.unroute('**/guide-runtime.wasm*');
     await page.locator('#retry').click();
     await ready(page);
     assert.equal(await page.locator('#boot-panel').isVisible(), false);
@@ -221,7 +221,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await interruptedPage.locator('#retry').waitFor({ state: 'visible' });
     assert.match(await interruptedPage.locator('#boot-error').innerText(), /Rails initialization checkpoint/);
     assert.ok(
-      !interruptedRequests.some(x => x.includes('base-app.wasm')),
+      !interruptedRequests.some(x => x.includes('guide-runtime.wasm')),
       'Interrupted boot must not automatically enter a reload loop'
     );
     await interruptedPage.locator('#diagnostics summary').click();
