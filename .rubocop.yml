@@ -2,7 +2,8 @@ plugins:
   - rubocop-rails
 
 AllCops:
-  # The app runs on the Ruby inside public/base-app.wasm.
+  # Shared app code must also run on the lab runtime (Ruby 3.3 / Rails 8.0);
+  # the guide runs on Ruby 4.0.7 / Rails 8.1.4.
   TargetRubyVersion: 3.3
   TargetRailsVersion: 8.0
   NewCops: enable
