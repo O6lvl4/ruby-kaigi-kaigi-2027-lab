@@ -1,0 +1,26 @@
+<% content_for :title, '過去の開催' %>
+<section id="archive" class="section reference-section" aria-labelledby="archive-title">
+  <%= section_label '06', @page.fetch('title'), id: 'archive-title' %>
+  <p class="section-intro"><%= @page.fetch('intro') %></p>
+  <div class="archive-list">
+    <%= render @editions %>
+  </div>
+  <details class="archive-reading">
+    <summary>過去の開催から、どこを読む？</summary>
+    <div class="reading-grid">
+      <% @reading_prompts.each do |prompt| %>
+        <article>
+          <h3><%= prompt.title %></h3>
+          <p><%= prompt.fact %></p>
+          <p><strong>読み方の提案：</strong><%= prompt.inference %></p>
+          <p class="source">
+            <% prompt.sources.each_with_index do |url, index| %>
+              <a href="<%= url %>">公式の実施例 <%= index + 1 %> ↗</a>
+            <% end %>
+          </p>
+        </article>
+      <% end %>
+    </div>
+  </details>
+  <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
+</section>

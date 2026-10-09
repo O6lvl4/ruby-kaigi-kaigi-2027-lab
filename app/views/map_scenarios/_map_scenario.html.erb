@@ -1,0 +1,36 @@
+<div class="map-guide-text">
+  <p class="kicker">THE ROUTE / <%= map_scenario.label %></p>
+  <h2><%= map_scenario.title %></h2>
+  <details class="journey-note">
+    <summary>交通手段と所要時間 <span aria-hidden="true">＋</span></summary>
+    <p><%= map_scenario.guidance %></p>
+    <a href="<%= map_scenario.source %>">公式の移動案内 ↗</a>
+  </details>
+</div>
+<div class="location-cards" id="location-cards">
+  <% map_scenario.places.each_with_index do |place, index| %>
+    <article class="location-card" data-place-id="<%= place.id %>">
+      <button type="button" class="place-focus" data-map-place="<%= place.id %>" aria-pressed="false">
+        <span class="place-number"><%= index + 1 %></span>
+        <span><small><%= place.category %></small><strong><%= place.name %></strong></span>
+        <span class="focus-caption" aria-hidden="true">↗</span>
+      </button>
+      <div class="place-copy">
+        <p><%= place.description %></p>
+        <p class="place-address"><small><%= place.address_label %></small><br><%= place.address %></p>
+        <%= render 'shared/destination_tools', destination: place %>
+        <p class="address-qualification"><%= place.google_maps_target_note %></p>
+        <details class="place-details">
+          <summary>出典・位置について</summary>
+          <p class="place-precision"><%= place.precision_note %></p>
+          <p class="address-qualification"><%= place.address_qualification %></p>
+          <div class="place-links">
+            <a href="<%= place.address_source_url %>"><%= place.address_source_name %> ↗</a>
+            <a href="<%= place.source %>">案内の出典 ↗</a>
+            <a href="<%= place.coordinate_source %>">位置の出典 ↗</a>
+          </div>
+        </details>
+      </div>
+    </article>
+  <% end %>
+</div>

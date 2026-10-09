@@ -1,4 +1,0 @@
-<div class="destination-tools">
-  <div class="destination-links"><a href="<%= GuideLinks.search(destination) %>" target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href="<%= GuideLinks.directions(destination, 'walking') %>" target="_blank" rel="noopener noreferrer">徒歩ルート ↗</a><a href="<%= GuideLinks.directions(destination, 'driving') %>" target="_blank" rel="noopener noreferrer">車ルート ↗</a></div>
-  <button type="button" class="copy-address" data-copy-address="<%= [destination.fetch('name'), destination.fetch('address'), destination['addressQualification'] || destination['addressNote']].compact.join("\n") %>">名称・住所をコピー</button><span class="copy-address-status" role="status" aria-live="polite"></span>
-</div>

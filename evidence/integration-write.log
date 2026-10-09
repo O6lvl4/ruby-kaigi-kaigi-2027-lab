@@ -1,9 +1,9 @@
 Initializing Rails application...
 Rails application has been loaded but not initialized
 -- create_table(:venues)
-   -> 0.0156s
+   -> 0.0068s
 -- add_index(:venues, :name, {:unique=>true})
-   -> 0.0037s
+   -> 0.0016s
 PASS: Fresh database has no records
 PASS: Rails creates 架空・宮崎テスト会場
 PASS: Rails creates 架空・第2会場

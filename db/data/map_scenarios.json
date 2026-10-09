@@ -1,0 +1,99 @@
+{
+  "checkedAt": "2026-10-08",
+  "scenarios": [
+    {
+      "id": "arrival",
+      "label": "宮崎に着く",
+      "title": "空港から会場へ、街で乗り換える",
+      "description": "会場公式が案内する空港からのバス移動を、位置関係で確認します。",
+      "placeIds": [
+        "airport",
+        "tachibana",
+        "bunkakoen",
+        "venue"
+      ],
+      "paths": [
+        [
+          "airport",
+          "tachibana",
+          "bunkakoen",
+          "venue"
+        ]
+      ],
+      "guidance": "宮崎空港から「宮崎駅」行きに乗車し、橘通り3丁目で乗り換え。「古賀総合病院[22]」行きで文化公園前へ。バスは約60分、下車後は徒歩約1分という現在の会場案内です。",
+      "source": "https://miyazaki-ac.jp/access/",
+      "schematicRoutes": [
+        "M815 795 H470 V490 V230 H380 L270 300"
+      ],
+      "camera": [
+        50,
+        35,
+        930,
+        835
+      ]
+    },
+    {
+      "id": "venue",
+      "label": "会場へ行く",
+      "title": "駅から会場への、2つの入り方",
+      "description": "宮崎駅からのバスと、宮崎神宮駅からの徒歩を見比べます。",
+      "placeIds": [
+        "miyazaki_station",
+        "jingu_station",
+        "bunkakoen",
+        "venue"
+      ],
+      "paths": [
+        [
+          "miyazaki_station",
+          "bunkakoen",
+          "venue"
+        ],
+        [
+          "jingu_station",
+          "venue"
+        ]
+      ],
+      "guidance": "宮崎駅西口2番乗り場から「酒泉の杜[305]」行きで約15分、文化公園前から徒歩約1分。別の選択肢として、宮崎神宮駅から会場までは徒歩約20分です。",
+      "source": "https://miyazaki-ac.jp/access/",
+      "schematicRoutes": [
+        "M750 515 H470 V230 H380 L270 300",
+        "M730 150 L550 150 L270 300"
+      ],
+      "camera": [
+        90,
+        70,
+        890,
+        550
+      ]
+    },
+    {
+      "id": "night",
+      "label": "夜の街へ",
+      "title": "宮崎駅から、ニシタチのエリアへ",
+      "description": "駅と中心街の位置関係を確認します。公式パーティー会場の案内ではありません。",
+      "placeIds": [
+        "miyazaki_station",
+        "tachibana",
+        "nishitachi"
+      ],
+      "paths": [
+        [
+          "miyazaki_station",
+          "nishitachi"
+        ]
+      ],
+      "guidance": "宮崎市観光協会は、ニシタチへのアクセスを宮崎駅から徒歩約13分と案内しています。橘通り3丁目は中心街の位置をつかむための参考地点です。",
+      "source": "https://www.miyazaki-city.tourism.or.jp/spot/10046",
+      "schematicRoutes": [
+        "M750 515 L340 555"
+      ],
+      "camera": [
+        150,
+        380,
+        830,
+        300
+      ]
+    }
+  ]
+}

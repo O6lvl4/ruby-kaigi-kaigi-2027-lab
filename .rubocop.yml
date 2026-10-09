@@ -1,0 +1,37 @@
+plugins:
+  - rubocop-rails
+
+AllCops:
+  # The app runs on the Ruby inside public/base-app.wasm.
+  TargetRubyVersion: 3.3
+  TargetRailsVersion: 8.0
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - experiments/**/*
+    - node_modules/**/*
+    - vendor/**/*
+    - dist/**/*
+
+Style/Documentation:
+  Exclude:
+    - app/controllers/**/*
+    - app/helpers/**/*
+    - db/**/*
+    - config/**/*
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/AbcSize:
+  Max: 20
+
+# StaticRecord collections are arrays, not Active Record relations.
+Rails/FindEach:
+  Enabled: false

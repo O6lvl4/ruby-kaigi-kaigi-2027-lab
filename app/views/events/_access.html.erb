@@ -1,0 +1,27 @@
+<section id="access" class="section">
+  <%= section_label '02', safe_join(['会場と', tag.br, 'アクセス']) %>
+  <div class="section-body">
+    <div class="venue-heading">
+      <div>
+        <p class="kicker">MEDIKIT ARTS CENTER</p>
+        <h3>駅から会場までの<br>移動も、旅程に入れておく。</h3>
+      </div>
+      <p class="address">〒<%= event.postal_code %><br><%= event.address %></p>
+    </div>
+    <div class="routes">
+      <% event.routes.each do |route| %>
+        <article>
+          <h4><%= route.origin %></h4>
+          <p><strong><%= route.main %></strong><span><%= route.detail %></span></p>
+          <p class="alternative"><%= route.alternative %></p>
+        </article>
+      <% end %>
+    </div>
+    <p class="note"><strong>車で行く場合：</strong>劇場専用の駐車場はありません。文化公園の駐車場はほかの施設と共用です。会場は公共交通機関の利用を案内しています。</p>
+    <p class="source">所在地・所要時間の出典：<a href="<%= event.access_url %>">会場公式の交通アクセス</a>。現在の一般案内であり、2027年開催日の運行・所要時間を保証するものではありません。</p>
+    <div class="text-links">
+      <a href="<%= event.access_url %>">最新の経路・乗り場を見る</a>
+      <a href="<%= event.floor_map_url %>">会場のフロアマップを見る</a>
+    </div>
+  </div>
+</section>

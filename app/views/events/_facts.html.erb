@@ -1,0 +1,13 @@
+<section id="overview" class="section">
+  <%= section_label '01', '開催の基本' %>
+  <div class="section-body">
+    <p class="section-intro">公式サイトで確認できた、準備の前提になる情報です。</p>
+    <dl class="facts">
+      <div><dt>イベント</dt><dd><%= event.name %></dd></div>
+      <div><dt>開催日</dt><dd><%= event.dates %> <span class="tag">公式掲載</span></dd></div>
+      <div><dt>開催地</dt><dd><%= event.city %></dd></div>
+      <div><dt>会場</dt><dd><%= event.venue %><small><%= event.venue_detail %></small></dd></div>
+    </dl>
+    <p class="source">出典：<a href="<%= event.official_url %>">RubyKaigi 2027 公式サイト</a></p>
+  </div>
+</section>

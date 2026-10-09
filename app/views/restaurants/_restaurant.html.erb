@@ -1,0 +1,78 @@
+<article class="dining-card" data-restaurant-id="<%= restaurant.id %>" data-group-capacity="<%= restaurant.group_capacity %>" data-dining-area="<%= restaurant.area %>">
+  <div class="dining-card-header">
+    <div class="dining-thumbnail">
+      <% if restaurant.thumbnail %>
+        <img src="<%= restaurant.thumbnail.fetch('path') %>" alt="<%= restaurant.thumbnail.fetch('alt') %>" width="96" height="80" loading="lazy" decoding="async">
+      <% else %>
+        <span class="thumbnail-symbol" aria-hidden="true">◇</span><span>写真未掲載</span>
+      <% end %>
+    </div>
+    <div class="dining-card-heading">
+      <p class="kicker">
+        <span class="dining-number"><%= list_number(restaurant.position) %></span>
+        <%= restaurant.hotel_banquet? ? 'ホテル宴会場' : '飲食店' %> · <%= restaurant.group_size_listed? ? '掲載人数あり' : '人数要確認' %>
+      </p>
+      <h3><%= restaurant.name %></h3>
+      <p class="restaurant-address"><%= restaurant.address %></p>
+    </div>
+  </div>
+
+  <% if restaurant.thumbnail %>
+    <p class="photo-credit">
+      <a href="<%= restaurant.thumbnail.fetch('sourceUrl') %>"><%= restaurant.thumbnail.fetch('credit') %></a> ·
+      <a href="<%= restaurant.thumbnail.fetch('licenseUrl') %>"><%= restaurant.thumbnail.fetch('license') %></a>
+    </p>
+  <% end %>
+
+  <% if restaurant.located? %>
+    <button type="button" class="dining-focus" data-dining-focus="<%= restaurant.id %>" aria-pressed="false">地図で見る ↗</button>
+  <% else %>
+    <p class="source">地図上の位置は未確認です</p>
+  <% end %>
+
+  <dl class="capacity-facts">
+    <div>
+      <dt><%= restaurant.hotel_banquet? ? '施設全体の総席数' : '店全体の総席数' %></dt>
+      <dd><% if restaurant.total_seats %><strong><%= restaurant.total_seats %></strong> 席<% else %><span>未確認</span><% end %></dd>
+    </div>
+    <div>
+      <dt><%= restaurant.group_capacity_label %></dt>
+      <dd><% if restaurant.group_size_listed? %><strong><%= restaurant.group_capacity %></strong> 人<% else %><span>人数要確認</span><% end %></dd>
+    </div>
+  </dl>
+
+  <%= render 'shared/destination_tools', destination: restaurant %>
+  <p class="restaurant-note"><%= restaurant.note %></p>
+
+  <details>
+    <summary>営業時間・個室・貸切・利用条件</summary>
+    <dl class="restaurant-details">
+      <% if restaurant.cuisine %><dt>料理・利用の目安</dt><dd><%= restaurant.cuisine %></dd><% end %>
+      <dt>営業時間</dt><dd><%= restaurant.opening_hours || '未確認。利用日・人数に合わせてお問い合わせください。' %></dd>
+      <% if restaurant.coordinate_precision %>
+        <dt>地図の位置</dt><dd><%= restaurant.coordinate_precision %> <a href="<%= restaurant.coordinate_source_url %>">位置の出典 ↗</a></dd>
+      <% end %>
+      <dt>定休日</dt><dd><%= restaurant.closed_days || '未確認' %></dd>
+      <dt>立食の掲載人数</dt>
+      <dd>
+        <% if restaurant.standing_capacity %>
+          <%= restaurant.standing_capacity %>人（<%= restaurant.standing_capacity_label || (restaurant.hotel_banquet? ? '表示中の部屋。会場・利用条件は要確認' : '掲載目安。利用条件は要確認') %>）
+        <% else %>
+          未確認
+        <% end %>
+      </dd>
+      <dt>個室</dt><dd><%= restaurant.private_room %></dd>
+      <dt>貸切</dt><dd><%= restaurant.private_booking %></dd>
+      <dt>アクセス上の配慮</dt><dd><%= restaurant.accessibility %></dd>
+      <dt>2027年の空席・料金</dt><dd>未確認。予約前に店舗へ確認してください。</dd>
+    </dl>
+  </details>
+
+  <p class="source">
+    <a href="<%= restaurant.source_url %>"><%= restaurant.source_label %> ↗</a><br>
+    確認日 <time datetime="<%= checked_at %>"><%= checked_at %></time><% if restaurant.source_updated_at %> · 掲載更新 <%= restaurant.source_updated_at %><% end %>
+    <% restaurant.supplementary_source_urls.each_with_index do |url, index| %>
+      <br><a href="<%= url %>">補足の出典 <%= index + 1 %> ↗</a>
+    <% end %>
+  </p>
+</article>
