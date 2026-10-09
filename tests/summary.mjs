@@ -32,8 +32,24 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       const errors = [];
       page.on('request', r => requests.push(r.url()));
       page.on('pageerror', e => errors.push(e.message));
+      // Record how the schematic looks at the very moment the guide replaces the loading screen.
+      await page.addInitScript(() => {
+        new MutationObserver((_, observer) => {
+          const root = document.getElementById('rails-root');
+          const road = root && !root.hidden && root.querySelector('.schematic-road');
+          if (!road) return;
+          window.firstPaintRoadFill = getComputedStyle(road).fill;
+          observer.disconnect();
+        }).observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden'] });
+      });
       await page.goto(base);
       await ready(page);
+      assert.equal(
+        await page.evaluate(() => window.firstPaintRoadFill),
+        'none',
+        'The map is styled before it first appears'
+      );
+      assert.equal(await page.locator('#boot-progress').getAttribute('aria-valuenow'), '100');
       const proof = await page.evaluate(() => ({
         response: window.guideApp.lastResponse,
         renderer: window.guideApp.renderer

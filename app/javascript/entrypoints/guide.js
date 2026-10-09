@@ -37,9 +37,12 @@ window.guideApp = {
   request: (path, accept) => rails.request(path, accept)
 };
 
+// Starting Ruby + Rails fills the bar up to this point; rendering the pages fills the rest.
+const RUNTIME_SHARE = 0.85;
+
 function step(message) {
   checkpoint.record('booting', message);
-  bootScreen.progress(message);
+  bootScreen.progress(stageLabel(message));
 }
 
 function fail(client, error) {
@@ -116,8 +119,11 @@ async function start() {
 
   const client = new RailsClient({
     scriptName: BASE_PATH.replace(/\/$/, ''),
-    onProgress: message => {
-      if (client === rails) step(progressMessage(message));
+    onProgress: (message, ratio) => {
+      if (client !== rails) return;
+      // The download reports every percent; record each stage only once.
+      if (progressMessage(message) !== checkpoint.step) step(progressMessage(message));
+      if (ratio !== undefined) bootScreen.setProgress(ratio * RUNTIME_SHARE);
     },
     onCrash: error => fail(client, error)
   });
@@ -132,7 +138,9 @@ async function start() {
     const pages = guidePages(client);
     step('Rails GET (each page) → controller → ActionView ERB');
     bootScreen.progress('Rails の ERB ビューで各ページを生成しています…');
-    await client.prerender(renderRequests(pages), verify);
+    await client.prerender(renderRequests(pages), verify, done =>
+      bootScreen.setProgress(RUNTIME_SHARE + done * (1 - RUNTIME_SHARE))
+    );
     if (client !== rails) return;
     client.release();
     window.guideApp.runtimeReleased = true;
