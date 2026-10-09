@@ -1,4 +1,4 @@
-require 'wasmify/rails/shim'
+require_relative 'boot'
 require 'rails'
 require 'action_controller/railtie'
 require 'json'
@@ -17,7 +17,8 @@ end
 module MiyazakiGuide
   class Application < Rails::Application
     config.root = File.expand_path('..', __dir__)
-    config.load_defaults 8.0
+    # The lab still runs Rails 8.0; the guide runs 8.1.
+    config.load_defaults Rails::VERSION::STRING.to_f
     config.eager_load = false
     config.enable_reloading = false
     config.secret_key_base = 'synthetic-local-demo-not-for-production'

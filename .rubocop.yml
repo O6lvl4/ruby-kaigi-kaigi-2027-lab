@@ -8,7 +8,7 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   Exclude:
-    - experiments/**/*
+    - wasm/**/*
     - node_modules/**/*
     - vendor/**/*
     - dist/**/*

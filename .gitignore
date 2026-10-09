@@ -3,3 +3,4 @@ dist/
 public/base-app.wasm
 .test-data/
 upstream-*/
+public/guide-runtime.wasm
