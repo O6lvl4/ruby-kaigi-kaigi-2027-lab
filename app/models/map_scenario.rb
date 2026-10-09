@@ -2,10 +2,9 @@
 # which places matter, in what order, and the schematic lines that connect them.
 # Lines are schematic connections only, never road-following navigation.
 class MapScenario < StaticRecord
-  self.data_file = 'map_scenarios.json'
-  self.collection_key = 'scenarios'
+  backed_by 'map_scenarios.json', collection: 'scenarios'
 
-  DEFAULT_ID = 'arrival'
+  DEFAULT_ID = 'arrival'.freeze
   OVERVIEW_CAMERA = [0, 0, 1000, 900].freeze
 
   attribute :label, :title, :description, :guidance, :source, :place_ids, :paths,
@@ -16,13 +15,8 @@ class MapScenario < StaticRecord
   end
 
   def places
-    all_places = Place.all
-    place_ids.map do |id|
-      place = all_places.find { |candidate| candidate.id == id } || raise("Missing verified place: #{id}")
-      raise "Missing coordinate verification: #{id}" unless place.verified_location?
-
-      place
-    end
+    by_id = Place.all.index_by(&:id)
+    place_ids.map { |id| verified_place(by_id, id) }
   end
 
   def includes?(place)
@@ -31,7 +25,7 @@ class MapScenario < StaticRecord
 
   def number_of(place)
     index = place_ids.index(place.id)
-    index && index + 1
+    index && (index + 1)
   end
 
   def geojson
@@ -53,24 +47,27 @@ class MapScenario < StaticRecord
 
   private
 
+  def verified_place(by_id, id)
+    place = by_id[id] || raise("Missing verified place: #{id}")
+    raise "Missing coordinate verification: #{id}" unless place.verified_location?
+
+    place
+  end
+
   def point_features
-    Place.all.map do |place|
-      {
-        type: 'Feature', id: place.id,
-        geometry: { type: 'Point', coordinates: place.coordinates },
-        properties: place.as_json.except('coordinates').merge(number: number_of(place), selected: includes?(place))
-      }
-    end
+    Place.all.map { |place| place.to_geojson(number: number_of(place), selected: includes?(place)) }
   end
 
   def line_features
-    by_id = places.index_by(&:id)
-    paths.each_with_index.map do |ids, index|
-      {
-        type: 'Feature', id: "#{id}-schematic-#{index}",
-        geometry: { type: 'LineString', coordinates: ids.map { |place_id| by_id.fetch(place_id).coordinates } },
-        properties: { kind: 'schematic', label: '概略線・道路に沿ったナビではありません', place_ids: ids, source: }
-      }
-    end
+    coordinates = places.to_h { |place| [place.id, place.coordinates] }
+    paths.each_with_index.map { |ids, index| line_feature(ids, index, coordinates) }
+  end
+
+  def line_feature(ids, index, coordinates)
+    {
+      type: 'Feature', id: "#{id}-schematic-#{index}",
+      geometry: { type: 'LineString', coordinates: coordinates.values_at(*ids) },
+      properties: { kind: 'schematic', label: '概略線・道路に沿ったナビではありません', place_ids: ids, source: }
+    }
   end
 end

@@ -1,35 +1,284 @@
+// 宮崎の地図: switches between Rails-rendered map scenarios and between the
+// schematic SVG and the real (Leaflet) map, keeping cards and pins in sync.
 import '../../../assets/stylesheets/map.css';
 import { saveStage } from '../../runtime/status.js';
 import { scenarioPath } from './scenarios.js';
+import { SchematicView } from './schematic_view.js';
 
-function tileStatusMessage(tileStatus) {
-  if (tileStatus === 'error') return '背景地図を読み込めませんでした。模式図と地点カードは利用できます。';
-  if (tileStatus === 'loaded') return '実地図に全7地点を配置しています。破線は概略線です。';
-  return '背景地図を読み込んでいます…';
-}
+const EXPECTED_CONTROLLER = 'MapScenariosController';
+const RENDERER = 'Rails-ActionView-ERB';
+const PLACE_COUNT = 7;
+const SCENARIO_CACHE_LIMIT = 3;
+
+const STATUS = {
+  loading: 'Rails で導線を確認しています…',
+  scenario: '全7地点を同じ地図に配置しています。選んだ導線を強調しています。',
+  schematic: '全7地点を同じ地図に配置しています。縮尺は実際と異なります。',
+  realLoading: '実地図を読み込んでいます…',
+  realFailed: '実地図を起動できませんでした。模式図と地点カードをご利用ください。',
+  scenarioFailed: '導線を更新できませんでした。現在の地図と出典を確認してください。',
+  tiles: {
+    error: '背景地図を読み込めませんでした。模式図と地点カードは利用できます。',
+    loaded: '実地図に全7地点を配置しています。破線は概略線です。',
+    loading: '背景地図を読み込んでいます…'
+  }
+};
 
 export async function initMapGuide(page, request) {
   const root = page.querySelector('.map-workspace');
-  const sidebar = page.querySelector('#map-sidebar');
-  const status = page.querySelector('#map-status');
   const svg = page.querySelector('#schematic-map');
-  const schematic = page.querySelector('#schematic-layer');
-  const actual = page.querySelector('#real-map');
-  if (!root || !svg) return;
+  if (!root || !svg) return undefined;
+  const guide = new MapGuide(page, root, svg, request);
+  await guide.mount();
+  return () => guide.dispose();
+}
 
-  const cache = new Map();
-  const bindings = [];
-  let current;
-  let disposed = false;
-  let switching = false;
-  let desiredKey = null;
-  let mode = 'schematic';
-  let realMap = null;
-  let modeVersion = 0;
-  let cameraBox = null;
-  window.guideApp.mapMetrics = { scenarioRequests: 0, cachedScenarios: 0, realMapInstances: 0 };
+class MapGuide {
+  #current = null;
+  #cache = new Map();
+  #bindings = [];
+  #disposed = false;
+  #switching = false;
+  #desiredKey = null;
+  #mode = 'schematic';
+  #modeVersion = 0;
+  #realMap = null;
 
-  function checkpoint(stage) {
+  constructor(page, root, svg, request) {
+    this.page = page;
+    this.root = root;
+    this.request = request;
+    this.schematic = new SchematicView(svg);
+    const $ = selector => page.querySelector(selector);
+    this.el = {
+      sidebar: $('#map-sidebar'),
+      status: $('#map-status'),
+      schematicLayer: $('#schematic-layer'),
+      realLayer: $('#real-map'),
+      license: $('#actual-map-license'),
+      note: $('#selected-place-note'),
+      fit: $('#fit-map')
+    };
+    this.metrics = { scenarioRequests: 0, cachedScenarios: 0, realMapInstances: 0 };
+  }
+
+  async mount() {
+    Object.assign(window.guideApp, { mapMetrics: this.metrics, mapMode: 'schematic', mapReady: false });
+    this.#bind(this.root, 'click', this.#onClick);
+    this.#bind(this.schematic.svg, 'keydown', this.#onKeydown);
+    this.#bind(this.el.fit, 'click', this.#onFit);
+    this.#bind(document, 'visibilitychange', () =>
+      this.#checkpoint(document.hidden ? 'タブが非表示になりました' : 'タブに戻りました')
+    );
+    await this.loadScenario(this.el.sidebar.dataset.scenario || 'arrival');
+  }
+
+  dispose() {
+    this.#disposed = true;
+    this.#desiredKey = null;
+    this.#modeVersion++;
+    this.schematic.dispose();
+    this.#disposeRealMap();
+    for (const unbind of this.#bindings) unbind();
+    this.#cache.clear();
+  }
+
+  // --- scenarios -----------------------------------------------------------
+
+  // Only the most recently requested scenario is shown, however fast the clicks.
+  async loadScenario(key) {
+    this.#desiredKey = key;
+    if (this.#switching) return;
+    this.#switching = true;
+    try {
+      while (this.#desiredKey && !this.#disposed) {
+        const next = this.#desiredKey;
+        this.#desiredKey = null;
+        try {
+          this.#applyScenario(this.#cache.get(next) || (await this.#fetchScenario(next)));
+        } catch (error) {
+          this.#reportScenarioError(error);
+        }
+      }
+    } finally {
+      this.#switching = false;
+    }
+  }
+
+  async #fetchScenario(key) {
+    this.el.status.textContent = STATUS.loading;
+    this.metrics.scenarioRequests++;
+    const response = await this.request(scenarioPath(key));
+    if (response.status !== 200) throw new Error('Scenario request failed');
+    if (this.#cache.size < SCENARIO_CACHE_LIMIT) this.#cache.set(key, response.body);
+    return response.body;
+  }
+
+  #applyScenario(scenario) {
+    // A newer request or teardown must never publish the response just received.
+    if (this.#disposed || this.#desiredKey) return;
+    const placeIds = this.#verify(scenario);
+    this.#current = scenario;
+    this.#renderCards(scenario);
+    this.schematic.showScenario(scenario);
+    for (const button of this.root.querySelectorAll('[data-map-scenario]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.mapScenario === scenario.key));
+    }
+    this.el.note.hidden = true;
+    this.#realMap?.update(scenario);
+    Object.assign(window.guideApp, {
+      mapReady: true,
+      mapState: {
+        key: scenario.key,
+        geojson: scenario.geojson,
+        placeIds: scenario.selected_ids,
+        allPlaceIds: placeIds,
+        controller: scenario.controller,
+        renderer: scenario.renderer
+      }
+    });
+    this.metrics.cachedScenarios = this.#cache.size;
+    if (this.#mode === 'schematic') this.el.status.textContent = STATUS.scenario;
+    this.#checkpoint(`導線を表示：${scenario.label}（${this.#mode === 'schematic' ? '模式図' : '実地図'}）`);
+  }
+
+  // The scenario must come from Rails and describe the same seven places the SVG shows.
+  #verify(scenario) {
+    if (scenario.renderer !== RENDERER || scenario.controller !== EXPECTED_CONTROLLER) {
+      throw new Error('Rails map response could not be verified');
+    }
+    const ids = this.schematic.placeIds;
+    const points = scenario.geojson.features.filter(feature => feature.geometry.type === 'Point');
+    if (
+      ids.length !== PLACE_COUNT ||
+      !sameMembers(
+        ids,
+        points.map(point => point.id)
+      )
+    ) {
+      throw new Error('Persistent map and Rails locations do not match');
+    }
+    return ids;
+  }
+
+  #renderCards(scenario) {
+    this.el.sidebar.innerHTML = scenario.html;
+    this.el.sidebar.dataset.scenario = scenario.key;
+    const cardIds = [...this.el.sidebar.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId);
+    if (JSON.stringify(cardIds) !== JSON.stringify(scenario.selected_ids)) {
+      throw new Error('Rails selected cards do not match');
+    }
+  }
+
+  #reportScenarioError(error) {
+    if (this.#disposed || this.#desiredKey) return;
+    this.el.status.textContent = STATUS.scenarioFailed;
+    window.guideApp.mapError = error.message;
+  }
+
+  // --- places --------------------------------------------------------------
+
+  #selectPlace = id => {
+    const place = this.#current?.all_places.find(candidate => candidate.id === id);
+    if (!place) return;
+    this.schematic.highlight(id);
+    for (const card of this.el.sidebar.querySelectorAll('[data-place-id]')) {
+      const selected = card.dataset.placeId === id;
+      card.classList.toggle('is-selected', selected);
+      card.querySelector('[data-map-place]')?.setAttribute('aria-pressed', String(selected));
+    }
+    this.#realMap?.select(id);
+    window.guideApp.mapSelected = id;
+    this.el.note.textContent = `${place.name}：${place.description}`;
+    this.el.note.hidden = false;
+    this.#checkpoint(`地点を選択：${place.name}`);
+  };
+
+  // --- schematic / real map ------------------------------------------------
+
+  async #setMode(next) {
+    const version = ++this.#modeVersion;
+    this.#mode = next;
+    window.guideApp.mapMode = next;
+    this.#disposeRealMap();
+    for (const button of this.root.querySelectorAll('[data-map-mode]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.mapMode === next));
+    }
+    this.el.schematicLayer.hidden = next !== 'schematic';
+    this.el.realLayer.hidden = next !== 'actual';
+    this.el.license.hidden = next !== 'actual';
+    if (next === 'schematic') {
+      this.schematic.sizeLabels();
+      this.el.status.textContent = STATUS.schematic;
+      this.#checkpoint('模式図を表示');
+      return;
+    }
+    await this.#openRealMap(version);
+  }
+
+  async #openRealMap(version) {
+    const stale = () => this.#disposed || version !== this.#modeVersion;
+    this.el.status.textContent = STATUS.realLoading;
+    this.#checkpoint('実地図を読み込み中');
+    try {
+      const { createRealMap } = await import('./real_map.js');
+      if (stale()) return;
+      this.#realMap = createRealMap(this.el.realLayer, this.#selectPlace, tileStatus => {
+        if (!stale()) this.#reportTileStatus(tileStatus);
+      });
+      this.metrics.realMapInstances = 1;
+      this.#realMap.update(this.#current);
+    } catch {
+      if (stale()) return;
+      this.el.status.textContent = STATUS.realFailed;
+      window.guideApp.mapTileStatus = 'error';
+    }
+  }
+
+  #reportTileStatus(tileStatus) {
+    window.guideApp.mapTileStatus = tileStatus;
+    this.el.status.classList.toggle('map-warning', tileStatus === 'error');
+    this.el.status.textContent = STATUS.tiles[tileStatus] || STATUS.tiles.loading;
+  }
+
+  #disposeRealMap() {
+    this.#realMap?.dispose();
+    this.#realMap = null;
+    this.metrics.realMapInstances = 0;
+  }
+
+  // --- events --------------------------------------------------------------
+
+  #onClick = event => {
+    const target = selector => event.target.closest(selector);
+    const scenario = target('[data-map-scenario]');
+    if (scenario) return this.loadScenario(scenario.dataset.mapScenario);
+    const toggle = target('[data-map-mode]');
+    if (toggle) return toggle.dataset.mapMode === this.#mode ? undefined : this.#setMode(toggle.dataset.mapMode);
+    const place = target('[data-map-node]')?.dataset.mapNode || target('[data-map-place]')?.dataset.mapPlace;
+    if (place) this.#selectPlace(place);
+    return undefined;
+  };
+
+  #onKeydown = event => {
+    const point = event.target.closest('[data-map-node]');
+    if (!point || (event.key !== 'Enter' && event.key !== ' ')) return;
+    event.preventDefault();
+    this.#selectPlace(point.dataset.mapNode);
+  };
+
+  #onFit = () => {
+    this.schematic.frame(this.#current.schematic.overview);
+    this.#realMap?.fit(true);
+    this.#checkpoint('全7地点を全体表示');
+  };
+
+  #bind(node, type, handler) {
+    node.addEventListener(type, handler);
+    this.#bindings.push(() => node.removeEventListener(type, handler));
+  }
+
+  #checkpoint(stage) {
     saveStage({
       build: window.guideApp.build,
       state: 'ready',
@@ -38,269 +287,8 @@ export async function initMapGuide(page, request) {
       source: 'map-interaction'
     });
   }
+}
 
-  function bind(node, type, handler) {
-    node.addEventListener(type, handler);
-    bindings.push(() => node.removeEventListener(type, handler));
-  }
-
-  function sizeLabels() {
-    const box = svg.viewBox.baseVal;
-    const rect = svg.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const scale = Math.min(rect.width / box.width, rect.height / box.height);
-    if (!scale) return;
-    const label = (rect.width < 600 ? 13 : 14) / scale;
-    svg.style.setProperty('--label-size', `${label}px`);
-    svg.style.setProperty('--context-size', `${11 / scale}px`);
-    svg.style.setProperty('--number-size', `${12 / scale}px`);
-    for (const node of svg.querySelectorAll('[data-map-node]')) {
-      const circle = node.querySelector('.point-ring');
-      const hit = node.querySelector('.point-hit');
-      const x = Number(circle.getAttribute('cx'));
-      const y = Number(circle.getAttribute('cy'));
-      const size = Math.max(90, 44 / scale);
-      circle.setAttribute('r', String(Math.max(18, 12 / scale)));
-      hit.setAttribute('x', String(x - size / 2));
-      hit.setAttribute('y', String(y - size / 2));
-      hit.setAttribute('width', String(size));
-      hit.setAttribute('height', String(size));
-    }
-  }
-
-  function setCamera(box) {
-    cameraBox = box.slice();
-    let [x, y, w, h] = box;
-    const rect = svg.getBoundingClientRect();
-    if (rect.width && rect.height) {
-      const ratio = rect.width / rect.height;
-      if (w / h > ratio) {
-        const nh = w / ratio;
-        y -= (nh - h) / 2;
-        h = nh;
-      } else {
-        const nw = h * ratio;
-        x -= (nw - w) / 2;
-        w = nw;
-      }
-    }
-    if (h <= 900) y = Math.max(0, Math.min(900 - h, y));
-    if (w <= 1000) x = Math.max(0, Math.min(1000 - w, x));
-    svg.setAttribute('viewBox', [x, y, w, h].join(' '));
-    sizeLabels();
-  }
-
-  const observer = new ResizeObserver(() => (cameraBox ? setCamera(cameraBox) : sizeLabels()));
-  observer.observe(svg);
-
-  function selectPlace(id) {
-    const place = current?.all_places.find(p => p.id === id);
-    if (!place) return;
-    for (const node of svg.querySelectorAll('[data-map-node]')) {
-      node.classList.toggle('is-selected', node.dataset.mapNode === id);
-    }
-    for (const card of sidebar.querySelectorAll('[data-place-id]')) {
-      const selected = card.dataset.placeId === id;
-      card.classList.toggle('is-selected', selected);
-      card.querySelector('[data-map-place]')?.setAttribute('aria-pressed', String(selected));
-    }
-    realMap?.select(id);
-    window.guideApp.mapSelected = id;
-    const note = page.querySelector('#selected-place-note');
-    note.textContent = `${place.name}：${place.description}`;
-    note.hidden = false;
-    checkpoint(`地点を選択：${place.name}`);
-  }
-
-  function validateScenario(data) {
-    if (data.renderer !== 'Rails-ActionView-ERB' || data.controller !== 'MapScenariosController') {
-      throw new Error('Rails map response could not be verified');
-    }
-    const ids = [...svg.querySelectorAll('[data-map-node]')].map(node => node.dataset.mapNode);
-    const points = data.geojson.features.filter(feature => feature.geometry.type === 'Point');
-    if (ids.length !== 7 || JSON.stringify([...ids].sort()) !== JSON.stringify(points.map(point => point.id).sort())) {
-      throw new Error('Persistent map and Rails locations do not match');
-    }
-    return ids;
-  }
-
-  function updateScenarioCards(data) {
-    sidebar.innerHTML = data.html;
-    sidebar.dataset.scenario = data.key;
-    const cardIds = [...sidebar.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId);
-    if (JSON.stringify(cardIds) !== JSON.stringify(data.selected_ids)) {
-      throw new Error('Rails selected cards do not match');
-    }
-  }
-
-  function updateSchematic(data) {
-    for (const node of svg.querySelectorAll('[data-map-node]')) {
-      const index = data.selected_ids.indexOf(node.dataset.mapNode);
-      node.classList.toggle('is-in-scenario', index >= 0);
-      node.classList.remove('is-selected');
-      node.querySelector('[data-map-number]').textContent = index < 0 ? '' : String(index + 1);
-    }
-    for (const path of svg.querySelectorAll('[data-route-scenario]')) {
-      path.classList.toggle('is-active', path.dataset.routeScenario === data.key);
-    }
-    setCamera(data.schematic.view_box);
-  }
-
-  function applyScenario(data) {
-    // A newer request or teardown must never publish the response just received.
-    if (disposed || desiredKey) return;
-    const ids = validateScenario(data);
-    current = data;
-    updateScenarioCards(data);
-    updateSchematic(data);
-    for (const button of root.querySelectorAll('[data-map-scenario]')) {
-      button.setAttribute('aria-pressed', String(button.dataset.mapScenario === data.key));
-    }
-    page.querySelector('#selected-place-note').hidden = true;
-    realMap?.update(data);
-    window.guideApp.mapState = {
-      key: data.key,
-      geojson: data.geojson,
-      placeIds: data.selected_ids,
-      allPlaceIds: ids,
-      controller: data.controller,
-      renderer: data.renderer
-    };
-    window.guideApp.mapReady = true;
-    window.guideApp.mapMetrics.cachedScenarios = cache.size;
-    if (mode === 'schematic') {
-      status.textContent = '全7地点を同じ地図に配置しています。選んだ導線を強調しています。';
-    }
-    checkpoint(`導線を表示：${data.label}（${mode === 'schematic' ? '模式図' : '実地図'}）`);
-  }
-
-  function requestScenario(key) {
-    status.textContent = 'Rails で導線を確認しています…';
-    window.guideApp.mapMetrics.scenarioRequests++;
-    return request(scenarioPath(key));
-  }
-
-  function cacheScenario(key, result) {
-    if (result.status !== 200) throw new Error('Scenario request failed');
-    const data = result.body;
-    if (cache.size < 3) cache.set(key, data);
-    return data;
-  }
-
-  function reportScenarioError(error) {
-    if (disposed || desiredKey) return;
-    status.textContent = '導線を更新できませんでした。現在の地図と出典を確認してください。';
-    window.guideApp.mapError = error.message;
-  }
-
-  async function loadScenario(key) {
-    desiredKey = key;
-    if (switching) return;
-    switching = true;
-    try {
-      while (desiredKey && !disposed) {
-        const next = desiredKey;
-        desiredKey = null;
-        try {
-          let data = cache.get(next);
-          if (!data) data = cacheScenario(next, await requestScenario(next));
-          applyScenario(data);
-        } catch (error) {
-          reportScenarioError(error);
-        }
-      }
-    } finally {
-      switching = false;
-    }
-  }
-
-  function reportTileStatus(tileStatus, version) {
-    if (disposed || version !== modeVersion) return;
-    window.guideApp.mapTileStatus = tileStatus;
-    status.classList.toggle('map-warning', tileStatus === 'error');
-    status.textContent = tileStatusMessage(tileStatus);
-  }
-
-  async function setMode(next) {
-    const version = ++modeVersion;
-    mode = next;
-    window.guideApp.mapMode = next;
-    realMap?.dispose();
-    realMap = null;
-    window.guideApp.mapMetrics.realMapInstances = 0;
-    for (const button of root.querySelectorAll('[data-map-mode]')) {
-      button.setAttribute('aria-pressed', String(button.dataset.mapMode === next));
-    }
-    schematic.hidden = next !== 'schematic';
-    actual.hidden = next !== 'actual';
-    page.querySelector('#actual-map-license').hidden = next !== 'actual';
-    if (next === 'schematic') {
-      sizeLabels();
-      status.textContent = '全7地点を同じ地図に配置しています。縮尺は実際と異なります。';
-      checkpoint('模式図を表示');
-      return;
-    }
-    status.textContent = '実地図を読み込んでいます…';
-    checkpoint('実地図を読み込み中');
-    try {
-      const { createRealMap } = await import('./real_map.js');
-      if (disposed || version !== modeVersion) return;
-      realMap = createRealMap(actual, selectPlace, tileStatus => reportTileStatus(tileStatus, version));
-      window.guideApp.mapMetrics.realMapInstances = 1;
-      realMap.update(current);
-    } catch (error) {
-      if (disposed || version !== modeVersion) return;
-      status.textContent = '実地図を起動できませんでした。模式図と地点カードをご利用ください。';
-      window.guideApp.mapTileStatus = 'error';
-    }
-  }
-
-  bind(root, 'click', event => {
-    const scenario = event.target.closest('[data-map-scenario]');
-    if (scenario) {
-      loadScenario(scenario.dataset.mapScenario);
-      return;
-    }
-    const toggle = event.target.closest('[data-map-mode]');
-    if (toggle) {
-      if (toggle.dataset.mapMode !== mode) setMode(toggle.dataset.mapMode);
-      return;
-    }
-    const point = event.target.closest('[data-map-node]');
-    if (point) {
-      selectPlace(point.dataset.mapNode);
-      return;
-    }
-    const card = event.target.closest('[data-map-place]');
-    if (card) selectPlace(card.dataset.mapPlace);
-  });
-  bind(svg, 'keydown', event => {
-    const point = event.target.closest('[data-map-node]');
-    if (point && (event.key === 'Enter' || event.key === ' ')) {
-      event.preventDefault();
-      selectPlace(point.dataset.mapNode);
-    }
-  });
-  bind(page.querySelector('#fit-map'), 'click', () => {
-    setCamera(current.schematic.overview);
-    realMap?.fit(true);
-    checkpoint('全7地点を全体表示');
-  });
-  bind(document, 'visibilitychange', () =>
-    checkpoint(document.hidden ? 'タブが非表示になりました' : 'タブに戻りました')
-  );
-  window.guideApp.mapMode = 'schematic';
-  window.guideApp.mapReady = false;
-  await loadScenario(sidebar.dataset.scenario || 'arrival');
-  return () => {
-    observer.disconnect();
-    disposed = true;
-    desiredKey = null;
-    modeVersion++;
-    realMap?.dispose();
-    realMap = null;
-    for (const unbind of bindings) unbind();
-    cache.clear();
-    window.guideApp.mapMetrics.realMapInstances = 0;
-  };
+function sameMembers(a, b) {
+  return JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
 }

@@ -1,8 +1,7 @@
 # A restaurant or hotel banquet hall with source-backed seating facts.
 # Total seats and the bookable group size are different facts and stay separate.
 class Restaurant < StaticRecord
-  self.data_file = 'restaurants.json'
-  self.collection_key = 'restaurants'
+  backed_by 'restaurants.json', collection: 'restaurants'
 
   attribute :name, :address, :venue_type, :total_seats, :group_capacity, :group_capacity_label,
             :standing_capacity, :standing_capacity_label, :cuisine, :opening_hours, :closed_days,
@@ -11,12 +10,10 @@ class Restaurant < StaticRecord
             :source_updated_at, :thumbnail, :address_qualification, :address_note,
             :google_maps_query, :google_maps_destination
 
+  DIGITS = '0123456789０１２３４５６７８９'.freeze
+
   def self.page
     document.fetch('page')
-  end
-
-  def self.areas
-    all.map(&:area).uniq.sort
   end
 
   def hotel_banquet?
@@ -34,7 +31,7 @@ class Restaurant < StaticRecord
   # Town name without prefecture, city or block number, e.g. "橘通西".
   def area
     address.delete_prefix('宮崎県').delete_prefix('宮崎市')
-           .chars.take_while { |character| !'0123456789０１２３４５６７８９'.include?(character) }.join.strip
+           .chars.take_while { |character| DIGITS.exclude?(character) }.join.strip
   end
 
   # Extra provenance links (fields sourced elsewhere than the main source page).

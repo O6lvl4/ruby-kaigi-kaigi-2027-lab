@@ -1,7 +1,6 @@
 # A past RubyKaigi, linked to its official schedule and social events.
 class Edition < StaticRecord
-  self.data_file = 'editions.json'
-  self.collection_key = 'editions'
+  backed_by 'editions.json', collection: 'editions'
 
   ReadingPrompt = Data.define(:title, :fact, :inference, :sources)
 

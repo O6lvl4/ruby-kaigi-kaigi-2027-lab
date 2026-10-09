@@ -1,65 +1,42 @@
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-export function createDiningMap(container, venues, onSelect, onStatus) {
-  const map = L.map(container, {
-    fadeAnimation: false,
-    zoomAnimation: false,
-    scrollWheelZoom: false,
-    minZoom: 11,
-    maxZoom: 18
-  });
-  // Establish the view before adding markers so their DOM and initial filter styles exist.
-  if (venues.length)
-    map.fitBounds(L.latLngBounds(venues.map(v => [v.coordinates[1], v.coordinates[0]])), {
-      padding: [38, 38],
-      maxZoom: 15,
-      animate: false
-    });
-  else map.setView([31.915, 131.424], 13);
+// Restaurant pins on GSI tiles. Numbers match the card list; colour shows the filter.
+import { addPin, createGsiMap, fitPoints } from '../../lib/gsi_map.js';
+
+const MIYAZAKI_CENTRE = [31.915, 131.424];
+
+export function createDiningMap(container, restaurants, onSelect, onStatus) {
+  const gsi = createGsiMap(container, { maxZoom: 18, onStatus: status => status !== 'loading' && onStatus(status) });
   const markers = new Map();
-  let disposed = false,
-    errors = 0;
-  const tile = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    keepBuffer: 0,
-    updateWhenIdle: true,
-    attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>'
-  }).addTo(map);
-  tile.on('tileerror', () => {
-    errors++;
-    onStatus('error');
-  });
-  tile.on('load', () => onStatus(errors ? 'error' : 'loaded'));
-  for (const venue of venues) {
-    const marker = L.marker([venue.coordinates[1], venue.coordinates[0]], {
-      title: venue.name,
-      keyboard: true,
-      icon: L.divIcon({
-        className: 'dining-pin',
-        html: `<span>${venue.number}</span>`,
-        iconSize: [34, 34],
-        iconAnchor: [17, 17]
-      })
-    }).addTo(map);
-    const label = document.createElement('span');
-    label.textContent = venue.name;
-    marker.bindTooltip(label, { direction: 'top', offset: [0, -14] });
-    marker.on('click', () => onSelect(venue.id));
-    markers.set(venue.id, marker);
-    marker.getElement()?.setAttribute('data-dining-pin', venue.id);
-    marker.getElement()?.classList.toggle('dining-pin-unknown', venue.groupCapacity === null);
+  let disposed = false;
+
+  function fit() {
+    if (restaurants.length)
+      fitPoints(
+        gsi.map,
+        restaurants.map(restaurant => restaurant.coordinates),
+        { padding: 38 }
+      );
+    else gsi.map.setView(MIYAZAKI_CENTRE, 13);
   }
+
+  // Establish the view before adding markers so their DOM and initial filter styles exist.
+  fit();
+  for (const restaurant of restaurants) {
+    const marker = addPin(gsi.map, restaurant.coordinates, {
+      name: restaurant.name,
+      className: 'dining-pin',
+      html: `<span>${restaurant.number}</span>`,
+      size: 34,
+      tooltipOffset: -14,
+      onClick: () => onSelect(restaurant.id)
+    });
+    markers.set(restaurant.id, marker);
+    marker.getElement()?.setAttribute('data-dining-pin', restaurant.id);
+    marker.getElement()?.classList.toggle('dining-pin-unknown', restaurant.groupCapacity === null);
+  }
+
   return {
     fit() {
-      if (disposed) return;
-      map.invalidateSize({ animate: false });
-      if (venues.length)
-        map.fitBounds(L.latLngBounds(venues.map(v => [v.coordinates[1], v.coordinates[0]])), {
-          padding: [38, 38],
-          maxZoom: 15,
-          animate: false
-        });
-      else map.setView([31.915, 131.424], 13);
+      if (!disposed) fit();
     },
     update(matches, selected) {
       for (const [id, marker] of markers) {
@@ -76,8 +53,7 @@ export function createDiningMap(container, venues, onSelect, onStatus) {
     },
     dispose() {
       disposed = true;
-      tile.off();
-      map.remove();
+      gsi.remove();
       markers.clear();
       container.replaceChildren();
       container.removeAttribute('style');

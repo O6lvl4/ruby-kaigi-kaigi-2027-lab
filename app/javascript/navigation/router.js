@@ -107,10 +107,15 @@ export class Router {
 // The same-origin URL of a plain left click on a link, or null when the browser
 // should handle the click itself (new tab, download, modifier keys, other sites).
 function routableUrl(event) {
-  if (event.defaultPrevented || event.button !== 0) return null;
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return null;
+  if (!isPlainLeftClick(event)) return null;
   const link = event.target.closest('a[href]');
   if (!link || link.target || link.hasAttribute('download')) return null;
   const url = new URL(link.href);
   return url.origin === location.origin ? url : null;
+}
+
+function isPlainLeftClick(event) {
+  return (
+    !event.defaultPrevented && event.button === 0 && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+  );
 }

@@ -1,7 +1,8 @@
 # Lab only: CRUD over synthetic venue records in PGlite.
 class VenuesController < ActionController::API
   def index
-    render json: { venues: Venue.order(:id), runtime: { ruby: RUBY_VERSION, rails: Rails.version, platform: RUBY_PLATFORM, adapter: Venue.connection.adapter_name } }
+    runtime = { ruby: RUBY_VERSION, rails: Rails.version, platform: RUBY_PLATFORM, adapter: Venue.connection.adapter_name }
+    render json: { venues: Venue.order(:id), runtime: }
   end
 
   def create
@@ -9,13 +10,13 @@ class VenuesController < ActionController::API
     if venue.save
       render json: { venue: }, status: :created
     else
-      render json: { errors: venue.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: venue.errors.full_messages }, status: :unprocessable_content
     end
   end
 
   private
 
   def venue_params
-    params.require(:venue).permit(:name, :category, :area, :capacity, :estimated_cost)
+    params.expect(venue: %i[name category area capacity estimated_cost])
   end
 end

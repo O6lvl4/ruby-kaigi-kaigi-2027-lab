@@ -44,7 +44,7 @@ In one same-machine Node comparison, compile-stage RSS fell201→167MiB and firs
 
 `runtime-check.html` is a lightweight landing page with no automatic Wasm or map load. It reads one localStorage record containing only build, stage, state, timestamp and source. Unlike the same-tab session recovery, this record can be read after reopening a new tab in the same browser/origin; browser data clearing/private-session termination can still erase it. Nothing is uploaded automatically.
 
-Its explicit check runs one worker through Ruby alone, then genuine Rails initialization, then the actual ERB summary response. It does not load Leaflet tiles, PGlite or DuckDB, and terminates the worker after the check. Passing this check while the full guide fails would narrow the investigation; neither outcome independently identifies an OS memory kill. The main guide also records its latest stage locally, including successful initialization. A successful stage does not prove the browser remained alive afterward.
+Its explicit check runs one worker through Ruby alone, then genuine Rails initialization, then one actual ERB page response (`GET /event`). It does not load Leaflet tiles, PGlite or DuckDB, and terminates the worker after the check. Passing this check while the full guide fails would narrow the investigation; neither outcome independently identifies an OS memory kill. The main guide also records its latest stage locally, including successful initialization. A successful stage does not prove the browser remained alive afterward.
 
 A truly smaller custom Rails bundle is feasible upstream, but would require rebuilding and validating dependency packaging. No dependency swap or unverified newer runtime has been introduced here.
 

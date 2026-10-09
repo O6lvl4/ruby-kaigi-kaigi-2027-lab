@@ -9,7 +9,9 @@ GUIDE_ONLY = ENV['GUIDE_ONLY'] == '1'
 unless GUIDE_ONLY
   require 'active_record/railtie'
   require_relative '../vendor/pglite_adapter'
-  ActiveRecord::ConnectionAdapters.register('pglite', 'ActiveRecord::ConnectionAdapters::PGliteAdapter', File.expand_path('../vendor/pglite_adapter', __dir__))
+  ActiveRecord::ConnectionAdapters.register(
+    'pglite', 'ActiveRecord::ConnectionAdapters::PGliteAdapter', File.expand_path('../vendor/pglite_adapter', __dir__)
+  )
 end
 
 module MiyazakiGuide

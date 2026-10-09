@@ -9,7 +9,13 @@
     "preview": "vite preview --host 127.0.0.1",
     "test:e2e": "node tests/e2e.mjs",
     "setup:runtime": "node scripts/fetch-runtime.mjs",
-    "test": "sh scripts/test-node.sh"
+    "test": "sh scripts/test-node.sh",
+    "lint": "npm run lint:js && npm run lint:architecture && npm run lint:ruby",
+    "lint:js": "eslint . && prettier --check .",
+    "lint:architecture": "depcruise app/javascript --config .dependency-cruiser.cjs",
+    "lint:ruby": "bundle exec rubocop && bundle exec erb_lint --lint-all",
+    "quality:ruby": "bundle exec rubycritic app config lib db --no-browser --format console",
+    "format": "prettier --write . && bundle exec rubocop -a"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.29.1-dev132.0",

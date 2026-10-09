@@ -1,28 +1,31 @@
 # Read-only records backed by the source-checked JSON snapshots in db/data.
 #
 #   class Restaurant < StaticRecord
-#     self.data_file = 'restaurants.json'
-#     self.collection_key = 'restaurants'
+#     backed_by 'restaurants.json', collection: 'restaurants'
 #     attribute :name, :group_capacity
 #   end
 #
-# Readers are snake_case and accept camelCase or snake_case JSON keys. The file is re-read on every
-# call so a changed snapshot is reflected in the next render.
+# Readers are snake_case and accept camelCase or snake_case JSON keys. The file
+# is re-read on every call so a changed snapshot shows in the next render.
 class StaticRecord
   class NotFound < StandardError; end
 
   class << self
-    attr_accessor :data_file, :collection_key
+    def backed_by(file, collection: nil)
+      @data_file = file
+      @collection_key = collection
+    end
 
     def attribute(*names)
       names.each do |name|
-        camel_key = name.to_s.camelize(:lower)
-        define_method(name) { @attributes.fetch(camel_key) { @attributes[name.to_s] } }
+        snake_key = name.to_s
+        camel_key = snake_key.camelize(:lower)
+        define_method(name) { @attributes.fetch(camel_key) { @attributes[snake_key] } }
       end
     end
 
     def all
-      records = collection_key ? document.fetch(collection_key) : document
+      records = @collection_key ? document.fetch(@collection_key) : document
       records.each_with_index.map { |attributes, index| new(attributes, position: index + 1) }
     end
 
@@ -31,15 +34,17 @@ class StaticRecord
     end
 
     def document
-      JSON.parse(Rails.root.join('db/data', data_file).read)
-    end
-
-    def model_name_path
-      name.underscore.pluralize
+      JSON.parse(Rails.root.join('db/data', @data_file).read)
     end
 
     def checked_at
       document.fetch('checkedAt')
+    end
+
+    # "restaurants/restaurant", so views can `render @restaurants`.
+    def partial_path
+      singular = name.underscore
+      "#{singular.pluralize}/#{singular}"
     end
   end
 
@@ -54,9 +59,8 @@ class StaticRecord
     @attributes['id'].to_s
   end
 
-  # Lets views `render @restaurants` like Active Model objects.
   def to_partial_path
-    "#{self.class.model_name_path}/#{self.class.name.underscore}"
+    self.class.partial_path
   end
 
   def as_json(*)

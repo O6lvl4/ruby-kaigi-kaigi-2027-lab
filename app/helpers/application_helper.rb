@@ -7,8 +7,8 @@ module ApplicationHelper
   end
 
   # Opens an external official page in a new tab.
-  def external_link_to(name, url, **options)
-    link_to "#{name} ↗", url, target: '_blank', rel: 'noopener noreferrer', **options
+  def external_link_to(name, url, **)
+    link_to "#{name} ↗", url, target: '_blank', rel: 'noopener noreferrer', **
   end
 
   # A static file served next to the guide (lab.html, runtime-check.html).

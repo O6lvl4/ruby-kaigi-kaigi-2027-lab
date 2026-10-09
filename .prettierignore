@@ -6,3 +6,5 @@ db/data/
 package-lock.json
 *.html
 *.md
+Gemfile.lock
+.github/

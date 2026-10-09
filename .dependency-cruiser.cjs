@@ -1,7 +1,9 @@
 // Layering for app/javascript (checked by `npm run lint:architecture`):
 //
-//   entrypoints → pages → features → (runtime, rails)
+//   entrypoints → pages → features → (lib, runtime, rails)
 //   entrypoints → navigation, rails, runtime
+//
+// lib/ holds framework-free helpers (e.g. Leaflet + GSI tiles) and imports no app layer.
 //
 // Features never reach up into pages or entrypoints, and stay independent of each other.
 /** @type {import('dependency-cruiser').IConfiguration} */
@@ -34,7 +36,18 @@ module.exports = {
       from: { path: '^app/javascript/(rails|runtime)/' },
       to: { path: '^app/javascript/(pages|features|navigation)/' }
     },
-    { name: 'no-orphans', severity: 'warn', from: { orphan: true, pathNot: '(^|/)\\.[^/]+|\\.d\\.ts$|eslint\\.config|vite\\.config' }, to: {} }
+    {
+      name: 'lib-is-leaf',
+      severity: 'error',
+      from: { path: '^app/javascript/lib/' },
+      to: { path: '^app/javascript/(?!lib/)' }
+    },
+    {
+      name: 'no-orphans',
+      severity: 'warn',
+      from: { orphan: true, pathNot: '(^|/)\\.[^/]+|\\.d\\.ts$|eslint\\.config|vite\\.config' },
+      to: {}
+    }
   ],
   options: {
     doNotFollow: { path: 'node_modules' },

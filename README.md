@@ -2,7 +2,7 @@
 
 RubyKaigiKaigi 2027は、RubyKaigi 2027 宮崎開催の公開情報を読むための非公式ガイドです。公式に掲載された日程・会場、会場公式のアクセス情報、確認範囲内でまだ見つからない詳細、提案の確認リストを分けて掲載しています。情報確認日は 2026年10月8日です。個人による非公式のまとめであり、主催者の承認・提携を示すものではありません。
 
-ホームのまとめ自体を、ブラウザ内の本物の Ruby/Wasm・Rails で生成します。軽量な初期 HTML は起動中・失敗時の案内だけで、静的なまとめを成功表示として代用しません。ブラウザの Worker → Rack → SummaryController → ActionView ERB → HTML レスポンス、という経路です。Ruby の PreparationSnapshot が公開情報を組み立て、同じ内容を /summary.json でも返します。
+ガイドの各ページは、ブラウザ内の本物の Ruby/Wasm・Rails で生成します。軽量な初期 HTML は起動中・失敗時の案内だけで、静的なまとめを成功表示として代用しません。ブラウザの Worker → Rack → ルーティング → 各コントローラー → ActionView（レイアウト＋ERB）→ HTML レスポンス、という経路です。構成は「アーキテクチャ」の節を参照してください。
 
 起動には約62 MiB の Ruby/Wasm が必要です。失敗時はエラー詳細・再試行・診断情報のコピーを表示します。読み取りモードでは技術デモの PGlite DB を開かず、DuckDB も起動しません。PGlite・DuckDB の実験は lab.html に残しています。iPhone 実機の互換性は未検証です。
 
@@ -70,14 +70,18 @@ Rails API を JavaScript で模倣していません。Ruby コードで Rails A
 
 ソース ZIP には第三者の巨大な Wasm バイナリや node_modules は含めません。取得先の内容が変わるとスクリプトは停止します。ハッシュを確認せず書き換えないでください。これは固定済み配布物を使う再現可能なセットアップで、Ruby/Wasm の完全なソース再ビルドを保証するものではありません。
 
-PGlite adapter と pg shim は https://github.com/palkan/wasmify-rails の 296a374fd863aa67c554d80b677b9a6cb2220fe7 から MIT ライセンスで同梱しています。ライセンスは src/ruby/vendor/LICENSE.wasmify-rails にあります。adapter の escape が引用符をそのまま返す問題を検証で確認したため、シングルクォートを二重化する最小修正を明記しています。prepared statements も有効です。
+PGlite adapter と pg shim は https://github.com/palkan/wasmify-rails の 296a374fd863aa67c554d80b677b9a6cb2220fe7 から MIT ライセンスで同梱しています。ライセンスは vendor/LICENSE.wasmify-rails にあります。adapter の escape が引用符をそのまま返す問題を検証で確認したため、シングルクォートを二重化する最小修正を明記しています。prepared statements も有効です。
 
 ## テスト
 
 ```sh
 npm test                # 実物の Rails/PGlite/DuckDB Wasm を Node で実行
-npm run build          # ブラウザ用静的配布物を dist に生成
+npm run build           # ブラウザ用静的配布物を dist に生成
+npm run lint            # ESLint・Prettier・依存レイヤー・RuboCop・erb_lint
+npm run quality:ruby    # RubyCritic（複雑度・重複・コードの臭い）
 ```
+
+Ruby の lint には `bundle install` が必要です（Gemfile は開発ツール専用で、アプリの gem は Wasm に内蔵）。
 
 npm test はテスト専用の新しいディレクトリに PGlite を保存し、別プロセスで開き直します。ブラウザの IndexedDB テストと同じではありません。テスト用データは .test-data 以下に残ります。
 
@@ -85,7 +89,7 @@ npm test はテスト専用の新しいディレクトリに PGlite を保存し
 
 ```sh
 npx playwright install chromium webkit
-node tests/summary.mjs  # Chromium/WebKitで実物Rails/ERB・失敗・再試行・再読込を検証
+node tests/summary.mjs  # Chromium/WebKitで実物Rails/ERB・ページ遷移・失敗・再試行・再読込を検証
 npm run test:e2e         # 別ページの技術デモを検証
 ```
 
@@ -103,24 +107,61 @@ npm run test:e2e         # 別ページの技術デモを検証
 
 初期技術デモの検証記録: TEST_REPORT.md。現在の実行結果は GitHub Actions の verification / live-browser artifacts を参照してください。
 
-## 読む画面の Rails/Wasm 実装
+## アーキテクチャ
 
-- src/ruby/summary.rb: 公開情報の Ruby オブジェクトと SummaryController
-- src/ruby/views/summary/show.html.erb: ブラウザ内 ActionView が実行する ERB ビュー
-- src/summary.js: Worker に Rails リクエストを送り、成功した HTML を表示する起動シェル
-- tests/summary-node.mjs: 実物 Wasm で HTML/JSON の経路と ERB 展開を検証
-- tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
+リポジトリ全体を Rails アプリと同じ形にしています。Ruby 側（`app/` の controllers・models・helpers・views、`config/`、`db/`、`lib/`、`vendor/`）は、そのまま Wasm 内の Rails.root（`/demo`）にマウントされ、Zeitwerk の自動読み込みで動きます。ファイルを追加しても読み込み一覧を書き換える必要はありません（`app/javascript/rails/app_files.js` が自動で集めます）。
 
-固定 Ruby/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
+```
+app/
+  controllers/      MapsController, EventsController, RestaurantsController,
+                    EditionsController, MapScenariosController（+ 技術デモの VenuesController）
+    concerns/       BrowserRendered（Wasm 内 ActionView が描いた印のヘッダー）
+  models/           StaticRecord（db/data の JSON を読む読み取り専用モデル）と
+                    Event, Restaurant, Edition, Place, MapScenario, SchematicLayout（+ Venue）
+  helpers/          リンク・ナビゲーション・Google Maps の目的地リンク
+  views/            layouts/application（ヘッダー・フッター）と各ページ・部分テンプレート
+  javascript/
+    entrypoints/    guide.js（index.html）, lab.js, runtime_check.js
+    rails/          Worker（Ruby/Wasm）, RailsClient, 生成結果の検証
+    navigation/     Router（ページ遷移）, ヘッダーメニュー
+    pages/          ページごとの登録（パス・必要な JSON・JS）
+    features/       map/, restaurants/, destinations/（機能ごと・互いに依存しない）
+    lib/            Leaflet + 地理院タイルの共通部品
+    runtime/        起動画面・起動記録
+  assets/stylesheets/
+config/             application.rb, environment.rb, routes.rb, initializers/
+db/data/            出典確認済みの公開情報（event, restaurants, editions, places, map_scenarios）
+lib/                WasmRequestBridge（JS ↔ Rack）
+```
+
+ルーティング（`config/routes.rb`）:
+
+| URL | コントローラー | 内容 |
+| --- | --- | --- |
+| `/` | `maps#show` | 宮崎の地図 |
+| `/event` | `events#show` | 開催・アクセス |
+| `/restaurants`（`.json`） | `restaurants#index` | ごはん・人数 |
+| `/archives`（`.json`） | `editions#index` | 過去の開催 |
+| `/map/scenarios/:id.json` | `map_scenarios#show` | 地図の見方ごとの GeoJSON とカード |
+
+起動時に全ページと必要な JSON を Rails で1回ずつ生成し、Ruby の実行ワーカーを終了してから表示します。以後のページ遷移は `Router` が生成済み HTML を差し替え、そのページの JS を付け外しします。URL は実パス（例：`/ruby-kaigi-kaigi-2027-lab/restaurants`）で、Rails の URL ヘルパーは `SCRIPT_NAME` から Pages のサブパスを含むリンクを出します。直接アクセスやリロードは `404.html`（ビルド時に `index.html` を複製）経由で同じページを開きます。旧1ページ版のアンカー（`#dining` など）は対応するページへ移ります。
+
+JS のレイヤーは `.dependency-cruiser.cjs` で検査します（entrypoints → pages → features → lib/runtime/rails の一方向。機能同士の直接依存は禁止）。
+
+- tests/support/rails_app.mjs: Node で同じ Rails アプリを Wasm 上に起動するヘルパー
+- tests/summary-node.mjs: 実物 Wasm で各ページのルート・コントローラー・ERB・JSON を検証
+- tests/summary.mjs: Chromium/WebKit で本物の Rails レスポンス、ページ遷移・直接アクセス・旧アンカー、Wasm読込失敗時に静的成功画面を出さないこと、診断・再試行・再読込を検証
+
+固定 Ruby/Wasm の Erubi 1.13.0 において MatchData#begin/#end を使うとテンプレートの一部が重複・破損する問題を再現したため、`config/initializers/erubi_wasm_compat.rb` で既存 gem ソースのその2式だけを等価な pre_match/post_match の文字数計算へ置き換える限定的な互換パッチを適用しています。Rails・ActionView・ERB の実行や出力エスケープは置き換えていません。元の Erubi: https://github.com/jeremyevans/erubi 。これは Ruby の正規表現全般や日時処理の互換性を修正したものではありません。
 
 ## 地図で読む宮崎
 
-大きな2D地図と地点カードで「宮崎に着く」「会場へ行く」「夜の街へ」を切り替えます。`GET /map.json?scenario=arrival|venue|night` はブラウザ内の Rails が処理し、同じ絞り込み済みデータから ActionView ERB のカードと GeoJSON を返します。地点をクリックするとカードも連動します。
+大きな2D地図と地点カードで「宮崎に着く」「会場へ行く」「夜の街へ」を切り替えます。`GET /map/scenarios/arrival|venue|night.json` はブラウザ内の Rails が処理し、同じ絞り込み済みデータから ActionView ERB のカードと GeoJSON を返します。地点をクリックするとカードも連動します。
 
 - 地図：Leaflet 1.9.4 と地理院タイル（淡色地図）。WebGL・APIキー・現在地取得は使いません
 - 地図の出典表示と重ね合わせの説明を画面内に表示します。タイルをまとめて保存する機能やオフライン一括取得はありません
 - 線は地点を結ぶ概略線です。道路形状、歩行ナビ、ライブ交通、徒歩圏半径を表しません
-- 7地点の座標・出典・代表点としての精度は `src/ruby/map_places.json` に記録します
+- 7地点の座標・出典・代表点としての精度は `db/data/places.json`、見方ごとの導線は `db/data/map_scenarios.json` に記録します
 - 駅は施設代表点、文化公園前はバス停周辺、橘通り3丁目は交差点・乗換エリアの参考点です。乗車方向別の停留所位置は断定しません
 - ニシタチは地元団体の公開マップ78地点の座標中央値から求めた参考点です。公式の境界や特定店舗を意味しません
 - タイルが読み込めない場合も、同じ Rails 生成の地点カード・移動説明・公式出典を読み続けられます
@@ -137,15 +178,15 @@ The published runtime removes only DWARF `.debug_*` sections from the pinned ups
 
 ## ごはんと人数・過去の開催
 
-`src/ruby/public_reference_data.json` は2026年10月8日に確認した公開情報です。20件（飲食店16店・ホテル宴会場4施設）の総席数と宴会・着席予約上限を分け、2022〜2026年の公式日程・会場・プログラム・交流イベントへのリンクをまとめています。元の私的な会議記録や担当者情報は含めていません。
+`db/data/restaurants.json` と `db/data/editions.json` は2026年10月8日に確認した公開情報です。20件（飲食店16店・ホテル宴会場4施設）の総席数と宴会・着席予約上限を分け、2022〜2026年の公式日程・会場・プログラム・交流イベントへのリンクをまとめています。元の私的な会議記録や担当者情報は含めていません。
 
-実物の Rails が JSON を読み、同じデータを `/summary.json` と ActionView ERB のカードに出力します。人数フィルターは既に生成したカードの宴会・着席予約上限だけを参照し、総席数から推定しません。人数不明の店は「人数要確認」として残します。追加リクエスト、追加 Worker、DB 起動はありません。営業時間・定休日・料理は確認できた公開情報を掲載し、未確認は明示します。ホテルは表示中の部屋の食事定員だけでフィルター判定し、スクール・シアター形式や総席数を転用しません。2027年の空席・営業・料金や同一宴会の受入可否を保証せず、公式関連イベント・予約済み店舗として扱いません。座標未検証の飲食店は地図に追加していません。
+実物の Rails が JSON を読み、同じデータを `/restaurants.json`・`/archives.json` と ActionView ERB のカードに出力します。人数フィルターは既に生成したカードの宴会・着席予約上限だけを参照し、総席数から推定しません。人数不明の店は「人数要確認」として残します。追加リクエスト、追加 Worker、DB 起動はありません。営業時間・定休日・料理は確認できた公開情報を掲載し、未確認は明示します。ホテルは表示中の部屋の食事定員だけでフィルター判定し、スクール・シアター形式や総席数を転用しません。2027年の空席・営業・料金や同一宴会の受入可否を保証せず、公式関連イベント・予約済み店舗として扱いません。座標未検証の飲食店は地図に追加していません。
 
 `npm test` は ERB と JSON の一致を検証し、`tests/summary.mjs` は Chromium/WebKit のデスクトップ・モバイル幅で人数フィルター、未確認表示、出典リンク、スクロール時の Worker 解放維持を検証します。Linux WebKit の成功は iPhone 実機確認ではありません。
 
 ## 住所・飲食店の地図・ナビゲーション
 
-読む画面はヘッダーのメニューで「宮崎の地図」「開催・アクセス」「ごはん・人数」「過去の開催」の4ページに分かれ、1画面に1つの話題だけを表示します。ページは URL のハッシュ（例：`#dining`、`#pending`）で切り替わり、ページ内の見出しへのリンクや履歴移動もそのページを開きます。Rails の生成は従来どおり1回で、ページ切り替えで Wasm を再起動しません。モバイルは開閉式メニューで、Escape・リンク選択・履歴移動で閉じます。過去5年の公式サイトへの外部リンクもヘッダーに配置しています。
+読む画面はヘッダーのメニューで「宮崎の地図」「開催・アクセス」「ごはん・人数」「過去の開催」の4ページに分かれ、1画面に1つの話題だけを表示します。各ページは Rails のルート（`/event`、`/restaurants` など）で、URL を共有・リロードしても同じページが開きます。Rails の生成は起動時の1回だけで、ページ切り替えで Wasm を再起動しません。モバイルは開閉式メニューで、Escape・リンク選択・履歴移動で閉じます。過去5年の公式サイトへの外部リンクもヘッダーに配置しています。
 
 飲食店20件は一覧／地図を同じ人数・住所の町名フィルターで切り替えます。地図では確認済み全20地点を残し、条件外を淡色表示します。重なるピンは候補選択でも選べます。ホテルや商業施設のピンは建物代表点で、入口・階数の位置・安全な乗降場所を示しません。地図は選択時だけ読み込み、一覧に戻ると破棄します。追加のRailsリクエストやWorker起動はありません。
 
