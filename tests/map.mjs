@@ -109,8 +109,47 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(dashed, mode === 'walking', 'Walking is dotted and driving is solid');
     }
     assert.match(await page.locator('.road-routes').innerText(), /OpenStreetMap/);
+    // Pinch / Ctrl + wheel zooms the map, not the page; a plain wheel scrolls the page and shows a hint.
+    const tileZoom = () =>
+      page.evaluate(() =>
+        Math.max(
+          ...[...document.querySelectorAll('#real-map img.leaflet-tile')].map(img => Number(img.src.split('/').at(-3)))
+        )
+      );
+    const zoomBefore = await tileZoom();
+    const realBox = await page.locator('#real-map').boundingBox();
+    await page.mouse.move(realBox.x + realBox.width / 2, realBox.y + realBox.height / 2);
+    await page.keyboard.down('Control');
+    await page.mouse.wheel(0, -360);
+    await page.keyboard.up('Control');
+    await page.waitForFunction(
+      z =>
+        Math.max(
+          ...[...document.querySelectorAll('#real-map img.leaflet-tile')].map(img => Number(img.src.split('/').at(-3)))
+        ) > z,
+      zoomBefore
+    );
+    assert.equal(await page.locator('#real-map .map-zoom-hint').isVisible(), false);
+    const scrollBefore = await page.evaluate(() => scrollY);
+    await page.mouse.wheel(0, 200);
+    await page.waitForFunction(y => scrollY > y, scrollBefore);
+    assert.equal(
+      await page.locator('#real-map .map-zoom-hint').isVisible(),
+      true,
+      'A plain wheel scrolls the page and explains how to zoom'
+    );
+    await page.evaluate(() => scrollTo(0, 0));
     await page.locator('[data-map-mode="schematic"]').click();
     assert.equal(await page.locator('#travel-mode-switch').isVisible(), false);
+    const viewWidth = () => page.evaluate(() => document.getElementById('schematic-map').viewBox.baseVal.width);
+    const widthBefore = await viewWidth();
+    const schematicBox = await page.locator('#schematic-map').boundingBox();
+    await page.mouse.move(schematicBox.x + schematicBox.width / 2, schematicBox.y + schematicBox.height / 2);
+    await page.keyboard.down('Control');
+    await page.mouse.wheel(0, -240);
+    await page.keyboard.up('Control');
+    await page.waitForFunction(w => document.getElementById('schematic-map').viewBox.baseVal.width < w, widthBefore);
+    await page.locator('#fit-map').click();
     assert.equal(await page.locator('.leaflet-container').count(), 0);
     assert.equal(await page.locator('#real-map').locator('*').count(), 0);
     const before = await page.locator('*').count();

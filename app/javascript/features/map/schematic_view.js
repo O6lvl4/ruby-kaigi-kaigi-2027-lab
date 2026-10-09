@@ -1,7 +1,10 @@
 // The Rails-rendered schematic SVG (1000×900, not to scale): camera framing,
 // legible labels at any size, and which places the current scenario numbers.
+import { enableGestureZoom } from '../../lib/gesture_zoom.js';
+
 const WIDTH = 1000;
 const HEIGHT = 900;
+const MIN_VIEW_WIDTH = 200; // closest pinch zoom: about five times the overview
 
 export class SchematicView {
   #camera = null;
@@ -10,6 +13,7 @@ export class SchematicView {
     this.svg = svg;
     this.observer = new ResizeObserver(() => (this.#camera ? this.frame(this.#camera) : this.sizeLabels()));
     this.observer.observe(svg);
+    this.disableGestureZoom = enableGestureZoom(svg.parentElement, (factor, event) => this.zoomAt(factor, event));
   }
 
   get nodes() {
@@ -84,7 +88,20 @@ export class SchematicView {
     for (const node of this.nodes) node.classList.toggle('is-selected', node.dataset.mapNode === id);
   }
 
+  // Pinch zoom around the pointer, staying inside the drawn map.
+  zoomAt(factor, { clientX, clientY }) {
+    const { x, y, width, height } = this.svg.viewBox.baseVal;
+    const rect = this.svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const nextWidth = Math.min(WIDTH, Math.max(MIN_VIEW_WIDTH, width / factor));
+    const ratio = nextWidth / width;
+    const pointerX = x + ((clientX - rect.left) / rect.width) * width;
+    const pointerY = y + ((clientY - rect.top) / rect.height) * height;
+    this.frame([pointerX - (pointerX - x) * ratio, pointerY - (pointerY - y) * ratio, nextWidth, height * ratio]);
+  }
+
   dispose() {
+    this.disableGestureZoom();
     this.observer.disconnect();
   }
 }

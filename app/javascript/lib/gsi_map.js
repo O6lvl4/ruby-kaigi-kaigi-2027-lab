@@ -1,9 +1,11 @@
 // Leaflet on GSI pale tiles (地理院タイル・淡色地図), shared by every map in the guide.
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { enableGestureZoom } from './gesture_zoom.js';
 
 const GSI_PALE_TILES = 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png';
 const GSI_ATTRIBUTION = '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル（淡色地図）</a>';
+// Leaflet's own wheel zoom stays off so a plain wheel scrolls the page; see gesture_zoom.js.
 const STATIC_MAP = { fadeAnimation: false, zoomAnimation: false, scrollWheelZoom: false, minZoom: 11 };
 
 // GeoJSON order is [longitude, latitude]; Leaflet wants [latitude, longitude].
@@ -26,9 +28,20 @@ export function createGsiMap(container, { maxZoom, onStatus = () => {}, ...optio
   });
   tiles.on('load', () => onStatus(tileErrors ? 'error' : 'loaded'));
   tiles.addTo(map);
+  // Pinch arrives in small steps; zoom by whole levels once enough has built up.
+  let pendingLevels = 0;
+  const disableGestureZoom = enableGestureZoom(container, (factor, event) => {
+    pendingLevels += Math.log2(factor);
+    const levels = Math.trunc(pendingLevels);
+    if (!levels) return;
+    pendingLevels -= levels;
+    const zoom = Math.min(map.getMaxZoom(), Math.max(map.getMinZoom(), map.getZoom() + levels));
+    map.setZoomAround(map.mouseEventToContainerPoint(event), zoom, { animate: false });
+  });
   return {
     map,
     remove() {
+      disableGestureZoom();
       tiles.off();
       map.remove();
     }
