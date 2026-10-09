@@ -1420,3 +1420,38 @@ select:focus-visible {
     display: none;
   }
 }
+/* Boot progress: download → Ruby → Rails → pages (app/javascript/runtime/boot_screen.js). */
+.boot-progress {
+  height: 3px;
+  margin: 0 0 22px;
+  background: var(--line);
+  overflow: hidden;
+}
+.boot-progress[hidden] {
+  display: none;
+}
+.boot-progress span {
+  display: block;
+  height: 100%;
+  background: var(--ruby);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms ease-out;
+}
+/* The rendered guide fades in instead of appearing all at once. */
+#rails-root:not([hidden]) {
+  animation: guide-appear 240ms ease-out;
+}
+@keyframes guide-appear {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boot-progress span {
+    transition: none;
+  }
+  #rails-root:not([hidden]) {
+    animation: none;
+  }
+}

@@ -11,7 +11,7 @@ const LAB_RUNTIME_URL = `${import.meta.env.BASE_URL}base-app.wasm?release=28acbb
 let vm;
 let db;
 let applicationLoaded = false;
-const progress = message => postMessage({ type: 'progress', message });
+const progress = (message, ratio) => postMessage({ type: 'progress', message, ratio });
 
 async function bootLab() {
   const [{ PGlite }, { initRailsVM, registerPGliteWasmInterface }] = await Promise.all([
@@ -56,10 +56,10 @@ async function boot(mode) {
 async function loadApplication() {
   if (applicationLoaded) return;
   if (!vm) throw new Error('Ruby is not initialized');
-  progress('Rails ライブラリを読み込んでいます…');
+  progress('Rails ライブラリを読み込んでいます…', 0.92);
   await vm.evalAsync(`load '${RAILS_ROOT}/config/environment.rb'`);
   applicationLoaded = true;
-  progress('Rails の準備完了');
+  progress('Rails の準備完了', 1);
 }
 
 async function handle({ type, request, mode }) {

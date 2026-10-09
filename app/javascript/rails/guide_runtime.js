@@ -6,6 +6,8 @@ import { RubyVM } from '@ruby/wasm-wasi-2.10';
 
 // Keep in step with scripts/fetch-runtime.mjs (GUIDE_RUNTIME).
 export const GUIDE_RUNTIME_URL = `${import.meta.env.BASE_URL}guide-runtime.wasm?release=58e96a81`;
+// Exact size of the pinned runtime; Content-Length may be the compressed size instead.
+const GUIDE_RUNTIME_BYTES = 40638460;
 
 const encoder = new TextEncoder();
 
@@ -25,12 +27,38 @@ function directoryTree(files, mountPoint) {
   return root;
 }
 
-export async function bootGuideRuntime({ files, mountPoint, env = {}, onProgress = () => {} }) {
-  onProgress('Ruby/Wasm をダウンロードしています…');
-  const response = await fetch(GUIDE_RUNTIME_URL);
+// Downloads the runtime, reporting the fraction received so far.
+async function download(url, onRatio) {
+  const response = await fetch(url);
   if (!response.ok) throw new Error(`Ruby/Wasm を取得できませんでした（${response.status}）`);
-  const bytes = await response.arrayBuffer();
-  onProgress('Ruby/Wasm を起動しています…');
+  if (!response.body) return response.arrayBuffer();
+  const reader = response.body.getReader();
+  const bytes = new Uint8Array(GUIDE_RUNTIME_BYTES);
+  let received = 0;
+  let percent = -1;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (received + value.length > bytes.length) throw new Error('Ruby/Wasm のサイズが想定と異なります');
+    bytes.set(value, received);
+    received += value.length;
+    const ratio = received / bytes.length;
+    if (Math.floor(ratio * 100) === percent) continue;
+    percent = Math.floor(ratio * 100);
+    onRatio(ratio);
+  }
+  return bytes.subarray(0, received);
+}
+
+// Share of starting Ruby + Rails taken by the download; the rest is compile and boot.
+const DOWNLOAD_SHARE = 0.85;
+
+// onProgress(message, ratio): ratio is how far starting Ruby + Rails has got (0–1).
+export async function bootGuideRuntime({ files, mountPoint, env = {}, onProgress = () => {} }) {
+  const downloading = 'Ruby/Wasm をダウンロードしています…';
+  onProgress(downloading, 0);
+  const bytes = await download(GUIDE_RUNTIME_URL, ratio => onProgress(downloading, ratio * DOWNLOAD_SHARE));
+  onProgress('Ruby/Wasm を起動しています…', DOWNLOAD_SHARE);
   const module = await WebAssembly.compile(bytes);
   const fds = [
     new OpenFile(new File([])),

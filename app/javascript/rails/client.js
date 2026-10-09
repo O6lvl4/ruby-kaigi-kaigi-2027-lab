@@ -46,11 +46,12 @@ export class RailsClient {
   }
 
   // Renders each request once and keeps the response for later reads.
-  async prerender(requests, verify = () => {}) {
-    for (const { path, accept } of requests) {
+  async prerender(requests, verify = () => {}, onRendered = () => {}) {
+    for (const [index, { path, accept }] of requests.entries()) {
       const response = await this.request(path, accept);
       verify(response, path);
       this.#rendered.set(cacheKey(path, accept), response);
+      onRendered((index + 1) / requests.length);
     }
   }
 
@@ -82,7 +83,7 @@ export class RailsClient {
 
   #receive(data) {
     if (data.type === 'progress') {
-      this.onProgress(data.message);
+      this.onProgress(data.message, data.ratio);
       return;
     }
     const call = this.#pending.get(data.id);
