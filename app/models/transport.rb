@@ -28,7 +28,7 @@ class Transport < StaticRecord
 
   def build(type, key)
     @attributes.fetch(key).map do |attributes|
-      values = type.members.to_h { |member| [member, attributes[member.to_s.camelize(:lower)]] }
+      values = type.members.index_with { |member| attributes[member.to_s.camelize(:lower)] }
       type.new(**values)
     end
   end

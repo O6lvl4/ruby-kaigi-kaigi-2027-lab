@@ -2,8 +2,8 @@
   "phase": "reopen",
   "host": "Node 24",
   "runtime": {
-    "ruby": "3.3.3",
-    "rails": "8.0.1",
+    "ruby": "4.0.7",
+    "rails": "8.1.4",
     "platform": "wasm32-wasi",
     "adapter": "PostgreSQL"
   },
