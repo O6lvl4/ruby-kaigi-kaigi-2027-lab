@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-16",
+  "photos": [
+    {
+      "id": "hakodate-2026-venue",
+      "year": 2026,
+      "title": "函館アリーナ前のウェルカムサイン",
+      "alt": "函館アリーナの前を行く参加者と、イカとRubyのウェルカムサイン",
+      "src": "images/archives/hakodate-2026-venue.jpg",
+      "width": 800,
+      "height": 600,
+      "sourceUrl": "https://lmlab.net/posts/2026/2026-04-23-hakodate-ruby-kaigi-day1.html",
+      "sourceLabel": "RubyKaigi 2026 Day1 at Hakodate",
+      "creator": "ITO Yosei / 伊藤製作所",
+      "credit": "ITO Yosei / 伊藤製作所",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "kind": "photograph",
+      "note": "函館アリーナの会場風景。",
+      "originalUrl": "https://lmlab.net/posts/2026/2026-04-23-hakodate-ruby-kaigi-day1.jpg",
+      "licenseEvidence": [
+        "https://lmlab.net/posts/2026/2026-04-23-hakodate-ruby-kaigi-day1.html",
+        "https://lmlab.net/"
+      ],
+      "changes": "原画像をそのまま保存。表示サイズのみ調整、トリミングなし。"
+    },
+    {
+      "id": "takeout-2021-products",
+      "year": 2021,
+      "title": "RubyKaigi Takeout 2021 公式販売グッズの紹介画像",
+      "alt": "RubyKaigi Takeout 2021のTシャツ、バッグ、カップなどの公式販売グッズを並べた紹介画像",
+      "src": "images/archives/takeout-2021-products.jpg",
+      "width": 1950,
+      "height": 632,
+      "sourceUrl": "https://rubykaigi.org/2021-takeout/novelties/",
+      "sourceLabel": "Novelties - RubyKaigi Takeout 2021",
+      "creator": "RubyKaigi 2021 Team",
+      "credit": "RubyKaigi 2021 Team",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "kind": "product_collage_mockup",
+      "note": "販売用の紹介画像です。参加者への無料配布を示すものではありません。",
+      "originalUrl": "https://rubykaigi.org/2021-takeout/images/novelties/novelties_large.jpg",
+      "licenseEvidence": [
+        "https://rubykaigi.org/2021-takeout/novelties/"
+      ],
+      "changes": "原画像をそのまま保存。表示サイズのみ調整、トリミングなし。"
+    },
+    {
+      "id": "lanyards-2024",
+      "year": 2024,
+      "title": "2024年の公式ネックストラップ案内（黄・白）",
+      "alt": "RubyKaigi 2024の黄色と白のネックストラップ。黄色は撮影への異議なし、白は撮影を望まない人向け",
+      "src": "images/archives/lanyards-2024.webp",
+      "width": 800,
+      "height": 411,
+      "sourceUrl": "https://rubykaigi.org/2024/onsite/",
+      "sourceLabel": "Onsite Information - RubyKaigi 2024",
+      "creator": "RubyKaigi 2024 Team",
+      "credit": "RubyKaigi 2024 Team",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "kind": "official_item_guide_composite",
+      "note": "撮影への意思を色で伝える、公式の案内画像。",
+      "originalUrl": "https://rubykaigi.org/2024/images/onsite/lanyards-f9677866.webp",
+      "licenseEvidence": [
+        "https://rubykaigi.org/2024/onsite/"
+      ],
+      "changes": "原画像をそのまま保存。表示サイズのみ調整、トリミングなし。"
+    },
+    {
+      "id": "lanyards-2026",
+      "year": 2026,
+      "title": "2026年の公式ネックストラップ案内（赤・青）",
+      "alt": "RubyKaigi 2026の赤色と青色のネックストラップを比較した公式案内画像",
+      "src": "images/archives/lanyards-2026.webp",
+      "width": 1190,
+      "height": 840,
+      "sourceUrl": "https://rubykaigi.org/2026/onsite/",
+      "sourceLabel": "Onsite Information - RubyKaigi 2026",
+      "creator": "RubyKaigi 2026 Team",
+      "credit": "RubyKaigi 2026 Team",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "kind": "official_item_guide_composite",
+      "note": "色の意味を添えた、公式の案内画像。",
+      "originalUrl": "https://rubykaigi.org/2026/images/onsite/lanyards-cedb1417.webp",
+      "licenseEvidence": [
+        "https://rubykaigi.org/2026/onsite/"
+      ],
+      "changes": "原画像をそのまま保存。表示サイズのみ調整、トリミングなし。"
+    }
+  ]
+}

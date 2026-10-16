@@ -1,0 +1,11 @@
+<figure class="archive-photo <%= 'archive-photo-featured' if featured %>" data-archive-photo="<%= photo.id %>" data-image-kind="<%= photo.kind %>">
+  <button type="button" class="archive-photo-open" data-photo-open aria-haspopup="dialog" aria-controls="archive-photo-dialog" aria-label="<%= photo.title %>の画像を拡大">
+    <img src="<%= static_file_path(photo.src) %>" alt="<%= photo.alt %>" width="<%= photo.width %>" height="<%= photo.height %>" loading="<%= featured ? 'eager' : 'lazy' %>" decoding="async">
+    <span class="archive-photo-zoom" aria-hidden="true">画像を拡大 ↗</span>
+  </button>
+  <figcaption>
+    <p class="archive-photo-title"><span><%= photo.year %></span><strong><%= photo.title %></strong></p>
+    <p class="archive-photo-credit"><%= photo.credit %> · <%= link_to photo.license, photo.license_url %> · <%= external_link_to '出典', photo.source_url, 'aria-label': photo.source_label %></p>
+    <% if photo.note %><p class="archive-photo-note"><%= photo.note %></p><% end %>
+  </figcaption>
+</figure>

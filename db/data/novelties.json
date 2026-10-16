@@ -13,7 +13,8 @@
       "distribution": "参加者向け",
       "note": "公式デザイン担当者が制作・配布を記録。普段使いしやすいデザインと、函館を記憶できるロゴを重視",
       "sourceLabel": "公式デザイン担当・Gaji-Labo の制作記録",
-      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/"
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "hasSourcePhoto": true
     },
     {
       "id": "2026-hoodie",
@@ -52,7 +53,8 @@
       "distribution": "公式ノベルティ。黒・ベージュ・グレーピンクの3色",
       "note": "公式デザイン担当者は、ガジェットや化粧道具など自由な用途に使えるサイズ感を意図したと説明。個別の最終配布数は未確認",
       "sourceLabel": "公式デザイン担当・Gaji-Labo の制作記録",
-      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/"
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "hasSourcePhoto": true
     },
     {
       "id": "2026-stickers",
@@ -78,7 +80,8 @@
       "distribution": "スタンプラリーコンプリートの交換景品",
       "note": "公式デザイン担当者が3種と明記。赤銅メッキ。一般参加者全員への基本配布品ではなく、達成条件のある景品",
       "sourceLabel": "公式デザイン担当・Gaji-Labo の制作記録",
-      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/"
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "hasSourcePhoto": true
     },
     {
       "id": "2026-ma1",
@@ -130,7 +133,8 @@
       "distribution": "公式ノベルティ。全員配布の保証・個別配布数は未確認",
       "note": "公式デザイナーは「愛媛県産」と記載。今治ブランド認証やメーカー名はこの出典だけでは確認できない。スポンサーが別途配布したタオルとは区別",
       "sourceLabel": "公式デザイナー・taeyeonkim の制作記録",
-      "sourceUrl": "https://note.com/taeyeonkim/n/nd7c032de6a99"
+      "sourceUrl": "https://note.com/taeyeonkim/n/nd7c032de6a99",
+      "hasSourcePhoto": true
     },
     {
       "id": "2025-tobe-chopstick-rest",
@@ -182,7 +186,8 @@
       "distribution": "参加者は赤、committerは黄、speakerは青、staffは緑",
       "note": "公式デザイナーによる記録。1,000着超の県内製造で、5月開催に向け前年12月22日のデザイン確定が必要だった。納期・費用の制約から全面プリントを避けた",
       "sourceLabel": "公式デザイナー・Yuki Haruyama の制作記録",
-      "sourceUrl": "https://note.com/yuki930/n/n11a3c1e3e979"
+      "sourceUrl": "https://note.com/yuki930/n/n11a3c1e3e979",
+      "hasSourcePhoto": true
     },
     {
       "id": "2024-shimazori",
@@ -234,7 +239,8 @@
       "distribution": "参加者向け。個別の最終配布数は未確認",
       "note": "木曽のひのき箸にmame氏考案のRubyコードを刻印。チケット販売が想定を上回ったため、箸は直前に生産数を追加できたと調達担当者が説明",
       "sourceLabel": "調達担当ローカルオーガナイザー・swan_match の制作記録",
-      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023"
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "hasSourcePhoto": true
     },
     {
       "id": "2023-shichimi-tin",
@@ -247,7 +253,8 @@
       "distribution": "参加者向け。個別の最終配布数は未確認",
       "note": "2023年の既存イヤーモデル「松本缶」をベースに蓋だけ専用仕様に。完全オリジナル缶は約1,000個規模では難しかったという調達上の工夫",
       "sourceLabel": "調達担当ローカルオーガナイザー・swan_match の制作記録",
-      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023"
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "hasSourcePhoto": true
     },
     {
       "id": "2023-keycaps",
@@ -260,7 +267,8 @@
       "distribution": "公式ノベルティ。全員分の用意・個別配布数は未確認",
       "note": "調達担当者が「公式ノベルティ」の項で制作を紹介。デザインはあつみ氏。会期後の追加発注・販売にも言及しているため、配布品と後日の販売品を混同しない",
       "sourceLabel": "調達担当ローカルオーガナイザー・swan_match の制作記録",
-      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023"
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "hasSourcePhoto": true
     },
     {
       "id": "2023-diy-keyboard",
@@ -273,7 +281,8 @@
       "distribution": "人数分は用意せず。開場約40分で配布終了",
       "note": "はんだ付け等が必要なキーボード。mruby系ファームウェアに触れるきっかけを意図。余剰部品などを使った後日の販売は、会場での無料配布とは別",
       "sourceLabel": "設計・調達担当ローカルオーガナイザー・swan_match の記録",
-      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023"
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "hasSourcePhoto": true
     },
     {
       "id": "rk2022-official-shirt",

@@ -1,37 +1,65 @@
 <% content_for :title, '過去RubyKaigi' %>
-<section id="archive" class="section reference-section" aria-labelledby="archive-title">
-  <%= section_label '06', @page.fetch('title'), id: 'archive-title' %>
-  <p class="section-intro"><%= @page.fetch('intro') %></p>
-  <nav class="archive-sections" aria-label="過去RubyKaigiの掲載内容">
-    <a href="#archive">開催一覧</a>
-    <a href="#novelties">ノベルティ・記念品</a>
-    <a href="#archive-reading">運営の読み方</a>
-  </nav>
-  <div class="archive-list">
-    <%= render @editions %>
-  </div>
-  <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
-</section>
-<%= render 'novelties/archive', novelties: @novelties %>
-<section id="archive-reading" class="section reference-section" aria-labelledby="archive-reading-title">
-  <%= section_label '08', '運営の読み方', id: 'archive-reading-title' %>
-  <p class="section-intro">公開資料で確認できる実施例と、そこから考えられることを分けてまとめています。</p>
-  <details class="archive-reading">
-    <summary>過去の開催から、どこを読む？</summary>
-    <div class="reading-grid">
-      <% @reading_prompts.each do |prompt| %>
-        <article>
-          <h3><%= prompt.title %></h3>
-          <p><%= prompt.fact %></p>
-          <p><strong>読み方の提案：</strong><%= prompt.inference %></p>
-          <p class="source">
-            <% prompt.sources.each_with_index do |url, index| %>
-              <a href="<%= url %>">実施例の出典 <%= index + 1 %> ↗</a>
-            <% end %>
-          </p>
-        </article>
-      <% end %>
+<div class="archive-guide">
+  <section id="archive" class="archive-hero" aria-labelledby="archive-title">
+    <div class="archive-hero-copy">
+      <p class="archive-eyebrow">RUBYKAIGI ARCHIVE <span>2016—2026</span></p>
+      <h1 id="archive-title">街の記憶と、<br>手元に残るもの。</h1>
+      <p class="archive-lead">過去RubyKaigiを、写真と記念品から。<br>開催地ごとの工夫を、次のアイデアに。</p>
+      <div class="archive-stats" aria-label="掲載数">
+        <p><strong><%= @editions.length %></strong><span>開催の記録</span></p>
+        <p><strong><%= @novelties.length %></strong><span>ノベルティの実例</span></p>
+        <p><strong><%= @editions.map(&:year).uniq.length %></strong><span>年のアーカイブ</span></p>
+      </div>
+      <nav class="archive-sections" aria-label="過去RubyKaigiの掲載内容">
+        <a class="archive-primary-link" href="#novelties">ノベルティ・記念品 <span aria-hidden="true">↓</span></a>
+        <a href="#archive-events">開催一覧</a>
+        <a href="#archive-reading">運営の読み方</a>
+      </nav>
     </div>
-  </details>
-  <p class="source">公式サイト・担当者の公開記録を参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
-</section>
+    <% if @photos.any? %>
+      <%= render 'editions/photo', photo: @photos.first, featured: true %>
+    <% end %>
+  </section>
+  <% if @photos.length > 1 %>
+    <section class="archive-photo-grid" aria-label="画像で振り返るRubyKaigi">
+      <% @photos.drop(1).each do |photo| %>
+        <%= render 'editions/photo', photo:, featured: false %>
+      <% end %>
+    </section>
+  <% end %>
+  <%= render 'novelties/archive', novelties: @novelties %>
+  <section id="archive-events" class="archive-section" aria-labelledby="archive-events-title">
+    <div class="archive-section-heading">
+      <div><p class="archive-eyebrow">THE PLACES</p><h2 id="archive-events-title">開催の記録</h2></div>
+      <p>街、会場、開催のかたち。<br>公式資料へつながる年表です。</p>
+    </div>
+    <div class="archive-list"><%= render @editions %></div>
+    <p class="source">2020年の現地開催中止とオンラインTakeoutを別に記録しています。<br>各年の公式サイトを参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
+  </section>
+  <section id="archive-reading" class="archive-section" aria-labelledby="archive-reading-title">
+    <div class="archive-section-heading">
+      <div><p class="archive-eyebrow">IDEAS FOR NEXT TIME</p><h2 id="archive-reading-title">運営の読み方</h2></div>
+      <p>公開された実施例から考える、<br>次の開催へのヒント。</p>
+    </div>
+    <details class="archive-reading">
+      <summary>過去の開催から、どこを読む？</summary>
+      <div class="reading-grid">
+        <% @reading_prompts.each_with_index do |prompt, index| %>
+          <article>
+            <span class="archive-reading-number"><%= list_number(index + 1) %></span>
+            <h3><%= prompt.title %></h3>
+            <p><%= prompt.fact %></p>
+            <p><strong>読み方の提案：</strong><%= prompt.inference %></p>
+            <p class="source">
+              <% prompt.sources.each_with_index do |url, source_index| %>
+                <a href="<%= url %>">実施例の出典 <%= source_index + 1 %> ↗</a>
+              <% end %>
+            </p>
+          </article>
+        <% end %>
+      </div>
+    </details>
+    <p class="source">公式サイト・担当者の公開記録を参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time><br>このガイドの提案は、2027年の決定事項ではありません。</p>
+  </section>
+  <%= render 'editions/photo_dialog' %>
+</div>

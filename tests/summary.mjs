@@ -93,7 +93,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       );
       assert.deepEqual(errors, []);
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-      const requestsBeforeReading = requests.length;
+      const nonPhotoRequests = () => requests.filter(url => !new URL(url).pathname.includes('/images/archives/'));
+      const requestsBeforeReading = nonPhotoRequests().length;
       const restaurants = restaurantsJson.body.restaurants;
       assert.equal(await page.locator('[data-restaurant-id]').count(), 0, 'The map page shows only the map');
       await go(page, '/event');
@@ -149,6 +150,38 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
         assert.equal(await card.locator('.novelty-category').innerText(), item.category);
         assert.equal(await card.locator(`a[href="${item.sourceUrl}"]`).count(), 1);
       }
+      const photos = JSON.parse(await readFile('db/data/archive_photos.json', 'utf8')).photos;
+      assert.equal(await page.locator('[data-archive-photo]').count(), photos.length);
+      for (const photo of photos) {
+        const figure = page.locator(`[data-archive-photo="${photo.id}"]`);
+        assert.equal(await figure.locator('img').getAttribute('src'), new URL(photo.src, base).pathname);
+        assert.equal(await figure.locator('img').getAttribute('alt'), photo.alt);
+        assert.ok((await figure.innerText()).includes(photo.credit));
+        assert.equal(await figure.locator(`a[href="${photo.licenseUrl}"]`).count(), 1);
+      }
+      const firstPhoto = page.locator('[data-photo-open]').first();
+      const dialog = page.locator('#archive-photo-dialog');
+      await firstPhoto.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await dialog.isVisible(), true);
+      assert.equal(await dialog.locator('img').getAttribute('alt'), photos[0].alt);
+      await dialog.locator('img').evaluate(image => image.decode());
+      assert.ok((await dialog.innerText()).includes(photos[0].credit));
+      assert.equal(await page.evaluate(() => document.body.style.overflow), 'hidden');
+      await page.screenshot({ path: `evidence/archive-image-${name}-${size}.png`, fullPage: false });
+      await page.keyboard.press('Escape');
+      assert.equal(await dialog.isVisible(), false);
+      assert.equal(await firstPhoto.evaluate(button => button === document.activeElement), true);
+      assert.equal(await page.evaluate(() => document.body.style.overflow), '');
+      await firstPhoto.click();
+      await page.locator('[data-photo-close]').click();
+      assert.equal(await dialog.isVisible(), false);
+      await firstPhoto.click();
+      await page.mouse.click(1, 1);
+      assert.equal(await dialog.isVisible(), false, 'Backdrop closes the enlarged image');
+      assert.equal(await page.evaluate(() => document.body.style.overflow), '');
+      await page.locator('.archive-hero').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: `evidence/archive-hero-${name}-${size}.png`, fullPage: false });
       await page.locator('.archive-sections a[href="#novelties"]').click();
       assert.equal(new URL(page.url()).hash, '#novelties');
       assert.ok(await page.locator('#novelties-title').isVisible());
@@ -161,15 +194,27 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
         await page.locator('.reading-grid article').count(),
         JSON.parse(await readFile('db/data/editions.json', 'utf8')).readingPrompts.length
       );
+      const firstNovelty = page.locator('[data-novelty-id]').first();
+      await firstNovelty.locator('summary').click();
+      assert.ok((await firstNovelty.innerText()).includes(novelties[0].note));
+      await firstNovelty.locator('summary').click();
       for (let i = 0; i < 3; i++) {
         await go(page, '/restaurants');
         await page.locator('#dining').scrollIntoViewIfNeeded();
         await go(page, '/archives');
         await page.locator('#archive').scrollIntoViewIfNeeded();
       }
+      await page.locator('[data-photo-open]').first().click();
+      await page.goBack();
+      await page.waitForURL(new URL('restaurants', base).href);
+      assert.equal(await page.locator('#archive-photo-dialog[open]').count(), 0);
+      assert.equal(await page.evaluate(() => document.body.style.overflow), '');
+      await page.goForward();
+      await page.waitForURL(new URL('archives', base).href);
+      assert.equal(await page.locator('#archive-photo-dialog[open]').count(), 0);
       assert.equal(page.workers().length, 0);
       assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 8);
-      assert.equal(requests.length, requestsBeforeReading, 'Reading/filtering must not fetch more data');
+      assert.equal(nonPhotoRequests().length, requestsBeforeReading, 'Reading/filtering must not fetch more data');
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await go(page, '/event');
       assert.equal(await page.locator('#dining').count(), 0);

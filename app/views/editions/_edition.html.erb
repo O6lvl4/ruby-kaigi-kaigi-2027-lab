@@ -1,21 +1,17 @@
 <article class="archive-card" data-edition-id="<%= edition.id %>" data-archive-year="<%= edition.year %>">
-  <div class="archive-year">
-    <a href="<%= edition.url %>"><%= edition.year %> ↗</a>
-    <span><%= edition.city %></span>
-    <% if edition.edition %><span><%= edition.edition %></span><% end %>
-  </div>
-  <div>
-    <h3><%= edition.venue %></h3>
-    <p class="archive-dates"><%= edition.dates %></p>
+  <div class="archive-year"><a href="<%= edition.url %>"><%= edition.year %> ↗</a><span><%= edition.city %></span></div>
+  <% if edition.edition %><p class="archive-format"><%= edition.edition %></p><% end %>
+  <h3><%= edition.venue %></h3>
+  <p class="archive-dates"><%= edition.dates %></p>
+  <details class="archive-event-details">
+    <summary>運営の記録・公式資料</summary>
     <p class="archive-point"><%= edition.point %></p>
     <nav class="archive-links" aria-label="RubyKaigi <%= edition.year %> 公式資料">
       <% if edition.schedule_url %><a href="<%= edition.schedule_url %>">プログラム ↗</a><% end %>
       <% if edition.events_url %><a href="<%= edition.events_url %>">交流イベント ↗</a><% end %>
       <% if edition.operations_url %><a href="<%= edition.operations_url %>"><%= edition.operations_label %> ↗</a><% end %>
-      <% Array(edition.resources).each do |resource| %>
-        <a href="<%= resource.fetch('url') %>"><%= resource.fetch('label') %> ↗</a>
-      <% end %>
+      <% Array(edition.resources).each do |resource| %><a href="<%= resource.fetch('url') %>"><%= resource.fetch('label') %> ↗</a><% end %>
     </nav>
     <% if edition.point_source %><p class="source"><a href="<%= edition.point_source %>">実施例の出典 ↗</a></p><% end %>
-  </div>
+  </details>
 </article>

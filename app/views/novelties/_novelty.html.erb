@@ -1,10 +1,12 @@
 <li class="novelty-item" data-novelty-id="<%= novelty.id %>">
-  <p class="novelty-category"><%= novelty.category %></p>
+  <div class="novelty-card-top"><span class="novelty-category"><%= novelty.category %></span><span class="novelty-number" aria-hidden="true"><%= list_number(novelty.position) %></span></div>
   <h4><%= novelty.name %></h4>
   <p class="novelty-provider"><%= novelty.provider %></p>
-  <dl>
-    <div><dt>対象・入手方法</dt><dd><%= novelty.distribution %></dd></div>
-    <div><dt>確認できたこと</dt><dd><%= novelty.note %></dd></div>
-  </dl>
-  <p class="source"><%= external_link_to novelty.source_label, novelty.source_url %></p>
+  <p class="novelty-distribution"><span>対象・入手方法</span><%= novelty.distribution %></p>
+  <details class="novelty-detail">
+    <summary>記録を読む</summary>
+    <p><%= novelty.note %></p>
+    <p class="novelty-source-name">出典：<%= novelty.source_label %></p>
+  </details>
+  <p class="source"><%= external_link_to novelty.has_source_photo ? '写真・制作記録を見る' : '出典を見る', novelty.source_url, 'aria-label': novelty.source_label %></p>
 </li>

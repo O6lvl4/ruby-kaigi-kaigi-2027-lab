@@ -3,7 +3,7 @@ class Novelty < StaticRecord
   backed_by 'novelties.json', collection: 'novelties'
 
   attribute :year, :city, :event_url, :name, :category, :provider, :distribution,
-            :note, :source_label, :source_url
+            :note, :source_label, :source_url, :has_source_photo
 
   def self.resources
     document.fetch('resources')
