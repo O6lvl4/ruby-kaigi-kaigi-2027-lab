@@ -198,7 +198,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
         // A fresh context prevents WebKit's image memory cache from bypassing late fault injection.
         await verifyBlockedTiles(browser, viewport, `${engineName}-${size}`);
         assert.equal(page.workers().length, 0);
-        assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 8);
+        assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 9);
         assert.equal(requests.filter(u => u.includes('rails-runtime.wasm')).length, initialWasm);
         assert.equal(await page.evaluate(() => window.geolocationCalls), 0);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));

@@ -65,8 +65,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(page.workers().length, 0, 'Read-only Rails worker must be terminated before interactions');
       assert.equal(
         await page.evaluate(() => window.guideApp.railsRequestCount),
-        8,
-        '4 pages + 3 map scenarios + restaurants.json'
+        9,
+        '5 pages + 3 map scenarios + restaurants.json'
       );
       assert.equal(await page.locator('#rails-root form,#rails-root input').count(), 0);
       const restaurantsJson = await page.evaluate(() => window.guideApp.request('/restaurants.json'));
@@ -226,7 +226,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       await page.waitForURL(new URL('archives', base).href);
       assert.equal(await page.locator('#archive-photo-dialog[open]').count(), 0);
       assert.equal(page.workers().length, 0);
-      assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 8);
+      assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 9);
       assert.equal(nonPhotoRequests().length, requestsBeforeReading, 'Reading/filtering must not fetch more data');
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await go(page, '/event');

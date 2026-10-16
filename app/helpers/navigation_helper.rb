@@ -5,6 +5,7 @@ module NavigationHelper
       ['宮崎の地図', root_path],
       ['開催・アクセス', event_path],
       ['ごはん・人数', restaurants_path],
+      ['移動・バス', transport_path],
       ['過去RubyKaigi', editions_path]
     ]
   end

@@ -25,6 +25,7 @@ const PAGES = {
   '/': 'MapsController',
   '/event': 'EventsController',
   '/restaurants': 'RestaurantsController',
+  '/transport': 'TransportsController',
   '/archives': 'EditionsController'
 };
 
@@ -246,6 +247,28 @@ for (const photo of photoData.photos) {
 }
 assert.match(archivesHtml, /<dialog[^>]+aria-labelledby="archive-photo-title"/);
 console.log('PASS licensed archive images retain credit, provenance, dimensions, and accessible enlargement controls');
+
+const transportData = await data('transport');
+const transportHtml = pages['/transport'];
+for (const [key, attribute] of Object.entries({
+  routes: 'data-transport-route',
+  operators: 'data-transport-operator',
+  checklist: 'data-transport-check',
+  rules: 'data-transport-rule',
+  pastPractices: 'data-transport-practice',
+  taxis: 'data-transport-taxi'
+})) {
+  assert.ok(transportData[key].length > 0, `transport.${key} is empty`);
+  assert.equal((transportHtml.match(new RegExp(`${attribute}[ >]`, 'g')) || []).length, transportData[key].length, key);
+}
+for (const item of Object.values(transportData).filter(Array.isArray).flat()) {
+  for (const url of [item.sourceUrl, ...(item.sourceUrls || [])].filter(Boolean)) {
+    assert.equal(new URL(url).protocol, 'https:');
+    assert.ok(transportHtml.includes(url.replaceAll('&', '&amp;')), `Missing transport source ${url}`);
+  }
+}
+assert.match(transportHtml, /担当・進捗は載せていません/);
+console.log('PASS transport page renders every route, operator, rule and check with its official source');
 
 assert.equal(new Set(venues.map(v => v.id)).size, 20);
 assert.equal(venues.filter(v => v.venueType === 'hotel_banquet').length, 4);

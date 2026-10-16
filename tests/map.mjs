@@ -164,7 +164,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       await page.locator('[data-map-mode="schematic"]').click();
       assert.equal(await page.locator('.leaflet-container').count(), 0);
     }
-    assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 8);
+    assert.equal(await page.evaluate(() => window.guideApp.railsRequestCount), 9);
     assert.equal(await page.evaluate(() => window.guideApp.mapMetrics.cachedScenarios), 3);
     assert.equal(await page.evaluate(() => window.guideApp.mapMetrics.realMapInstances), 0);
     assert.equal(page.workers().length, 0);
