@@ -1,11 +1,14 @@
-Initializing Rails application...
-Rails application has been loaded but not initialized
+(node:61452) ExperimentalWarning: WASI is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
 PASS each guide page is its own Rails route → controller → ActionView ERB with the shared layout
 PASS URL helpers honour the Pages mount point (SCRIPT_NAME)
 PASS Rails JSON exposes the same event snapshot
 PASS reading-mode Rails boots and renders without opening the lab database
 PASS changing the Ruby model changes ERB output and ActionView escapes HTML
-PASS Rails scenarios emit matching ERB place cards and source-backed GeoJSON with schematic-only lines; unknown → 404
-PASS real Rails ERB and JSON expose twenty source-backed dining venues and five official archives
+PASS Rails scenarios emit place cards, schematic lines, and OSM walking/driving routes that follow roads between the places; unknown → 404
+PASS real Rails ERB and JSON expose source-backed dining venues and official archives
+PASS novelty JSON and Rails cards agree, with exact sources and explicit distribution categories
+PASS licensed archive images retain credit, provenance, dimensions, and accessible enlargement controls
+PASS transport page renders every route, operator, rule and check with its official source
 PASS expanded data provenance, unknown/conflicting capacities, seated-vs-standing and hotel room distinctions
 PASS all 27 destinations have qualified addresses; 20 dining pins and origin-free Maps links are Rails-rendered
