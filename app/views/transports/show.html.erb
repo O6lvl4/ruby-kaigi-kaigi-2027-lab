@@ -1,5 +1,5 @@
 <% content_for :title, '移動・バス' %>
-<% sources = ->(urls) { Array(urls).each_with_index.map { |url, index| link_to("出典#{index + 1 if Array(urls).size > 1} ↗", url) }.join(' ').html_safe } %>
+<% sources = ->(urls) { safe_join(Array(urls).each_with_index.map { |url, index| link_to("出典#{index + 1 if Array(urls).size > 1} ↗", url) }, ' ') } %>
 <div class="archive-guide transport-guide">
   <header id="transport" class="archive-header" aria-labelledby="transport-title">
     <p class="archive-eyebrow">GETTING AROUND <span>MIYAZAKI 2027</span></p>
