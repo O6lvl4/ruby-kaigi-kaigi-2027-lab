@@ -4,9 +4,17 @@ class EditionsController < ApplicationController
     @editions = Edition.all
     @page = Edition.page
     @reading_prompts = Edition.reading_prompts
+    @novelties = Novelty.all
     respond_to do |format|
       format.html
-      format.json { render json: { checkedAt: Edition.checked_at, editions: @editions } }
+      format.json { render json: archive_data }
     end
+  end
+
+  private
+
+  def archive_data
+    { checkedAt: Edition.checked_at, editions: @editions,
+      noveltyCheckedAt: Novelty.checked_at, novelties: @novelties, noveltyResources: Novelty.resources }
   end
 end

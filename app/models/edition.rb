@@ -5,7 +5,7 @@ class Edition < StaticRecord
   ReadingPrompt = Data.define(:title, :fact, :inference, :sources)
 
   attribute :year, :city, :dates, :venue, :url, :schedule_url, :events_url,
-            :operations_url, :operations_label, :point
+            :operations_url, :operations_label, :point, :point_source, :edition, :resources
 
   def self.page
     document.fetch('page')
@@ -20,6 +20,6 @@ class Edition < StaticRecord
   end
 
   def id
-    year.to_s
+    @attributes['id'] || year.to_s
   end
 end

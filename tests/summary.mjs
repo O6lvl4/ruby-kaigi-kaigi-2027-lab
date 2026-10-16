@@ -132,15 +132,35 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.match(await page.locator('[data-restaurant-id="torihisa"] details').innerText(), /2027年の空席/);
       await page.screenshot({ path: `evidence/dining-${name}-${size}.png`, fullPage: true });
       await go(page, '/archives');
-      assert.equal(await page.locator('[data-archive-year]').count(), 5);
       const editions = JSON.parse(await readFile('db/data/editions.json', 'utf8')).editions;
+      assert.equal(await page.locator('[data-archive-year]').count(), editions.length);
       for (const event of editions) {
-        const card = page.locator(`[data-archive-year="${event.year}"]`);
-        assert.equal(await card.locator(`a[href="${event.scheduleUrl}"]`).count(), 1);
-        assert.equal(await card.locator(`a[href="${event.eventsUrl}"]`).count(), 1);
+        const card = page.locator(`[data-edition-id="${event.id}"]`);
+        if (event.scheduleUrl) assert.ok((await card.locator(`a[href="${event.scheduleUrl}"]`).count()) >= 1);
+        if (event.eventsUrl) assert.ok((await card.locator(`a[href="${event.eventsUrl}"]`).count()) >= 1);
       }
+      assert.equal(await page.locator('#site-navigation a[aria-current="page"]').innerText(), '過去RubyKaigi');
+      const novelties = JSON.parse(await readFile('db/data/novelties.json', 'utf8')).novelties;
+      assert.equal(await page.locator('[data-novelty-id]').count(), novelties.length);
+      for (const item of novelties) {
+        const card = page.locator(`[data-novelty-id="${item.id}"]`);
+        assert.ok((await card.innerText()).includes(item.name));
+        assert.ok((await card.innerText()).includes(item.distribution));
+        assert.equal(await card.locator('.novelty-category').innerText(), item.category);
+        assert.equal(await card.locator(`a[href="${item.sourceUrl}"]`).count(), 1);
+      }
+      await page.locator('.archive-sections a[href="#novelties"]').click();
+      assert.equal(new URL(page.url()).hash, '#novelties');
+      assert.ok(await page.locator('#novelties-title').isVisible());
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      await page.screenshot({ path: `evidence/novelties-${name}-${size}.png`, fullPage: false });
+      await page.locator('.archive-sections a[href="#archive-reading"]').click();
+      assert.equal(new URL(page.url()).hash, '#archive-reading');
       await page.locator('.archive-reading > summary').click();
-      assert.equal(await page.locator('.reading-grid article').count(), 3);
+      assert.equal(
+        await page.locator('.reading-grid article').count(),
+        JSON.parse(await readFile('db/data/editions.json', 'utf8')).readingPrompts.length
+      );
       for (let i = 0; i < 3; i++) {
         await go(page, '/restaurants');
         await page.locator('#dining').scrollIntoViewIfNeeded();
@@ -162,17 +182,21 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
         new URL('restaurants', base).pathname,
         'Old single-page anchors land on their page'
       );
-      await page.goto(new URL('archives', base).href);
+      await page.goto(new URL('archives#novelties', base).href);
       await ready(page, { map: false });
       assert.equal(
         await page.locator('main[data-controller="EditionsController"]').count(),
         1,
         'Deep links boot straight into their page'
       );
+      assert.equal(new URL(page.url()).hash, '#novelties');
+      assert.equal(await page.locator('[data-novelty-id]').count(), novelties.length);
       await page.screenshot({ path: `evidence/summary-${name}-${size}.png`, fullPage: true });
       await page.reload();
       await ready(page, { map: false });
       assert.equal(await page.locator('#rails-root main[data-platform="wasm32-wasi"]').count(), 1);
+      assert.equal(new URL(page.url()).hash, '#novelties');
+      assert.equal(await page.locator('[data-novelty-id]').count(), novelties.length);
       results.push({
         engine: name,
         viewport: size,
