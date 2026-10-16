@@ -134,7 +134,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
         const dining = page.locator('#dining');
         await dining.scrollIntoViewIfNeeded();
         assert.equal(await dining.locator('[data-restaurant-id]').count(), 20);
-        assert.equal(await dining.locator('.dining-thumbnail').count(), 20);
+        assert.equal(await dining.locator('.dining-thumbnail').count(), 0, 'Restaurants show no photo placeholders');
         const card = dining.locator('[data-restaurant-id="torihisa"]');
         for (const mode of ['walking', 'driving']) {
           const href = await card.locator(`a[href*="travelmode=${mode}"]`).getAttribute('href');
