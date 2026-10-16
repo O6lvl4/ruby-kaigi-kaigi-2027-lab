@@ -1,10 +1,21 @@
-<% content_for :title, '過去の開催' %>
+<% content_for :title, '過去RubyKaigi' %>
 <section id="archive" class="section reference-section" aria-labelledby="archive-title">
   <%= section_label '06', @page.fetch('title'), id: 'archive-title' %>
   <p class="section-intro"><%= @page.fetch('intro') %></p>
+  <nav class="archive-sections" aria-label="過去RubyKaigiの掲載内容">
+    <a href="#archive">開催一覧</a>
+    <a href="#novelties">ノベルティ・記念品</a>
+    <a href="#archive-reading">運営の読み方</a>
+  </nav>
   <div class="archive-list">
     <%= render @editions %>
   </div>
+  <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
+</section>
+<%= render 'novelties/archive', novelties: @novelties %>
+<section id="archive-reading" class="section reference-section" aria-labelledby="archive-reading-title">
+  <%= section_label '08', '運営の読み方', id: 'archive-reading-title' %>
+  <p class="section-intro">公開資料で確認できる実施例と、そこから考えられることを分けてまとめています。</p>
   <details class="archive-reading">
     <summary>過去の開催から、どこを読む？</summary>
     <div class="reading-grid">

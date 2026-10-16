@@ -1,6 +1,6 @@
 import { chromium, webkit } from 'playwright';
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 const base = process.env.DEMO_URL || 'http://127.0.0.1:5173/';
 const restaurantsPath = new URL('restaurants', base).pathname,
   homePath = new URL(base).pathname;
@@ -115,7 +115,10 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
         } else {
           assert.equal(await page.locator('#site-navigation').isVisible(), true);
           await page.locator('.header-archives summary').click();
-          assert.equal(await page.locator('.header-archives a').count(), 5);
+          assert.equal(
+            await page.locator('.header-archives a').count(),
+            JSON.parse(await readFile('db/data/editions.json', 'utf8')).editions.length
+          );
           await page.locator('.header-archives a').first().focus();
           await page.keyboard.press('Escape');
           assert.equal(await page.locator('.header-archives').getAttribute('open'), null);

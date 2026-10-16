@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-08",
+  "checkedAt": "2026-10-16",
   "page": {
-    "title": "過去のRubyKaigiを見てみる",
-    "intro": "プログラムだけでなく、食事・交流会・会場への移動の案内も読めます。過去の実施例であり、2027年の決定事項ではありません。"
+    "title": "過去RubyKaigi",
+    "intro": "2016〜2026年の開催情報、ノベルティ・記念品、運営の実施例を出典つきでまとめています。現地開催・オンライン開催・中止を区別し、2027年の検討材料として読めるアーカイブです。"
   },
   "editions": [
     {
@@ -21,7 +21,8 @@
         "city": "url",
         "dates": "url",
         "venue": "url"
-      }
+      },
+      "id": "2026"
     },
     {
       "year": 2025,
@@ -42,7 +43,9 @@
         "city": "url",
         "dates": "url",
         "venue": "url"
-      }
+      },
+      "id": "2025",
+      "pointSource": "https://rubykaigi.org/2025/onsite/"
     },
     {
       "year": 2024,
@@ -58,7 +61,8 @@
         "city": "url",
         "dates": "url",
         "venue": "url"
-      }
+      },
+      "id": "2024"
     },
     {
       "year": 2023,
@@ -76,25 +80,168 @@
         "city": "url",
         "dates": "url",
         "venue": "url"
-      }
+      },
+      "id": "2023"
     },
     {
       "year": 2022,
-      "city": "三重",
-      "dates": "2022年9月8〜10日",
-      "venue": "三重県総合文化センター",
+      "city": "津（三重）＋オンライン",
+      "dates": "2022年9月8日–10日",
+      "venue": "三重県総合文化センター（Mie Center for the Arts）＋バーチャル会場",
       "url": "https://rubykaigi.org/2022/",
       "scheduleUrl": "https://rubykaigi.org/2022/schedule/",
       "eventsUrl": "https://rubykaigi.org/2022/events/",
       "operationsUrl": "https://rubykaigi.org/2022/venue/",
-      "operationsLabel": "会場・シャトルバス",
-      "point": "津駅と会場を結ぶシャトルバスの乗り場・運行時間・注意事項を読む",
+      "operationsLabel": "公式会場・シャトル案内",
+      "point": "津駅と会場を結ぶ無料シャトルの乗り場・運行間隔を公開。港への便はフェリー時刻変更で中止し代替交通にも言及。接続交通の変更を案内に反映する参考。",
       "pointSource": "https://rubykaigi.org/2022/venue/",
-      "fieldSources": {
-        "city": "url",
-        "dates": "url",
-        "venue": "url"
-      }
+      "formatSource": "https://ti.to/rubykaigi/2022",
+      "citySource": "https://cfp.rubykaigi.org/events/2022",
+      "id": "2022",
+      "resources": [
+        {
+          "year": 2022,
+          "label": "公式オンラインショップ（販売）・Graphic Kit",
+          "url": "https://rubykaigi.org/2022/novelties/",
+          "note": "Shopifyは世界配送、SUZURIは日本国内配送。デジタルキットはロゴ・メインビジュアル・忍者。販売品を全参加者配布品と混同しない。"
+        },
+        {
+          "year": 2022,
+          "label": "現地・オンライン参加の公式案内",
+          "url": "https://ti.to/rubykaigi/2022"
+        },
+        {
+          "year": 2022,
+          "label": "開催都市の公式案内",
+          "url": "https://cfp.rubykaigi.org/events/2022"
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "edition": "RubyKaigi Takeout 2021",
+      "city": "オンライン",
+      "dates": "2021年9月9日–11日（JST昼間）",
+      "venue": "オンライン",
+      "url": "https://rubykaigi.org/2021-takeout/",
+      "scheduleUrl": "https://rubykaigi.org/2021-takeout/schedule/",
+      "operationsUrl": "https://rubykaigi.org/2021-takeout/",
+      "operationsLabel": "公式オンライン移行告知",
+      "point": "当初の7月・三重での現地開催を中止し、9月のオンライン代替イベントに変更。変更後の日程・形式・動画アーカイブを明示した。",
+      "pointSource": "https://rubykaigi.org/2021-takeout/",
+      "id": "2021-takeout",
+      "resources": [
+        {
+          "year": 2021,
+          "label": "公式オンラインショップ（販売）",
+          "url": "https://rubykaigi.org/2021-takeout/novelties/",
+          "note": "Shopifyは世界配送、SUZURIは日本国内配送と当時の公式ページに明記。商品別の販売履歴は未確認。現行販売・在庫を保証しない。"
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "city": "松本（現地開催中止）",
+      "dates": "2020年9月3日–5日の予定を中止",
+      "venue": "まつもと市民芸術館（Matsumoto Performing Arts Centre／予定会場）",
+      "url": "https://rubykaigi.org/2020/",
+      "operationsUrl": "https://rubykaigi.org/2020/",
+      "operationsLabel": "公式中止告知",
+      "point": "現地開催は中止。後日のオンライン代替イベント RubyKaigi Takeout 2020 と区別して記録する。松本で開催された年として数えない。",
+      "pointSource": "https://rubykaigi.org/2020/",
+      "id": "2020-cancelled"
+    },
+    {
+      "year": 2020,
+      "edition": "RubyKaigi Takeout 2020",
+      "city": "オンライン",
+      "dates": "2020年9月4日–5日（JST）",
+      "venue": "オンライン",
+      "url": "https://rubykaigi.org/2020-takeout/",
+      "scheduleUrl": "https://rubykaigi.org/2020-takeout/schedule/",
+      "operationsUrl": "https://rubykaigi.org/2020-takeout/schedule/",
+      "operationsLabel": "公式オンライン時間割",
+      "point": "2トラックの時間割にJSTを明記。オンライン開催ではタイムゾーンと視聴先を揃えて示す参考（運営上の読み取り）。",
+      "pointSource": "https://rubykaigi.org/2020-takeout/schedule/",
+      "id": "2020-takeout"
+    },
+    {
+      "year": 2019,
+      "city": "福岡",
+      "dates": "2019年4月18日–20日",
+      "venue": "福岡国際会議場（Fukuoka International Congress Center）",
+      "url": "https://rubykaigi.org/2019/",
+      "scheduleUrl": "https://rubykaigi.org/2019/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2019/parties/",
+      "operationsUrl": "https://rubykaigi.org/2019/transport/",
+      "operationsLabel": "公式交通案内",
+      "point": "協賛シャトルを博多駅・天神・空港と会場の間に設定し、乗車方法・満席時の注意・時刻表を公開。会場から懇親会や帰路までをまとめて案内する参考。",
+      "pointSource": "https://rubykaigi.org/2019/transport/",
+      "id": "2019",
+      "resources": [
+        {
+          "year": 2019,
+          "label": "デジタル配布物：Graphic Kit、Keynoteテンプレート",
+          "url": "https://rubykaigi.org/2019/goodies/"
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "city": "仙台",
+      "dates": "2018年5月31日–6月2日",
+      "venue": "仙台国際センター（Sendai International Center）",
+      "url": "https://rubykaigi.org/2018/",
+      "scheduleUrl": "https://rubykaigi.org/2018/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2018/parties/",
+      "operationsUrl": "https://rubykaigi.org/2018/goodies/",
+      "operationsLabel": "公式デザイン配布物",
+      "point": "Keynoteテンプレートとロゴ・メインビジュアルを公式サイトで公開。印刷物・登壇資料・協賛制作物のデザインを揃える参考（運営上の読み取り）。",
+      "pointSource": "https://rubykaigi.org/2018/goodies/",
+      "id": "2018",
+      "resources": [
+        {
+          "year": 2018,
+          "label": "デジタル配布物：ロゴ・メインビジュアル、Keynoteテンプレート",
+          "url": "https://rubykaigi.org/2018/goodies/"
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "city": "広島",
+      "dates": "2017年9月18日–20日",
+      "venue": "広島国際会議場（International Conference Center Hiroshima）",
+      "url": "https://rubykaigi.org/2017/",
+      "scheduleUrl": "https://rubykaigi.org/2017/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2017/parties/",
+      "operationsUrl": "https://rubykaigi.org/2017/policies/",
+      "operationsLabel": "公式アクセシビリティ方針",
+      "point": "車椅子で利用できる会場、授乳室・有資格者による託児、学生割引・無料参加日、録画公開を方針に組み込んだ。会場選定段階で参加の障壁を点検する参考。",
+      "pointSource": "https://rubykaigi.org/2017/policies/",
+      "id": "2017",
+      "resources": [
+        {
+          "year": 2017,
+          "label": "デジタル配布物：Keynoteテンプレート",
+          "url": "https://rubykaigi.org/2017/goodies/",
+          "note": "物理ノベルティを示すページではない。"
+        }
+      ]
+    },
+    {
+      "year": 2016,
+      "city": "京都",
+      "dates": "2016年9月8日–10日",
+      "venue": "国立京都国際会館（Kyoto International Conference Center）",
+      "url": "https://rubykaigi.org/2016/",
+      "scheduleUrl": "https://rubykaigi.org/2016/schedule/",
+      "eventsUrl": "https://rubykaigi.org/2016/parties/",
+      "operationsUrl": "https://rubykaigi.org/2016/code-of-conduct/",
+      "operationsLabel": "公式行動規範",
+      "point": "名札でスタッフを識別できることと、ハラスメントの相談窓口を明示。地域開催でも相談先と現場対応を先に設計する際の参考になる。",
+      "pointSource": "https://rubykaigi.org/2016/code-of-conduct/",
+      "id": "2016"
     }
   ],
   "readingPrompts": [
@@ -121,6 +268,31 @@
       "inference": "飲食店を調べるときは、大人数の一会場だけでなく少人数で集まる場所も比べられます。",
       "sources": [
         "https://rubykaigi.org/2024/events/"
+      ]
+    },
+    {
+      "title": "地元の既存製品に、専用の意匠を足す",
+      "fact": "2023年の調達担当者は、約1,000個での完全オリジナル缶が難しかったため、八幡屋礒五郎の既存「松本缶」に専用の蓋を組み合わせたと記録しています。",
+      "inference": "地元らしさと発注数・費用・納期を両立するため、既製品の一部分を変える方法も比較できます。",
+      "sources": [
+        "https://swan-match.hatenablog.com/entry/rubykaigi2023"
+      ]
+    },
+    {
+      "title": "製造の締切から、デザインを逆算する",
+      "fact": "2024年のかりゆしウェアは1,000着超を沖縄県内で製造。公式デザイナーは、5月開催に間に合わせるため前年12月22日にデザイン確定が必要だったと説明しています。",
+      "inference": "地域の製造能力、サイズ展開、サンプル確認も含めて早い段階で相談する材料になります。",
+      "sources": [
+        "https://note.com/yuki930/n/n11a3c1e3e979"
+      ]
+    },
+    {
+      "title": "配布対象と在庫を分けて案内する",
+      "fact": "2023年のDIYキーボードは全員分を用意せず、開場約40分で配布終了。2026年のMA-1はcommitter専用、ピンバッジはスタンプラリー達成景品でした。",
+      "inference": "基本配布、数量限定、役割限定、条件付き景品を先に区別すると、参加者の期待と現場案内を揃えやすくなります。",
+      "sources": [
+        "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+        "https://www.gaji.jp/blog/2026/06/04/24768/"
       ]
     }
   ]

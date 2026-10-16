@@ -861,6 +861,77 @@ footer details span {
   gap: 10px 24px;
   font-size: 12px;
 }
+.archive-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 24px 0;
+  font-size: 14px;
+}
+.novelty-year .archive-year h3 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ruby);
+}
+.novelty-year .archive-year h3 a {
+  text-decoration: none;
+}
+.novelty-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.novelty-item + .novelty-item {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  margin-top: 24px;
+}
+.novelty-category {
+  display: inline-block;
+  padding: 2px 9px;
+  margin-bottom: 8px;
+  background: var(--tint);
+  color: var(--ruby);
+  border-radius: 3px;
+  font-size: 12px;
+}
+.novelty-item h4 {
+  margin-bottom: 4px;
+  font-size: 17px;
+}
+.novelty-provider {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.novelty-item dl {
+  margin: 0;
+  font-size: 14px;
+}
+.novelty-item dt {
+  font-weight: 600;
+}
+.novelty-item dd {
+  margin: 2px 0 10px;
+}
+.novelty-item .source {
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+.archive-resources {
+  padding-left: 20px;
+  font-size: 14px;
+}
+.archive-resources li {
+  margin: 16px 0;
+}
+.archive-resources p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
 .archive-reading {
   border-top: 1px solid var(--line);
   padding-top: 20px;
@@ -1231,6 +1302,8 @@ select:focus-visible {
   right: 0;
   z-index: 750;
   width: 225px;
+  max-height: 50vh;
+  overflow-y: auto;
   background: var(--paper);
   border: 1px solid var(--line);
   box-shadow: 0 8px 24px #252a2714;

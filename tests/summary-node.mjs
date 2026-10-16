@@ -6,6 +6,13 @@ import { bootRails } from './support/rails_app.mjs';
 const { vm, get, request } = await bootRails();
 const html = path => get(path, 'text/html');
 const data = async name => JSON.parse(await readFile(`db/data/${name}.json`, 'utf8'));
+const escaped = text =>
+  text
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 // Great-circle distance in metres between two [longitude, latitude] points.
 function metres([lng1, lat1], [lng2, lat2]) {
   const rad = Math.PI / 180;
@@ -148,7 +155,7 @@ const restaurantsHtml = pages['/restaurants'];
 const archivesHtml = pages['/archives'];
 assert.equal(venues.length, 20);
 assert.deepEqual(
-  editionData.editions.map(x => x.year),
+  editionData.editions.slice(0, 5).map(x => x.year),
   [2026, 2025, 2024, 2023, 2022]
 );
 assert.equal(venues.find(x => x.id === 'ajidokoro-shu').groupCapacity, null);
@@ -156,7 +163,7 @@ assert.equal(venues.find(x => x.id === 'torihisa').groupCapacity, 20);
 assert.equal(venues.find(x => x.id === 'takasago').totalSeats, 163);
 assert.equal(venues.find(x => x.id === 'takasago').groupCapacity, 50);
 assert.equal((restaurantsHtml.match(/data-restaurant-id=/g) || []).length, 20);
-assert.equal((archivesHtml.match(/data-archive-year=/g) || []).length, 5);
+assert.equal((archivesHtml.match(/data-archive-year=/g) || []).length, editionData.editions.length);
 assert.match(restaurantsHtml, /id="dining"/);
 assert.match(archivesHtml, /id="archive"/);
 for (const restaurant of venues) {
@@ -164,8 +171,43 @@ for (const restaurant of venues) {
   assert.ok(restaurantsHtml.includes(restaurant.sourceUrl));
 }
 for (const edition of editionData.editions)
-  for (const key of ['url', 'scheduleUrl', 'eventsUrl']) assert.ok(archivesHtml.includes(edition[key]));
-console.log('PASS real Rails ERB and JSON expose twenty source-backed dining venues and five official archives');
+  for (const key of ['url', 'scheduleUrl', 'eventsUrl'])
+    if (edition[key]) assert.ok(archivesHtml.includes(edition[key]));
+console.log('PASS real Rails ERB and JSON expose source-backed dining venues and official archives');
+
+const noveltyData = await data('novelties');
+assert.deepEqual(editionsJson.body.novelties, noveltyData.novelties);
+assert.equal(editionsJson.body.noveltyCheckedAt, noveltyData.checkedAt);
+assert.match(archivesHtml, /id="novelties"/);
+assert.match(archivesHtml, /過去RubyKaigi/);
+assert.ok(archivesHtml.includes(noveltyData.coverageNote));
+assert.equal((archivesHtml.match(/data-novelty-id=/g) || []).length, noveltyData.novelties.length);
+assert.equal(new Set(noveltyData.novelties.map(item => item.id)).size, noveltyData.novelties.length);
+assert.deepEqual(
+  noveltyData.novelties.map(item => item.year),
+  noveltyData.novelties.map(item => item.year).sort((a, b) => b - a)
+);
+for (const item of noveltyData.novelties) {
+  assert.ok(
+    editionData.editions.some(edition => edition.year === item.year),
+    `Unknown year: ${item.id}`
+  );
+  for (const key of ['id', 'city', 'name', 'category', 'provider', 'distribution', 'note', 'sourceLabel'])
+    assert.ok(typeof item[key] === 'string' && item[key].trim(), `${item.id} is missing ${key}`);
+  for (const key of ['eventUrl', 'sourceUrl']) {
+    assert.equal(new URL(item[key]).protocol, 'https:');
+    assert.ok(archivesHtml.includes(item[key].replaceAll('&', '&amp;')), `Missing source: ${item.id}`);
+  }
+  for (const key of ['name', 'category', 'distribution'])
+    assert.ok(archivesHtml.includes(escaped(item[key])), `Missing visible ${key}: ${item.id}`);
+}
+assert.ok(noveltyData.novelties.some(item => item.category.includes('公式')));
+assert.deepEqual(editionsJson.body.noveltyResources, noveltyData.resources);
+assert.ok(noveltyData.resources.some(item => item.label.includes('販売')));
+assert.equal(new Set(editionData.editions.map(item => item.id)).size, editionData.editions.length);
+assert.equal(editionData.editions.filter(item => item.year === 2020).length, 2);
+assert.match(archivesHtml, /現地開催中止/);
+console.log('PASS novelty JSON and Rails cards agree, with exact sources and explicit distribution categories');
 
 assert.equal(new Set(venues.map(v => v.id)).size, 20);
 assert.equal(venues.filter(v => v.venueType === 'hotel_banquet').length, 4);

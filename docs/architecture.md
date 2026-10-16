@@ -8,7 +8,7 @@ app/
                     EditionsController, MapScenariosController（+ 技術デモの VenuesController）
     concerns/       BrowserRendered（Wasm 内 ActionView が描いた印のヘッダー）
   models/           StaticRecord（db/data の JSON を読む読み取り専用モデル）と
-                    Event, Restaurant, Edition, Place, MapScenario, SchematicLayout（+ Venue）
+                    Event, Restaurant, Edition, Novelty, Place, MapScenario, SchematicLayout（+ Venue）
   helpers/          リンク・ナビゲーション・Google Maps の目的地リンク
   views/            layouts/application（ヘッダー・フッター）と各ページ・部分テンプレート
   javascript/
@@ -32,7 +32,7 @@ lib/                WasmRequestBridge（JS ↔ Rack）
 | `/` | `maps#show` | 宮崎の地図 |
 | `/event` | `events#show` | 開催・アクセス |
 | `/restaurants`（`.json`） | `restaurants#index` | ごはん・人数 |
-| `/archives`（`.json`） | `editions#index` | 過去の開催 |
+| `/archives`（`.json`） | `editions#index` | 過去RubyKaigi・ノベルティ |
 | `/map/scenarios/:id.json` | `map_scenarios#show` | 地図の見方ごとの GeoJSON とカード |
 
 起動時に全ページと必要な JSON を Rails で1回ずつ生成し、Ruby の実行ワーカーを終了してから表示します。以後のページ遷移は `Router` が生成済み HTML を差し替え、そのページの JS を付け外しします。URL は実パス（例：`/ruby-kaigi-kaigi-2027-lab/restaurants`）で、Rails の URL ヘルパーは `SCRIPT_NAME` から Pages のサブパスを含むリンクを出します。直接アクセスやリロードは `404.html`（ビルド時に `index.html` を複製）経由で同じページを開きます。旧1ページ版のアンカー（`#dining` など）は対応するページへ移ります。
