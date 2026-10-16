@@ -1,0 +1,539 @@
+{
+  "checkedAt": "2026-10-16",
+  "photos": [
+    {
+      "id": "331cbe3ace",
+      "noveltyIds": [
+        "2026-tshirt",
+        "2026-hoodie",
+        "2026-gloves",
+        "2026-pouch",
+        "2026-stickers"
+      ],
+      "shows": {
+        "2026-tshirt": "yes",
+        "2026-hoodie": "yes",
+        "2026-gloves": "yes",
+        "2026-pouch": "yes",
+        "2026-stickers": "partly"
+      },
+      "title": "RubyKaigi 2026 公式ノベルティ一式（パーカー、Tシャツ、ガジェットポーチ、手袋、ステッカーシート等）を袋入",
+      "alt": "RubyKaigi 2026 公式ノベルティ一式（パーカー、Tシャツ、ガジェットポーチ、手袋、ステッカーシート等）を袋入りのまま並べた写真。記事キャプション「RubyKaigi 2026公式ノベルティ」",
+      "src": "images/novelties/331cbe3ace.webp",
+      "width": 1164,
+      "height": 1188,
+      "creator": "FUNDINNO 採用担当（note投稿者）",
+      "credit": "FUNDINNO 採用担当（note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/fundinno_recruit/n/n2b477cfe8297",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1776922353-PlVR0zTtSCbomEufGO1j73Iw.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "3c0d457c4b",
+      "noveltyIds": [
+        "2026-tshirt",
+        "2026-gloves",
+        "2026-pouch",
+        "2026-stickers"
+      ],
+      "shows": {
+        "2026-tshirt": "yes",
+        "2026-gloves": "partly",
+        "2026-pouch": "partly",
+        "2026-stickers": "partly"
+      },
+      "title": "Gaji-Labo スポンサーブースの展示写真",
+      "alt": "Gaji-Labo スポンサーブースの展示写真。2026年Tシャツ3枚を吊り展示し、机上に名札・ストラップ・ポーチ・手袋・ステッカー等の実物を陳列",
+      "src": "images/novelties/3c0d457c4b.webp",
+      "width": 1200,
+      "height": 900,
+      "creator": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "credit": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://wp.gaji.jp/wp-content/uploads/2026/05/image-5-1.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "87f834159b",
+      "noveltyIds": [
+        "2026-tshirt",
+        "2026-gloves"
+      ],
+      "shows": {
+        "2026-tshirt": "partly",
+        "2026-gloves": "partly"
+      },
+      "title": "Gaji-Labo によるRubyKaigi 2026ノベルティのデザイン一覧（Tシャツ着用モック、パーカー/MA-1、",
+      "alt": "Gaji-Labo によるRubyKaigi 2026ノベルティのデザイン一覧（Tシャツ着用モック、パーカー/MA-1、名札、スタンプラリー台紙、ステッカー、ポーチ、手袋、ピンバッジ等）。記事alt「ロゴをシンプルに使用したノベルティたち」。Tシャツはモデル着用のモック画像",
+      "src": "images/novelties/87f834159b.webp",
+      "width": 1200,
+      "height": 719,
+      "creator": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "credit": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "sourceLabel": "元記事",
+      "kind": "mockup",
+      "originalUrl": "https://wp.gaji.jp/wp-content/uploads/2026/05/image-5.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "55fc222c54",
+      "noveltyIds": [
+        "2026-hoodie",
+        "2026-ma1"
+      ],
+      "shows": {
+        "2026-hoodie": "yes",
+        "2026-ma1": "yes"
+      },
+      "title": "パーカー（黒・紺・グレー）とMA-1ジャケットの表裏モック画像",
+      "alt": "パーカー（黒・紺・グレー）とMA-1ジャケットの表裏モック画像。記事に「モック画像ですみません」と明記",
+      "src": "images/novelties/55fc222c54.webp",
+      "width": 1200,
+      "height": 643,
+      "creator": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "credit": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "sourceLabel": "元記事",
+      "kind": "mockup",
+      "originalUrl": "https://wp.gaji.jp/wp-content/uploads/2026/05/image-15.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "dae8e5954f",
+      "noveltyIds": [
+        "2026-pouch"
+      ],
+      "shows": {
+        "2026-pouch": "yes"
+      },
+      "title": "ガジェットポーチ3色（黒・ベージュ・グレーピンク）の写真（背景切り抜き）",
+      "alt": "ガジェットポーチ3色（黒・ベージュ・グレーピンク）の写真（背景切り抜き）。記事alt「ガジェットポーチ。黒・ベージュ・グレーピンクの3色選べる。」",
+      "src": "images/novelties/dae8e5954f.webp",
+      "width": 1200,
+      "height": 374,
+      "creator": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "credit": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://wp.gaji.jp/wp-content/uploads/2026/05/image-13.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "837861a02b",
+      "noveltyIds": [
+        "2026-rally-pin"
+      ],
+      "shows": {
+        "2026-rally-pin": "yes"
+      },
+      "title": "ピンバッジ3種（長方形ロゴ、五稜郭型ロゴ、丸型イカのマーク）の写真",
+      "alt": "ピンバッジ3種（長方形ロゴ、五稜郭型ロゴ、丸型イカのマーク）の写真。記事alt「ピンバッジ。五稜郭型のロゴマーク、丸型のイカのマーク、長方形のロゴ、の3種類を用意。」",
+      "src": "images/novelties/837861a02b.webp",
+      "width": 1200,
+      "height": 604,
+      "creator": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "credit": "Gaji-Labo（記事投稿者 Naoki Matsuda）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://www.gaji.jp/blog/2026/06/04/24768/",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://wp.gaji.jp/wp-content/uploads/2026/05/image-13.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "aa8b27cf41",
+      "noveltyIds": [
+        "2026-rally-pin"
+      ],
+      "shows": {
+        "2026-rally-pin": "partly"
+      },
+      "title": "スタンプラリー台紙の上に獲得した五稜郭型ピンバッジ（袋入り）を置いた写真",
+      "alt": "スタンプラリー台紙の上に獲得した五稜郭型ピンバッジ（袋入り）を置いた写真。記事キャプション「スタンプラリー用紙」「真ん中にある五角形のものがGETしたピンバッチです」",
+      "src": "images/novelties/aa8b27cf41.webp",
+      "width": 1200,
+      "height": 675,
+      "creator": "FUNDINNO 採用担当（note投稿者）",
+      "credit": "FUNDINNO 採用担当（note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/fundinno_recruit/n/n2b477cfe8297",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1776924103-uZJijynhETc9LNbadXvoAW50.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "06160b0ad7",
+      "noveltyIds": [
+        "2025-lock-keychain",
+        "2025-ehime-towel",
+        "2025-tobe-chopstick-rest",
+        "2025-goshuin-book"
+      ],
+      "shows": {
+        "2025-lock-keychain": "yes",
+        "2025-ehime-towel": "yes",
+        "2025-tobe-chopstick-rest": "yes",
+        "2025-goshuin-book": "yes"
+      },
+      "title": "RubyKaigi 2025 公式ノベルティの物撮り写真：愛媛県産タオル（RubyKaigi 2025柄）、砥部焼の箸置",
+      "alt": "RubyKaigi 2025 公式ノベルティの物撮り写真：愛媛県産タオル（RubyKaigi 2025柄）、砥部焼の箸置き2種（台紙入り）、御朱印帳、松竹錠型アクリルキーホルダー。記事見出し「公式ノベルティ」",
+      "src": "images/novelties/06160b0ad7.webp",
+      "width": 1200,
+      "height": 759,
+      "creator": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "credit": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/taeyeonkim/n/nd7c032de6a99",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1754826056-iuOKy0sZB6oCRPbz5jv7TGUJ.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "1c98019138",
+      "noveltyIds": [
+        "2025-rally-pin"
+      ],
+      "shows": {
+        "2025-rally-pin": "yes"
+      },
+      "title": "スタンプラリー景品のピンバッジ3種（椿・ロゴ／ルビー／暖簾モチーフ）を黒背景で撮影した写真",
+      "alt": "スタンプラリー景品のピンバッジ3種（椿・ロゴ／ルビー／暖簾モチーフ）を黒背景で撮影した写真。記事見出し「ピンバッジ」",
+      "src": "images/novelties/1c98019138.webp",
+      "width": 1200,
+      "height": 509,
+      "creator": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "credit": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/taeyeonkim/n/nd7c032de6a99",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1754730849-wLOlzYcUPxQa1GMpHVBNeSJm.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "19ecf33afc",
+      "noveltyIds": [
+        "2025-rally-pin"
+      ],
+      "shows": {
+        "2025-rally-pin": "yes"
+      },
+      "title": "ピンバッジ3種のデザインデータ（PANTONE 6003 C / 016 C の色指定付き）",
+      "alt": "ピンバッジ3種のデザインデータ（PANTONE 6003 C / 016 C の色指定付き）",
+      "src": "images/novelties/19ecf33afc.webp",
+      "width": 1200,
+      "height": 509,
+      "creator": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "credit": "Kim（note株式会社 コミュニケーションデザイナー、note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/taeyeonkim/n/nd7c032de6a99",
+      "sourceLabel": "元記事",
+      "kind": "official_graphic",
+      "originalUrl": "https://assets.st-note.com/img/1754731138-Eu80Fqj7KUzpasIgOfJohT2R.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "172db3173f",
+      "noveltyIds": [
+        "2024-kariyushi"
+      ],
+      "shows": {
+        "2024-kariyushi": "yes"
+      },
+      "title": "役割別4色（黄・ロイヤルブルー・赤・緑）のかりゆしウェアを着た人々の集合写真",
+      "alt": "役割別4色（黄・ロイヤルブルー・赤・緑）のかりゆしウェアを着た人々の集合写真。記事キャプション「4色揃うとこんな感じ！」",
+      "src": "images/novelties/172db3173f.webp",
+      "width": 1200,
+      "height": 800,
+      "creator": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "credit": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/yuki930/n/n11a3c1e3e979",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1717427110631-qQym0lMTg4.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "a96fd0c65f",
+      "noveltyIds": [
+        "2024-kariyushi"
+      ],
+      "shows": {
+        "2024-kariyushi": "partly"
+      },
+      "title": "Ruby Committers and the World の壇上で黄色のかりゆしウェアを着たコミッター陣の写真",
+      "alt": "Ruby Committers and the World の壇上で黄色のかりゆしウェアを着たコミッター陣の写真。記事キャプション「Ruby Committers and the Worldでのワンシーン」",
+      "src": "images/novelties/a96fd0c65f.webp",
+      "width": 1200,
+      "height": 800,
+      "creator": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "credit": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/yuki930/n/n11a3c1e3e979",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1717427147854-nNqiKUsgq8.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "278572fdc0",
+      "noveltyIds": [
+        "2023-hinoki-chopsticks"
+      ],
+      "shows": {
+        "2023-hinoki-chopsticks": "yes"
+      },
+      "title": "Rubyコードが刻印された木曽ひのき箸の写真（「BEGIN{q=:Ruby};p||=:Enjoy;END{puts p",
+      "alt": "Rubyコードが刻印された木曽ひのき箸の写真（「BEGIN{q=:Ruby};p||=:Enjoy;END{puts p,q||2023}」等）。記事キャプション「ひのき箸」",
+      "src": "images/novelties/278572fdc0.webp",
+      "width": 1200,
+      "height": 900,
+      "creator": "swan_match（はてなブログ投稿者）",
+      "credit": "swan_match（はてなブログ投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/s/swan_match/20230522/20230522004451.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "4f7e1d0d47",
+      "noveltyIds": [
+        "2023-hinoki-chopsticks",
+        "2023-shichimi-tin"
+      ],
+      "shows": {
+        "2023-hinoki-chopsticks": "partly",
+        "2023-shichimi-tin": "yes"
+      },
+      "title": "七味缶を積み上げた机の写真",
+      "alt": "七味缶を積み上げた机の写真。右奥にひのき箸の束が写る",
+      "src": "images/novelties/4f7e1d0d47.webp",
+      "width": 1200,
+      "height": 900,
+      "creator": "swan_match（はてなブログ投稿者）",
+      "credit": "swan_match（はてなブログ投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/s/swan_match/20230521/20230521224235.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "05c8ccc778",
+      "noveltyIds": [
+        "2023-keycaps"
+      ],
+      "shows": {
+        "2023-keycaps": "yes"
+      },
+      "title": "オリジナルキーキャップ5種（りんごRuby、ロゴ、ルビー、松本城、山）の写真",
+      "alt": "オリジナルキーキャップ5種（りんごRuby、ロゴ、ルビー、松本城、山）の写真。記事キャプション「keycaps」",
+      "src": "images/novelties/05c8ccc778.webp",
+      "width": 938,
+      "height": 570,
+      "creator": "swan_match（はてなブログ投稿者）",
+      "credit": "swan_match（はてなブログ投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/s/swan_match/20230521/20230521224041.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "2215379036",
+      "noveltyIds": [
+        "2023-diy-keyboard"
+      ],
+      "shows": {
+        "2023-diy-keyboard": "yes"
+      },
+      "title": "キーキャップを装着しLEDが点灯した4キーのDIYミニキーボードの写真",
+      "alt": "キーキャップを装着しLEDが点灯した4キーのDIYミニキーボードの写真。記事キャプション「キーボード」",
+      "src": "images/novelties/2215379036.webp",
+      "width": 1200,
+      "height": 900,
+      "creator": "swan_match（はてなブログ投稿者）",
+      "credit": "swan_match（はてなブログ投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://swan-match.hatenablog.com/entry/rubykaigi2023",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/s/swan_match/20230521/20230521230509.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "4872af0726",
+      "noveltyIds": [
+        "rk2022-official-shirt"
+      ],
+      "shows": {
+        "rk2022-official-shirt": "yes"
+      },
+      "title": "RubyKaigi 2022 Tシャツ（紫・えんじ）を着た2人の写真",
+      "alt": "RubyKaigi 2022 Tシャツ（紫・えんじ）を着た2人の写真。記事キャプション「2022年のTシャツ着用のスマートバンクのエンジニア @nifuchi222222 と @yukihiro_matz さん」。出典は2024年かりゆし記事（targetsのsourceUrlとは別ページ）",
+      "src": "images/novelties/4872af0726.webp",
+      "width": 1200,
+      "height": 1058,
+      "creator": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "credit": "ゆっきー | Yuki Haruyama（note投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://note.com/yuki930/n/n11a3c1e3e979",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://assets.st-note.com/img/1717421952922-6ZIPSsQX4N.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "f0776479b8",
+      "noveltyIds": [
+        "rk2019-official-shirt",
+        "rk2019-official-hoodie"
+      ],
+      "shows": {
+        "rk2019-official-shirt": "yes",
+        "rk2019-official-hoodie": "yes"
+      },
+      "title": "Tシャツ4種・フーディ4種の入稿データ（イラスト）",
+      "alt": "Tシャツ4種・フーディ4種の入稿データ（イラスト）。記事alt「Tシャツ・フーディの入稿データを列べたもの。Tシャツ４種、フーディ４種の合計８種が並んでいる」",
+      "src": "images/novelties/f0776479b8.webp",
+      "width": 1180,
+      "height": 618,
+      "creator": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "credit": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://blog.orangebomb.org/blog/2022/06/13/rubykaigi2019-2/",
+      "sourceLabel": "元記事",
+      "kind": "official_graphic",
+      "originalUrl": "https://blog.orangebomb.org/images/post/20220613rubykaigi2019-2/20220613rubykaigi2019-2_05.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "5500a71b37",
+      "noveltyIds": [
+        "rk2019-official-hoodie"
+      ],
+      "shows": {
+        "rk2019-official-hoodie": "partly"
+      },
+      "title": "スポンサーボードとrubyists.mapの前に集まる参加者の俯瞰写真",
+      "alt": "スポンサーボードとrubyists.mapの前に集まる参加者の俯瞰写真。オレンジ・水色等のフーディ着用者が写る。記事alt「RubyKaigi 2019のフーディを着たRubyistが大勢いて…」",
+      "src": "images/novelties/5500a71b37.webp",
+      "width": 1180,
+      "height": 820,
+      "creator": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "credit": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://blog.orangebomb.org/blog/2022/06/13/rubykaigi2019-3/",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://blog.orangebomb.org/images/post/20220613rubykaigi2019-3/20220613rubykaigi2019-2_01.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "82516bbdc1",
+      "noveltyIds": [
+        "rk2019-official-pins"
+      ],
+      "shows": {
+        "rk2019-official-pins": "yes"
+      },
+      "title": "ピンバッジ4種（街並み・屋台・ラーメン・ルビー）の入稿データとPANTONE指定",
+      "alt": "ピンバッジ4種（街並み・屋台・ラーメン・ルビー）の入稿データとPANTONE指定。記事altより",
+      "src": "images/novelties/82516bbdc1.webp",
+      "width": 1180,
+      "height": 618,
+      "creator": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "credit": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://blog.orangebomb.org/blog/2022/06/13/rubykaigi2019-2/",
+      "sourceLabel": "元記事",
+      "kind": "official_graphic",
+      "originalUrl": "https://blog.orangebomb.org/images/post/20220613rubykaigi2019-2/20220613rubykaigi2019-2_04.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "a1de56bc66",
+      "noveltyIds": [
+        "rk2019-official-pins"
+      ],
+      "shows": {
+        "rk2019-official-pins": "partly"
+      },
+      "title": "ネームカードのストラップに付けたピンバッジ（ラーメン・屋台）の写真",
+      "alt": "ネームカードのストラップに付けたピンバッジ（ラーメン・屋台）の写真。記事alt「ネームカードのストラップとそこにつけられたピンバッジの写真」",
+      "src": "images/novelties/a1de56bc66.webp",
+      "width": 1180,
+      "height": 620,
+      "creator": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "credit": "keita_kawamoto（RubyKaigi 2019 デザイナー）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://blog.orangebomb.org/blog/2022/06/13/rubykaigi2019-3/",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://blog.orangebomb.org/images/post/20220613rubykaigi2019-3/ogp.png",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    },
+    {
+      "id": "77f8838378",
+      "noveltyIds": [
+        "rk2017-misoca-keycaps"
+      ],
+      "shows": {
+        "rk2017-misoca-keycaps": "partly"
+      },
+      "title": "RubyKaigi 2017 Misocaスポンサーブースの机",
+      "alt": "RubyKaigi 2017 Misocaスポンサーブースの机。キーボードの手前に配布用キーキャップが小さく並ぶ写真（「RubyKaigi当日にブースで配布しました」の段落）",
+      "src": "images/novelties/77f8838378.webp",
+      "width": 1024,
+      "height": 768,
+      "creator": "mzp（弥生開発者ブログ投稿者）",
+      "credit": "mzp（弥生開発者ブログ投稿者）",
+      "license": "none stated (all rights reserved by default)",
+      "licenseUrl": null,
+      "sourceUrl": "https://tech-blog.yayoi-kk.co.jp/entry/2017/10/30/104242",
+      "sourceLabel": "元記事",
+      "kind": "photograph",
+      "originalUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/m/mzp/20171019/20171019113404.jpg",
+      "changes": "幅1200px以下に縮小しWebPに変換。トリミングなし。"
+    }
+  ]
+}

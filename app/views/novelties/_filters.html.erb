@@ -1,0 +1,28 @@
+<div class="archive-toolbar">
+  <nav class="archive-year-nav" aria-label="年へ移動">
+    <% editions.uniq(&:year).each do |edition| %>
+      <a href="#archive-<%= edition.id %>" data-novelty-jump><%= edition.year %></a>
+    <% end %>
+  </nav>
+  <form class="novelty-filters" aria-label="ノベルティを絞り込む" data-novelty-filters>
+    <label>品目
+      <select name="kind">
+        <option value="all">すべて</option>
+        <% Novelty::KINDS.each do |kind, label| %>
+          <option value="<%= kind %>"><%= label %>（<%= novelties.count { |item| item.kind == kind } %>）</option>
+        <% end %>
+      </select>
+    </label>
+    <label>配り方
+      <select name="reach">
+        <option value="all">すべて</option>
+        <% Novelty::REACHES.each do |reach, label| %>
+          <option value="<%= reach %>"><%= label %>（<%= novelties.count { |item| item.reach == reach } %>）</option>
+        <% end %>
+      </select>
+    </label>
+    <label class="novelty-photo-toggle"><input type="checkbox" name="photo" value="1"><span>写真がある品</span></label>
+    <p class="novelty-result" role="status" aria-live="polite" data-novelty-result><%= novelties.length %>件</p>
+    <button type="reset" class="novelty-reset">クリア</button>
+  </form>
+</div>

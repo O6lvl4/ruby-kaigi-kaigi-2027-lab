@@ -1,0 +1,15 @@
+<%# A generic line icon for the item kind. It stands in for no particular item and is never a photo. %>
+<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <% case kind %>
+  <% when 'wear' %>
+    <path d="M17 8 8 13l3.5 8 4.5-2v21h16V19l4.5 2 3.5-8-9-5c-1.2 3-4 5-7 5s-5.8-2-7-5Z"/>
+  <% when 'sticker' %>
+    <path d="M10 9h28v18L27 38H10Z"/><path d="M38 27H27v11"/><path d="m17 20 4-5 4 5-4 5Z"/>
+  <% when 'pin' %>
+    <circle cx="24" cy="21" r="12"/><path d="m19 19 5-5 5 5-5 7Z"/><path d="M24 33v8"/>
+  <% when 'keyboard' %>
+    <rect x="9" y="11" width="30" height="26" rx="5"/><rect x="15" y="15" width="18" height="14" rx="3"/><path d="M21 22h6"/>
+  <% else %>
+    <path d="M25 8h13v13L22 37a3 3 0 0 1-4 0L11 30a3 3 0 0 1 0-4Z"/><circle cx="32" cy="14" r="2.5"/>
+  <% end %>
+</svg>

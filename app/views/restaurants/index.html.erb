@@ -8,6 +8,13 @@
   <p id="dining-empty" class="note" hidden>掲載人数の条件に合う候補はありません。人数要確認の候補は下に残しています。</p>
   <%= render 'map_panel', restaurants: @restaurants %>
   <div class="dining-grid">
+    <div class="dining-list-head" role="group" aria-label="一覧の並べ替え">
+      <button type="button" data-dining-sort="position" aria-pressed="true">No.</button>
+      <button type="button" data-dining-sort="name" aria-pressed="false">店名・エリア・住所</button>
+      <button type="button" data-dining-sort="seats" aria-pressed="false">総席数</button>
+      <button type="button" data-dining-sort="group" aria-pressed="false">集まれる人数</button>
+      <span>地図・移動</span>
+    </div>
     <%= render @restaurants, checked_at: Restaurant.checked_at %>
   </div>
   <p class="source"><%= @page.fetch('publicationDisclaimer') %> 掲載情報は変更されることがあります。店舗との条件確認・予約は別途必要です。</p>

@@ -944,28 +944,6 @@ select:focus-visible {
   min-width: 0;
   flex: 1;
 }
-.dining-thumbnail {
-  width: 96px;
-  height: 80px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--tint);
-  color: var(--ruby);
-  font-size: 9px;
-  overflow: hidden;
-}
-.dining-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.thumbnail-symbol {
-  font-size: 32px;
-  line-height: 1.2;
-}
 .dining-number {
   font-size: 13px;
   margin-right: 7px;
@@ -1108,10 +1086,6 @@ select:focus-visible {
   }
   .dining-card-header {
     gap: 12px;
-  }
-  .dining-thumbnail {
-    width: 76px;
-    height: 76px;
   }
   .dining-card h3 {
     font-size: 18px;
@@ -1382,628 +1356,236 @@ select:focus-visible {
     animation: none;
   }
 }
-
-/* Past RubyKaigi: a quiet, photo-led editorial archive. */
-.archive-guide {
-  max-width: 1280px;
-  margin: auto;
-  padding-bottom: 48px;
-}
-.archive-hero {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  align-items: center;
-  gap: 64px;
-  padding: 64px 0 40px;
-}
-.archive-eyebrow {
-  margin: 0 0 18px;
-  color: var(--ruby);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-}
-.archive-eyebrow span {
-  display: inline-block;
-  margin-left: 12px;
-  color: var(--muted);
-}
-.archive-hero h1 {
-  margin: 0 0 24px;
-  font-size: clamp(36px, 4.1vw, 56px);
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: -0.05em;
-}
-.archive-lead {
-  font-size: 15px;
-  line-height: 1.9;
-  color: var(--muted);
-}
-.archive-stats {
-  display: flex;
-  gap: 32px;
-  margin: 28px 0;
-}
-.archive-stats p {
-  margin: 0;
-}
-.archive-stats strong {
-  display: block;
-  font-size: 32px;
-  line-height: 1.3;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.archive-stats span {
-  font-size: 11px;
-  color: var(--muted);
-}
-.archive-guide .archive-sections {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 20px;
-  margin: 28px 0 0;
-  font-size: 12px;
-}
-.archive-primary-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 13px 16px;
-  background: var(--ruby);
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-}
-.archive-primary-link:hover {
-  color: white;
-  background: #852336;
-}
-.archive-photo {
-  min-width: 0;
-  margin: 0;
-}
-.archive-photo-open {
-  display: block;
-  position: relative;
-  width: 100%;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  border-radius: 12px;
-  background: #e8e6df;
-}
-.archive-photo-open img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: contain;
-}
-.archive-photo-featured .archive-photo-open img {
-  aspect-ratio: 4 / 3;
-}
-.archive-photo-zoom {
+/* Text-only content shared by every page. */
+.visually-hidden {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
-  padding: 6px 10px;
-  border-radius: 4px;
-  background: #fffefaf0;
-  color: var(--ink);
-  font-size: 11px;
-}
-.archive-photo-open:hover .archive-photo-zoom {
-  background: var(--ruby);
-  color: white;
-}
-.archive-photo-title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 12px;
-  margin: 12px 0 4px;
-  font-size: 14px;
-}
-.archive-photo-title span {
-  color: var(--ruby);
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-}
-.archive-photo-title strong {
-  font-weight: 600;
-}
-.archive-photo-credit,
-.archive-photo-note {
-  margin: 3px 0;
-  font-size: 10px;
-  color: var(--muted);
-  overflow-wrap: anywhere;
-}
-.archive-photo-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 24px;
-  padding-bottom: 32px;
-}
-.archive-section {
-  padding: 56px 0;
-  border-top: 1px solid var(--line);
-  scroll-margin-top: 28px;
-}
-.archive-section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 24px;
-  margin-bottom: 28px;
-}
-.archive-section-heading .archive-eyebrow {
-  margin-bottom: 8px;
-}
-.archive-section-heading h2 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.03em;
-}
-.archive-section-heading > p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-.archive-year-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.archive-year-nav a {
-  padding: 9px 16px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--paper);
-  text-decoration: none;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-}
-.archive-year-nav a:hover {
-  border-color: var(--ruby);
-  background: var(--tint);
-}
-.archive-coverage {
-  margin-top: 16px;
-  color: var(--muted);
-  font-size: 12px;
-}
-.archive-coverage summary {
-  padding: 8px 0;
-}
-.archive-coverage summary span {
-  display: inline-block;
-  margin-left: 16px;
-  font-size: 10px;
-}
-.archive-coverage p {
-  max-width: 850px;
-  margin: 10px 0;
-}
-.novelty-year {
-  padding: 36px 0 12px;
-  scroll-margin-top: 28px;
-}
-.novelty-year-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 16px;
-}
-.novelty-year-heading h3 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 16px;
-  margin: 0;
-  color: var(--ruby);
-  font-size: 32px;
-  line-height: 1.4;
-  font-weight: 500;
-}
-.novelty-year-heading h3 span {
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 600;
-}
-.novelty-year-heading > p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 11px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
-.novelty-year-heading > p a {
-  margin-left: 12px;
+/* ごはん・人数 list view: one row per candidate so names, seats and party sizes line up.
+   The same card is cloned into the map's detail panel, where it keeps the card layout. */
+.dining-grid {
+  display: block;
+  margin-top: 16px;
+  border-top: 1px solid var(--ink);
 }
-.archive-guide .novelty-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
+.dining-list-head {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: 16px;
-}
-.archive-guide .novelty-item {
-  margin: 0;
-  padding: 22px;
-  border: 1px solid #e4e2d9;
-  border-radius: 8px;
-  background: var(--paper);
-}
-.novelty-card-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.archive-guide .novelty-category {
-  display: inline-block;
-  background: var(--tint);
-  color: var(--ruby);
-  border-radius: 3px;
-  margin: 0;
-  padding: 3px 8px;
-  font-size: 10px;
-}
-.novelty-number {
-  color: #a8aaa1;
+  grid-template-columns: var(--dining-columns);
+  gap: 0 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
   font-size: 11px;
-  font-variant-numeric: tabular-nums;
 }
-.archive-guide .novelty-item h4 {
-  margin: 0 0 7px;
-  font-size: 17px;
+.dining-grid,
+.dining-list-head {
+  --dining-columns: 40px minmax(0, 1.5fr) 92px 112px minmax(0, 1.25fr);
+}
+.dining-grid .dining-card {
+  display: grid;
+  grid-template-columns: var(--dining-columns);
+  gap: 4px 20px;
+  align-items: start;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+.dining-grid .dining-card:hover {
+  background: #fffefa99;
+}
+.dining-grid .dining-card-header {
+  display: contents;
+}
+.dining-number {
+  color: var(--ruby);
+  font-size: 13px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   line-height: 1.6;
 }
-.archive-guide .novelty-provider {
+.dining-card .kicker {
+  margin: 2px 0 0;
   color: var(--muted);
-  margin: 0 0 18px;
-  font-size: 10px;
-}
-.novelty-distribution {
-  margin: 0 0 12px;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.novelty-distribution > span {
-  display: block;
-  margin-bottom: 3px;
-  color: var(--muted);
-  font-size: 10px;
-}
-.novelty-detail {
-  padding-top: 10px;
-  border-top: 1px solid #eeece5;
-  font-size: 12px;
-}
-.novelty-detail summary {
-  padding: 5px 0;
-}
-.novelty-detail p {
-  color: var(--muted);
-  margin: 10px 0;
-}
-.archive-guide .novelty-item .source {
-  overflow-wrap: anywhere;
-  margin: 14px 0 0;
-  font-size: 10px;
-}
-.archive-shop-notes {
-  margin-top: 36px;
-  padding: 20px 24px;
-  border-radius: 8px;
-  background: #eceae2;
-  font-size: 12px;
-}
-.archive-shop-notes > summary {
-  font-size: 14px;
-  font-weight: 600;
-}
-.archive-shop-notes > summary span {
-  display: inline-block;
-  margin-left: 12px;
   font-size: 11px;
   font-weight: 400;
-  color: var(--muted);
+  letter-spacing: 0;
 }
-.archive-guide .archive-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  align-items: start;
-}
-.archive-guide .archive-card {
-  display: block;
-  padding: 24px;
-  background: var(--paper);
-  border: 1px solid #e4e2d9;
-  border-radius: 8px;
-}
-.archive-guide .archive-year {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px 16px;
-  margin-bottom: 12px;
-}
-.archive-guide .archive-year > a {
+.dining-card .kicker .is-listed {
   color: var(--ruby);
-  text-decoration: none;
-  font-size: 26px;
 }
-.archive-guide .archive-year > span {
-  color: var(--ink);
-  font-size: 13px;
+.dining-card .kicker .is-unknown {
+  color: #8a5a12;
 }
-.archive-guide .archive-card h3 {
-  font-size: 14px;
-  line-height: 1.7;
-}
-.archive-format {
-  color: var(--muted);
-  font-size: 11px;
-  margin: 0 0 4px;
-}
-.archive-guide .archive-dates {
-  color: var(--muted);
-  margin: 7px 0 16px;
-  font-size: 12px;
-}
-.archive-event-details {
-  border-top: 1px solid #eeece5;
-  padding-top: 12px;
-  font-size: 12px;
-}
-.archive-event-details summary {
-  padding: 5px 0;
-}
-.archive-guide .archive-point {
-  color: var(--muted);
-  margin-top: 12px;
-}
-.archive-guide .archive-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  font-size: 11px;
-}
-.archive-guide .source {
-  margin-top: 20px;
-}
-.archive-guide .archive-reading {
-  padding: 20px 24px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.archive-guide .reading-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 24px;
-  gap: 32px;
-}
-.archive-reading-number {
-  display: block;
-  margin-bottom: 12px;
-  color: var(--ruby);
-  font-size: 26px;
-}
-.archive-photo-dialog {
-  width: min(1100px, calc(100% - 32px));
-  max-height: calc(100dvh - 32px);
-  padding: 0;
-  overflow: auto;
-  border: 0;
-  border-radius: 12px;
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: 0 24px 90px #0007;
-}
-.archive-photo-dialog::backdrop {
-  background: #18201ee0;
-}
-.archive-photo-dialog-head {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 20px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
-}
-.archive-photo-dialog-head > p {
+.dining-grid .dining-card h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.dining-grid .restaurant-address {
+  margin: 2px 0 0;
+  font-size: 11px;
+}
+.dining-grid .capacity-facts {
+  display: contents;
+}
+.dining-grid .capacity-facts > div {
+  padding-top: 1px;
+}
+.dining-grid .capacity-facts dt {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.dining-grid .capacity-facts dd {
+  margin: 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.dining-grid .capacity-facts strong {
+  font-size: 20px;
   font-weight: 600;
 }
-.archive-photo-dialog-head button {
-  flex: 0 0 auto;
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--paper);
-  color: var(--ink);
+.dining-grid .capacity-facts span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.dining-grid .capacity-facts > div:last-child span {
+  color: #8a5a12;
+}
+.dining-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  min-width: 0;
+}
+.dining-grid .dining-card-actions .destination-tools {
+  display: contents;
+}
+.dining-grid .dining-card-actions .destination-links {
+  display: contents;
+}
+.dining-grid .destination-links a,
+.dining-grid .dining-focus,
+.dining-grid .copy-address {
+  font-size: 11px;
+}
+.dining-grid .dining-focus {
+  margin: 0;
+  min-height: 32px;
+}
+.dining-grid .copy-address {
+  margin: 0;
+  min-height: 32px;
+  padding: 4px 10px;
+}
+.dining-grid .copy-address-status {
+  flex-basis: 100%;
+  margin: 0;
+}
+.dining-grid .copy-address-status:empty {
+  display: none;
+}
+.dining-grid .dining-card-actions > .source {
+  margin: 0;
+}
+.dining-grid .restaurant-note,
+.dining-grid .dining-card > details,
+.dining-grid .dining-card > .source {
+  grid-column: 2 / -1;
+  margin: 0;
+}
+.dining-grid .restaurant-note {
+  max-width: 64em;
+  margin-top: 4px;
   font-size: 12px;
+  line-height: 1.75;
 }
-.archive-photo-dialog-head button span {
-  margin-left: 8px;
-  font-size: 18px;
+.dining-grid .dining-card > details summary {
+  padding: 4px 0;
+  font-size: 11px;
 }
-.archive-photo-dialog-image {
-  background: #e8e6df;
+.dining-grid .dining-card > .source {
+  font-size: 10px;
+  line-height: 1.7;
 }
-.archive-photo-dialog-image img {
-  display: block;
-  max-width: 100%;
-  max-height: 70dvh;
-  width: auto;
-  height: auto;
-  margin: auto;
-  object-fit: contain;
+.dining-grid .dining-card-selected {
+  outline: 0;
+  box-shadow: inset 3px 0 0 var(--ruby);
+  background: var(--tint);
 }
-.archive-photo-dialog-caption {
-  padding: 12px 24px 24px;
-}
-.archive-photo-dialog-caption .archive-photo-credit,
-.archive-photo-dialog-caption .archive-photo-note {
-  font-size: 12px;
-}
-@media (max-width: 1000px) {
-  .archive-hero {
-    gap: 32px;
+@media (max-width: 900px) {
+  .dining-grid,
+  .dining-list-head {
+    --dining-columns: 32px minmax(0, 1fr) 76px 92px;
   }
-  .archive-guide .novelty-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .dining-grid .dining-card-actions {
+    grid-column: 2 / -1;
+    margin-top: 6px;
   }
-}
-@media (max-width: 767px) {
-  .archive-hero {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 36px 0 28px;
-  }
-  .archive-hero h1 {
-    font-size: clamp(34px, 8.6vw, 48px);
-    margin-bottom: 18px;
-  }
-  .archive-lead {
-    font-size: 14px;
-  }
-  .archive-stats {
-    margin: 22px 0;
-    gap: 30px;
-  }
-  .archive-photo-featured .archive-photo-open img {
-    aspect-ratio: 4 / 3;
-  }
-  .archive-photo-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 14px;
-  }
-  .archive-photo-title {
-    gap: 4px 8px;
-    font-size: 12px;
-  }
-  .archive-photo-zoom {
-    right: 8px;
-    bottom: 8px;
-    padding: 4px 7px;
-    font-size: 10px;
-  }
-  .archive-section {
-    padding: 36px 0;
-  }
-  .archive-section-heading {
-    display: block;
-    margin-bottom: 22px;
-  }
-  .archive-section-heading h2 {
-    font-size: 27px;
-  }
-  .archive-section-heading > p {
-    margin-top: 12px;
-  }
-  .archive-section-heading > p br {
+  .dining-list-head > :last-child {
     display: none;
   }
-  .archive-year-nav {
-    gap: 7px;
+}
+@media (max-width: 600px) {
+  .dining-grid,
+  .dining-list-head {
+    --dining-columns: 28px minmax(0, 1fr) 64px 70px;
   }
-  .archive-year-nav a {
-    padding: 10px 14px;
+  .dining-grid .dining-card {
+    gap: 2px 10px;
+    padding: 14px 0;
   }
-  .archive-coverage summary span {
-    display: block;
-    margin: 4px 0 0;
+  .dining-grid .dining-card h3 {
+    font-size: 15px;
   }
-  .novelty-year {
-    padding-top: 28px;
+  .dining-grid .capacity-facts strong {
+    font-size: 17px;
   }
-  .novelty-year-heading h3 {
-    font-size: 28px;
-    gap: 10px;
+  .dining-grid .capacity-facts dd {
+    font-size: 11px;
   }
-  .novelty-year-heading h3 span {
-    font-size: 13px;
-  }
-  .novelty-year-heading > p a {
-    display: block;
-    margin-left: 0;
-  }
-  .archive-guide .novelty-list,
-  .archive-guide .archive-list {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .archive-guide .novelty-item,
-  .archive-guide .archive-card {
-    padding: 20px;
-  }
-  .archive-guide .reading-grid {
-    grid-template-columns: 1fr;
-  }
-  .archive-photo-dialog {
-    width: calc(100% - 20px);
-    max-height: calc(100dvh - 20px);
-  }
-  .archive-photo-dialog-head {
-    padding: 12px;
-  }
-  .archive-photo-dialog-head > p {
-    font-size: 12px;
+  .dining-grid .capacity-facts span {
+    font-size: 10px;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  html:has(.archive-guide) {
-    scroll-behavior: auto;
-  }
+.dining-list-head button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  justify-self: start;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 11px;
+  text-align: left;
 }
-
-.archive-photo-grid .archive-photo-open img {
-  aspect-ratio: 3 / 2;
+.dining-list-head button::after {
+  content: '↕';
+  opacity: 0.45;
 }
-.archive-photo-grid [data-image-kind='product_collage_mockup'] .archive-photo-open img {
-  aspect-ratio: 3 / 1;
+.dining-list-head button[aria-pressed='true'] {
+  color: var(--ink);
+  font-weight: 600;
 }
-@media (max-width: 767px) {
-  .archive-photo-grid [data-image-kind='product_collage_mockup'] {
-    grid-column: 1 / -1;
-  }
+.dining-list-head button[data-direction='asc']::after {
+  content: '↑';
+  opacity: 1;
 }
-
-.archive-guide .reading-grid h3 {
-  font-size: 15px;
-  margin: 0 0 12px;
+.dining-list-head button[data-direction='desc']::after {
+  content: '↓';
+  opacity: 1;
 }
-.archive-guide .reading-grid p {
-  font-size: 12px;
-  color: var(--muted);
-}
-.archive-guide .archive-resources {
-  padding-left: 20px;
-  font-size: 12px;
-}
-.archive-guide .archive-resources li {
-  margin: 16px 0;
-}
-.archive-guide .archive-resources p {
-  color: var(--muted);
+.dining-list-head button:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 2px;
 }

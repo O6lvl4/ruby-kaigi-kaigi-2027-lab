@@ -1,0 +1,41 @@
+<% years = novelties_by_year.keys %>
+<div class="novelty-matrix-scroll" tabindex="0" role="region" aria-label="品目と年のノベルティ比較表（横にスクロールできます）">
+  <table class="novelty-matrix">
+    <caption class="visually-hidden">品目ごと・年ごとのノベルティ</caption>
+    <thead>
+      <tr>
+        <th scope="col">品目</th>
+        <% years.each do |year| %>
+          <th scope="col"><a href="#archive-<%= year %>"><%= year %><small><%= novelties_by_year[year].first.city %></small></a></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% Novelty::KINDS.each do |kind, kind_label| %>
+        <tr data-kind="<%= kind %>">
+          <th scope="row"><span class="novelty-matrix-mark" aria-hidden="true"><%= render 'novelties/glyph', kind: %></span><%= kind_label %></th>
+          <% years.each do |year| %>
+            <% items = novelties_by_year[year].select { |item| item.kind == kind } %>
+            <td>
+              <% if items.any? %>
+                <ul>
+                  <% items.each do |item| %>
+                    <li data-reach="<%= item.reach %>"><a href="#<%= item.anchor %>" data-novelty-jump title="<%= item.name %>（<%= item.category %>）"><%= item.label %></a></li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <span class="novelty-matrix-none" aria-label="記録なし">—</span>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<ul class="novelty-legend" aria-label="印の意味">
+  <% Novelty::REACHES.each do |reach, reach_label| %>
+    <li data-reach="<%= reach %>"><%= reach_label %></li>
+  <% end %>
+  <li class="novelty-legend-note">2020・2021年はノベルティの記録を掲載していません</li>
+</ul>

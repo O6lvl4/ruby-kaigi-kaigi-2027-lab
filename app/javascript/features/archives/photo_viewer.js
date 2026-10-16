@@ -7,9 +7,14 @@ export function initPhotoViewer(root) {
   const caption = dialog.querySelector('.archive-photo-dialog-caption');
   let opener = null;
   let previousOverflow = '';
+  // Both elements: iOS Safari keeps scrolling the page when only <body> is locked.
+  const lock = value => {
+    document.documentElement.style.overflow = value;
+    document.body.style.overflow = value;
+  };
 
   function restore() {
-    document.body.style.overflow = previousOverflow;
+    lock(previousOverflow);
     opener?.isConnected && opener.focus({ preventScroll: true });
     opener = null;
   }
@@ -25,7 +30,7 @@ export function initPhotoViewer(root) {
     caption.replaceChildren(figure.querySelector('figcaption').cloneNode(true));
     opener = button;
     previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lock('hidden');
     dialog.showModal();
   }
 
@@ -47,7 +52,7 @@ export function initPhotoViewer(root) {
     dialog.removeEventListener('close', restore);
     if (dialog.open) {
       dialog.close();
-      document.body.style.overflow = previousOverflow;
+      lock(previousOverflow);
     }
     opener = null;
   };
