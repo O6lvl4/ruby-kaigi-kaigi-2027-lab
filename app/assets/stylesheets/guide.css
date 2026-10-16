@@ -1395,6 +1395,9 @@ select:focus-visible {
   border-bottom: 1px solid var(--line);
   background: transparent;
 }
+.dining-grid .dining-card[hidden] {
+  display: none;
+}
 .dining-grid .dining-card:hover {
   background: #fffefa99;
 }

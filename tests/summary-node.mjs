@@ -211,7 +211,27 @@ console.log('PASS novelty JSON and Rails cards agree, with exact sources and exp
 
 const photoData = await data('archive_photos');
 assert.deepEqual(editionsJson.body.photos, photoData.photos);
-assert.equal((archivesHtml.match(/data-archive-photo=/g) || []).length, photoData.photos.length);
+const venuePhotoData = await data('venue_photos');
+const noveltyPhotoData = await data('novelty_photos');
+const noveltiesWithPhotos = noveltyData.novelties.filter(item =>
+  noveltyPhotoData.photos.some(photo => photo.noveltyIds.includes(item.id))
+);
+assert.equal(
+  (archivesHtml.match(/data-archive-photo=/g) || []).length,
+  photoData.photos.length + venuePhotoData.photos.length + noveltiesWithPhotos.length
+);
+for (const photo of [...venuePhotoData.photos, ...noveltyPhotoData.photos]) {
+  assert.ok((await readFile(`public/${photo.src}`)).byteLength > 0, `Missing image file: ${photo.src}`);
+  assert.ok(photo.width > 0 && photo.height > 0 && photo.alt && photo.credit && photo.sourceUrl && photo.license);
+  assert.equal(new URL(photo.sourceUrl).protocol, 'https:');
+}
+for (const photo of venuePhotoData.photos) assert.match(photo.license, /^(CC BY(-SA)? [0-9.]+|Public domain)$/);
+for (const photo of noveltyPhotoData.photos)
+  for (const id of photo.noveltyIds)
+    assert.ok(
+      noveltyData.novelties.some(item => item.id === id),
+      `Unknown novelty ${id}`
+    );
 assert.ok(photoData.photos.some(photo => photo.kind === 'photograph'));
 for (const photo of photoData.photos) {
   assert.match(photo.src, /^images\/archives\/[a-z0-9-]+\.(jpg|webp)$/);
