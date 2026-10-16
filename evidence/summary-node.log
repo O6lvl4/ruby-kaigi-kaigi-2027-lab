@@ -1,4 +1,4 @@
-(node:61452) ExperimentalWarning: WASI is an experimental feature and might change at any time
+(node:66665) ExperimentalWarning: WASI is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
 PASS each guide page is its own Rails route → controller → ActionView ERB with the shared layout
 PASS URL helpers honour the Pages mount point (SCRIPT_NAME)

@@ -1,4 +1,4 @@
-(node:64319) ExperimentalWarning: WASI is an experimental feature and might change at any time
+(node:70051) ExperimentalWarning: WASI is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
 PASS: Runtime is genuine Ruby/Rails on Wasm
 PASS: Records survive independent process/database reopen (Node FS)
