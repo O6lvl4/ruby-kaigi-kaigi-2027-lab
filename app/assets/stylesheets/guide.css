@@ -1274,7 +1274,7 @@ select:focus-visible {
 }
 .page-next {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1px;
   margin: 40px 0 56px;
   background: var(--line);

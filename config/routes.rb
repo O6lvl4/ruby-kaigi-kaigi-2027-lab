@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'maps#show'
   resource :event, only: :show
   resources :restaurants, only: :index
+  resource :transport, only: :show
   resources :editions, only: :index, path: 'archives'
   resources :map_scenarios, only: :show, path: 'map/scenarios'
 

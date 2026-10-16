@@ -1,0 +1,110 @@
+<% content_for :title, '移動・バス' %>
+<% sources = ->(urls) { Array(urls).each_with_index.map { |url, index| link_to("出典#{index + 1 if Array(urls).size > 1} ↗", url) }.join(' ').html_safe } %>
+<div class="archive-guide transport-guide">
+  <header id="transport" class="archive-header" aria-labelledby="transport-title">
+    <p class="archive-eyebrow">GETTING AROUND <span>MIYAZAKI 2027</span></p>
+    <h1 id="transport-title"><%= @transport.page.fetch('title') %></h1>
+    <p class="archive-lead"><%= @transport.page.fetch('intro') %></p>
+    <p class="archive-counts">路線 <%= @transport.routes.size %>件 · 貸切バス事業者 <%= @transport.operators.size %>社 · 確認日 <time datetime="<%= @transport.checked_at %>"><%= @transport.checked_at %></time></p>
+    <nav class="archive-sections" aria-label="移動・バスの掲載内容">
+      <a href="#transport-routes"><span>01</span>会場までの路線</a>
+      <a href="#transport-charter"><span>02</span>貸切バス事業者</a>
+      <a href="#transport-checklist"><span>03</span>手配の前に確認すること</a>
+      <a href="#transport-past"><span>04</span>過去RubyKaigiの例</a>
+      <a href="#transport-taxi"><span>05</span>タクシー</a>
+    </nav>
+  </header>
+
+  <section id="transport-routes" class="archive-section" aria-labelledby="transport-routes-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">01</p>
+      <h2 id="transport-routes-title">会場までの路線</h2>
+      <p>空港・駅・中心市街地から会場まで、定期便で行ける経路です。所要時間・本数は出典に書かれている場合だけ載せています。</p>
+    </div>
+    <div class="transport-table-scroll" tabindex="0" role="region" aria-label="会場までの路線（横にスクロールできます）">
+      <table class="transport-table">
+        <thead><tr><th scope="col">出発地</th><th scope="col">手段・路線</th><th scope="col">乗り場・降り場</th><th scope="col">所要・本数</th><th scope="col">補足</th></tr></thead>
+        <tbody>
+          <% @transport.routes.each do |route| %>
+            <tr data-transport-route>
+              <th scope="row"><%= route.from %></th>
+              <td><strong><%= route.mode %></strong><% if route.line %><br><%= route.line %><% end %></td>
+              <td><%= route.stops || '—' %></td>
+              <td><%= [route.time, route.frequency].compact.join(' · ').presence || '出典に記載なし' %></td>
+              <td><% if route.note %><%= route.note %><br><% end %><span class="source"><%= sources.call(route.source_urls) %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="transport-charter" class="archive-section" aria-labelledby="transport-charter-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">02</p>
+      <h2 id="transport-charter-title">貸切バス事業者</h2>
+      <p>宮崎県内を拠点に貸切バスを運行している事業者です。台数・空き状況・料金は掲載していません。各社の窓口で確認してください。</p>
+    </div>
+    <div class="transport-table-scroll" tabindex="0" role="region" aria-label="貸切バス事業者（横にスクロールできます）">
+      <table class="transport-table transport-operators">
+        <thead><tr><th scope="col">事業者</th><th scope="col">拠点・エリア</th><th scope="col">安全性評価</th><th scope="col">問い合わせ</th><th scope="col">補足</th></tr></thead>
+        <tbody>
+          <% @transport.operators.each do |operator| %>
+            <tr data-transport-operator>
+              <th scope="row"><%= operator.url ? link_to("#{operator.name} ↗", operator.url) : operator.name %></th>
+              <td><%= operator.area || '—' %></td>
+              <td><%= operator.safety || '確認できず' %></td>
+              <td><%= operator.inquiry_url ? link_to('貸切の案内 ↗', operator.inquiry_url) : '—' %></td>
+              <td><% if operator.note %><%= operator.note %><br><% end %><span class="source"><%= sources.call(operator.source_urls) %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="transport-checklist" class="archive-section" aria-labelledby="transport-checklist-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">03</p>
+      <h2 id="transport-checklist-title">手配の前に確認すること</h2>
+      <p>問い合わせの前にそろえておくと話が早い項目と、貸切バスに関わる公的なルールです。このガイドの提案であり、決定事項ではありません。</p>
+    </div>
+    <ol class="transport-checklist">
+      <% @transport.checklist.each do |check| %>
+        <li data-transport-check><strong><%= check.title %></strong><span><%= check.reason %><% if check.source_url %> <%= link_to '出典 ↗', check.source_url, class: 'source' %><% end %></span></li>
+      <% end %>
+    </ol>
+    <dl class="archive-policy-list transport-rules">
+      <% @transport.rules.each do |rule| %>
+        <div data-transport-rule><dt><%= rule.title %></dt><dd><%= rule.summary %> <%= link_to '出典 ↗', rule.source_url %></dd></div>
+      <% end %>
+    </dl>
+  </section>
+
+  <section id="transport-past" class="archive-section" aria-labelledby="transport-past-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">04</p>
+      <h2 id="transport-past-title">過去RubyKaigiの移動の工夫</h2>
+      <p>公式サイトで確認できる、シャトル・交通案内の実施例です。</p>
+    </div>
+    <ul class="transport-past">
+      <% @transport.past_practices.each do |practice| %>
+        <li data-transport-practice><span class="transport-past-year"><%= practice.year %><small><%= practice.city %></small></span><p><%= practice.summary %> <%= link_to '出典 ↗', practice.source_url %></p></li>
+      <% end %>
+    </ul>
+  </section>
+
+  <section id="transport-taxi" class="archive-section" aria-labelledby="transport-taxi-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">05</p>
+      <h2 id="transport-taxi-title">タクシー</h2>
+      <p>宮崎市内の主なタクシー会社です。</p>
+    </div>
+    <ul class="transport-taxis">
+      <% @transport.taxis.each do |taxi| %>
+        <li data-transport-taxi><%= taxi.url ? link_to("#{taxi.name} ↗", taxi.url) : taxi.name %><% if taxi.note %><span><%= taxi.note %></span><% end %><span class="source"><%= sources.call(taxi.source_urls) %></span></li>
+      <% end %>
+    </ul>
+    <p class="source">掲載は公開情報のみです。手配の担当・進捗は載せていません。確認日 <time datetime="<%= @transport.checked_at %>"><%= @transport.checked_at %></time>。運行・料金は各社の案内を優先してください。</p>
+  </section>
+</div>

@@ -1,0 +1,361 @@
+{
+  "checkedAt": "2026-10-16",
+  "page": {
+    "title": "移動・バス",
+    "intro": "空港・駅から会場までの路線、宮崎県内の貸切バス事業者、手配の前に確認すること、過去RubyKaigiの送迎の例を、公式の案内からまとめています。"
+  },
+  "routes": [
+    {
+      "from": "宮崎駅",
+      "mode": "路線バス（宮崎交通）",
+      "line": "「酒泉の杜」行き（系統305）",
+      "stops": "宮崎駅 西口2番のりば → 文化公園前（徒歩1分）",
+      "time": "約15分（会場公式）",
+      "frequency": null,
+      "note": "交通系ICカード可（会場公式アクセスページ記載） 宮崎交通の宮崎駅のりば案内では西2のりばに305系統「国富・酒泉の杜」の記載がある。文化公園前経由かどうかは同ページでは未記載のため、会場公式の案内を優先。タクシーは約10分（会場公式）。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/",
+        "https://www.miyakoh.co.jp/rosen/noriba/miyazaki.html"
+      ]
+    },
+    {
+      "from": "宮崎空港",
+      "mode": "路線バス（宮崎交通）乗り継ぎ",
+      "line": "空港1番のりば「宮崎駅」行き →（橘通り3丁目で乗り換え）→「古賀総合病院」行き（系統22）",
+      "stops": "宮崎空港 1番のりば → 橘通り3丁目で乗り換え、文化公園前で下車（徒歩1分）",
+      "time": "約60分（会場公式、乗り換え含む）",
+      "frequency": null,
+      "note": "交通系ICカード可（会場公式アクセスページ記載） 空港公式：のりば①は宮崎駅〜宮崎空港。【快速】エアポートライナーは宮崎空港・宮交シティ・橘通り1〜3丁目・宮崎駅に停車し、橘通りの各停留所は降車のみ。のりば①は2026年10月1日に改正あり。宮崎交通公式：空港→宮崎駅 25〜30分、運賃 大人530円／小児270円、予約不要、満席時は立席乗車あり（高速経由の都城便を除く）。タクシーは約30分（会場公式）。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/",
+        "https://www.miyazaki-airport.co.jp/access/bus",
+        "https://www.miyakoh.co.jp/rosen/airport.html"
+      ]
+    },
+    {
+      "from": "宮崎空港",
+      "mode": "鉄道（JR九州 宮崎空港線・日豊本線）",
+      "line": "JR宮崎空港線",
+      "stops": "宮崎空港駅 → 宮崎駅（その後バスで会場へ、または宮崎神宮駅から徒歩約20分）",
+      "time": null,
+      "frequency": "空港公式の宮崎空港発時刻表では6時台〜21時台、おおむね1時間に2本。",
+      "note": "SUGOCA宮崎エリア（2015年11月14日開始、宮崎駅中心の12駅：宮崎空港・田吉・南宮崎・宮崎・宮崎神宮などを含む）。他エリア（鹿児島エリア等）とのまたがり利用は不可。 会場最寄り駅は宮崎神宮駅（徒歩約20分、タクシー約5分）。ICの対象駅は2015年発表時点の資料に基づくため、最新の利用可能エリアはJR九州公式で再確認が必要。",
+      "sourceUrls": [
+        "https://www.miyazaki-airport.co.jp/access/train",
+        "https://www.jrkyushu.co.jp/news/pdf/miyazakisugoca.pdf",
+        "https://www.jrkyushu.co.jp/sugoca/area/each/index.html",
+        "https://www.miyazaki-ac.jp/access/"
+      ]
+    },
+    {
+      "from": "橘通り（中心市街地）",
+      "mode": "路線バス（宮崎交通）",
+      "line": "「古賀総合病院」行き（系統22）",
+      "stops": "橘通り3丁目 → 文化公園前（徒歩1分）",
+      "time": null,
+      "frequency": null,
+      "note": "交通系ICカード可（会場公式アクセスページ記載） 会場公式の空港からの乗り継ぎ案内に基づく。その他の最寄りバス停として「宮崎神宮」「霧島3丁目」「霧島4丁目」（いずれも徒歩7分）。時刻は宮崎交通の時刻・運賃検索（qbus）で確認できる。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/",
+        "https://www.miyakoh.co.jp/rosen/"
+      ]
+    },
+    {
+      "from": "（参考）自家用車・駐車場",
+      "mode": "自動車",
+      "line": null,
+      "stops": null,
+      "time": "宮崎ICから約20分、宮崎西ICから約15分（会場公式）",
+      "frequency": null,
+      "note": "劇場専用駐車場はなく、県総合文化公園の共有駐車場（無料、混雑しやすい）：公園北169台、公園南362台、臨時約100台。公共交通機関の利用を推奨。身障者等用駐車場は劇場敷地内に7台（事前予約不可）。貸切バスの乗降・待機場所は会場・公園管理事務所に要確認。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/"
+      ]
+    }
+  ],
+  "operators": [
+    {
+      "name": "宮崎交通株式会社（貸切バス）",
+      "area": "宮崎市（貸切バスページに記載の営業所は宮崎営業所のみ）",
+      "url": "https://www.miyakoh.co.jp/kashikiri/",
+      "inquiryUrl": "https://ws.formzu.net/fgen/S799472951/",
+      "safety": "★★（二ツ星）（2028-03-31まで）",
+      "note": "公式ラインナップ：大型バス 乗車定員55名（正席45＋補助席10）または53名（正席45＋補助席8、サロン風回転シート付き）。中型バス 29名・小型バス 21名（いずれも補助席なし、手配は宮交タクシー(株)）。保有台数・バリアフリー車両の有無は公式ページに記載なし。 問い合わせフォームのほか電話 0985-32-3914（9:00〜18:00、土日祝休、日本語のみ）。予約の流れ：問い合わせ（出発地・時刻、目的地、到着地・時刻）→見積（無料）→承認で正式予約→支払い（銀行振込のみ）。 FAQ：料金にはバス代・運転手1名分・燃料代を含み、有料道路・駐車場・ガイド料・乗務員宿泊費は別途。繁忙期（5月、10〜11月、2月）は早めの予約を推奨。キャンセル料は配車日の14〜8日前20%、7日前〜24時間前30%、24時間前以降50%、配車時間以降100%。車内トイレなし。待機料金の扱いはFAQに記載なし。",
+      "sourceUrls": [
+        "https://www.miyakoh.co.jp/kashikiri/",
+        "https://www.miyakoh.co.jp/kashikiri/lineup.html",
+        "https://www.miyakoh.co.jp/faq/kashikiri/",
+        "https://www.miyakoh.co.jp/kashikiri/nagare.html",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "株式会社山口運送（美登観光バス）",
+      "area": "宮崎市高岡町",
+      "url": "https://mito-kankobus.jp/",
+      "inquiryUrl": "https://mito-kankobus.jp/quotes-groups/",
+      "safety": "★（一ツ星）（2027-03-31まで）",
+      "note": "トップページのリンクから見積（団体向け・代理店向け）、問い合わせ（/contact/）、予約（/reservation/）ページを確認。見積ページの中身は証明書エラーで未確認。社名・所在地はトップページのフッターで確認。",
+      "sourceUrls": [
+        "https://mito-kankobus.jp/",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "有限会社永峰観光バス",
+      "area": "宮崎市（高岡町浦之名）",
+      "url": "https://www.nagamine-g.co.jp/",
+      "inquiryUrl": "https://www.nagamine-g.co.jp/contact",
+      "safety": "★（一ツ星）（2028-03-31まで）",
+      "note": "公式サイトでは大型・中型・小型・ミニバスの区分のみ記載。台数・定員は未記載。 「お見積もり・お問い合わせ」ページ。見積専用フォームは別ページにある様子だが未確認。",
+      "sourceUrls": [
+        "https://www.nagamine-g.co.jp/",
+        "https://www.nagamine-g.co.jp/contact",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "有限会社佐土原運送（佐土原バス）",
+      "area": "宮崎市佐土原町",
+      "url": "https://sadowarabus.com/travelbus",
+      "inquiryUrl": "https://sadowarabus.com/estimate",
+      "safety": "★（一ツ星）（2027-03-31まで）",
+      "note": "公式ページ記載：大型バス 40人乗り（トイレ・メイクルーム付）・53人乗り、マイクロバス 26人乗り・27人乗り。台数は未記載。 見積フォーム（/estimate）、問い合わせフォーム（/contact）、予約方法（/reserve）。電話受付は月〜金 9:00〜17:30（公式ページ記載）。",
+      "sourceUrls": [
+        "https://sadowarabus.com/",
+        "https://sadowarabus.com/travelbus",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "三和交通株式会社（三和交通グループ）",
+      "area": "西都市・小林市などに本社、宮崎市に宮崎営業所（グループ本社）",
+      "url": "https://www.30-gr.co.jp/bus",
+      "inquiryUrl": "https://www.30-gr.co.jp/contact",
+      "safety": "★（一ツ星）（西都：2027-03-31／小林：2029-03-31まで）",
+      "note": "公式ページ記載：小型 正席14〜24（補助席込み最大28）、中型 正席27〜33（最大39）、大型 正席44〜45（最大55）。 貸切バス専用の見積フォームは見当たらず、一般の問い合わせページ。 グループで宮崎タクシー株式会社などのタクシー事業も運営。",
+      "sourceUrls": [
+        "https://www.30-gr.co.jp/",
+        "https://www.30-gr.co.jp/bus",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "有限会社高山三幸観光・宮崎（みやざき高山観光バス）",
+      "area": "本社 高原町、宮崎営業所 宮崎市塩路、福岡営業所 筑紫野市",
+      "url": "https://www.kouyama-bus.jp/",
+      "inquiryUrl": "https://www.kouyama-bus.jp/quotation/",
+      "safety": "★★★（三ツ星）（2027-03-31まで）",
+      "note": "公式サイトでは「大型バスから小型バスまで」とのみ記載。台数・定員は未記載。 お見積りフォーム。",
+      "sourceUrls": [
+        "https://www.kouyama-bus.jp/",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    },
+    {
+      "name": "宮崎県内のその他の安全性評価認定事業者（一覧掲載のみ）",
+      "area": "宮崎県内各地",
+      "url": null,
+      "inquiryUrl": null,
+      "safety": "一覧参照（一覧参照まで）",
+      "note": "公式サイト未確認。 宮崎市外に拠点を置く事業者が多く、宮崎市内への回送の可否・費用は各社に要確認。宮崎県バス協会の会員名簿は公式サイトで見つけられなかった。",
+      "sourceUrls": [
+        "https://www.bus.or.jp/safety/",
+        "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+      ]
+    }
+  ],
+  "taxis": [
+    {
+      "name": "宮交タクシー株式会社",
+      "url": "https://www.miyakoh-taxi.com/",
+      "note": "宮崎県内各地に営業所。公式サイトでスマホ予約、宮崎市内でUberタクシーに対応。宮崎地区配車センター 0985-22-4141（空港公式にも同番号）。観光タクシーのコースあり。",
+      "sourceUrls": [
+        "https://www.miyakoh-taxi.com/",
+        "https://www.miyazaki-airport.co.jp/access/taxi"
+      ]
+    },
+    {
+      "name": "三和交通グループ（宮崎タクシー株式会社ほか）",
+      "url": "https://www.30-gr.co.jp/",
+      "note": "グループで一般タクシーと配車受付を行う。空港公式の掲載名は「三和交通 宮崎タクシー」0985-23-5481。",
+      "sourceUrls": [
+        "https://www.30-gr.co.jp/",
+        "https://www.miyazaki-airport.co.jp/access/taxi"
+      ]
+    },
+    {
+      "name": "宮崎空港のタクシー案内",
+      "url": "https://www.miyazaki-airport.co.jp/access/taxi",
+      "note": "宮崎空港公式のタクシーページに掲載の事業者：宮交タクシー、第一交通、宮児タクシー、美登タクシー、日の丸タクシー、平和タクシー、三和交通 宮崎タクシー、国際グループ（国際タクシー・南国タクシー・銀町タクシー、3社配車センター）、MR交通、宮崎個人タクシー事業協同組合。各社の電話番号は同ページに掲載。佐土原みやこは空港に待機していないとの注記あり。",
+      "sourceUrls": [
+        "https://www.miyazaki-airport.co.jp/access/taxi"
+      ]
+    },
+    {
+      "name": "タクシーの待機・配車について",
+      "url": null,
+      "note": "宮崎空港のタクシー乗り場はターミナル正面玄関前。8:30〜21:30はタクシーコンシェルジュが配車手配や荷物の補助を行う。",
+      "sourceUrls": [
+        "https://www.miyazaki-airport.co.jp/access/taxi"
+      ]
+    },
+    {
+      "name": "タクシーの待機・配車について",
+      "url": null,
+      "note": "会場までのタクシー所要時間の目安：宮崎駅から約10分、宮崎神宮駅から約5分、宮崎空港から約30分（会場公式）。料金の目安は公式記載なし。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/"
+      ]
+    },
+    {
+      "name": "タクシーの待機・配車について",
+      "url": null,
+      "note": "宮崎駅のタクシー待機台数や、ピーク時の配車状況に関する公式情報は見つからなかった。",
+      "sourceUrls": [
+        "https://www.miyazaki-ac.jp/access/"
+      ]
+    }
+  ],
+  "pastPractices": [
+    {
+      "year": 2026,
+      "city": "函館",
+      "summary": "会場行きシャトルバス、市内行きシャトルバスと貸切市電、スポンサー企画の路面電車イベント。函館駅近くの団体バス駐車場（函館若松町観光バス駐車場）から会場行きシャトル（Day1 8:00・8:50、Day2-3 8:10・9:00、先着順、乗車時にチケットページの提示を求める場合あり）。帰りは市内行きバス（18:30〜18:45、4〜5便）と貸切市電（18:15〜19:00、2便）。Day1はオフィシャルパーティー参加者専用でパーティー会場へ直行、Day2-3は函館駅・五稜郭方面。タクシーアプリGO・Uber・DiDiが使えると案内。Events ページにはスポンサーの Wake-up Tram や車内ドリンクアップ、会場発バス付きのイベントも掲載。",
+      "sourceUrl": "https://rubykaigi.org/2026/onsite/"
+    },
+    {
+      "year": 2025,
+      "city": "松山",
+      "summary": "全体向けシャトルの記載なし（公共交通推奨・駐車場案内）、一部イベントで会場発バス。Onsite ページは公共交通機関の利用を推奨し、車の場合は会場駐車場を使い周辺施設に駐車しないよう案内。Venue ページは会場（愛媛県県民文化会館）のアクセスページへリンク。Events ページでは IVRy Climbing & Drinkup（Day2）が「会場からバスで出発」（18:20）と記載。",
+      "sourceUrl": "https://rubykaigi.org/2025/onsite/"
+    },
+    {
+      "year": 2024,
+      "city": "那覇",
+      "summary": "シャトルの記載なし、ゆいレール＋徒歩の案内。Venue ページで、那覇空港からゆいレール（てだこ浦西方面、約10分間隔、Suica利用可）で県庁前駅下車、会場（那覇文化芸術劇場なはーと）まで徒歩約6分（400m）と案内。空港からタクシー10〜15分。Onsite・Events ページに交通の記載なし。",
+      "sourceUrl": "https://rubykaigi.org/2024/venue/"
+    },
+    {
+      "year": 2023,
+      "city": "松本",
+      "summary": "都市間アクセスの案内（鉄道）、コミュニティ企画の列車。Matsumoto ページで成田・羽田・新宿・東京・関西/名古屋から松本までの鉄道経路を案内。会場シャトルの記載なし。Events ページには新宿発の「Rubyists on Rails」列車（8時・15時発、各約30人）が掲載。",
+      "sourceUrl": "https://rubykaigi.org/2023/matsumoto/"
+    },
+    {
+      "year": 2019,
+      "city": "福岡",
+      "summary": "スポンサー提供の無料シャトルバス、パーティー送迎、貸切タクシー。SmartHR 提供の無料シャトル（4/18〜20）：博多駅筑紫口・天神（日本銀行福岡支店前）・福岡空港国内線から会場へ、会場から博多・天神・空港へ。名札等の提示で乗車、時刻表どおり運行、満車時は乗車不可。オフィシャルパーティー（櫛田神社）へは会場発シャトル。4/19は JapanTaxi が約100台の貸切タクシーを用意（1枚4名まで、福岡市中央区・博多区行き）。",
+      "sourceUrl": "https://rubykaigi.org/2019/transport"
+    }
+  ],
+  "rules": [
+    {
+      "title": "貸切バスの運賃・料金制度（九州運輸局）",
+      "summary": "九州運輸局は令和7年9月26日に基準額を改定。新基準額は大型 距離制150円/km・時間制6,920円/h、中型 130円・5,840円、小型 120円・5,110円、コミューター 100円・4,560円（ページ更新日2026年6月2日）。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/00001_00260.html"
+    },
+    {
+      "title": "車種区分（運賃計算の前提）",
+      "summary": "大型は車両の長さ9m以上または乗車定員50人以上、中型は長さ6m以上8m以下かつ乗車定員33人以下、コミューターは長さ6m未満かつ乗車定員14人以下、小型はそれ以外。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/00001_00260.html"
+    },
+    {
+      "title": "運賃の簡易計算シミュレーター",
+      "summary": "九州運輸局は運賃計算の目安としてExcelの簡易計算シミュレーターを提供しているが、結果は目安であり違反かどうかを判断するものではないと明記している。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/00001_00260.html"
+    },
+    {
+      "title": "バス運転者の改善基準告示：1日の拘束時間（2024年4月1日以降）",
+      "summary": "1日の拘束時間は原則13時間以内、延長しても最大15時間まで。14時間超は週3回までを目安とする。",
+      "sourceUrl": "https://driver-roudou-jikan.mhlw.go.jp/bus/notice"
+    },
+    {
+      "title": "バス運転者の改善基準告示：休息期間",
+      "summary": "勤務終了後は継続11時間以上の休息を与えるよう努めることを基本とし、9時間を下回らない。朝の送迎と夜の送迎を同じ運転者が担うと、拘束時間と休息期間の両方に影響する。",
+      "sourceUrl": "https://driver-roudou-jikan.mhlw.go.jp/bus/notice"
+    },
+    {
+      "title": "バス運転者の改善基準告示：運転時間・連続運転",
+      "summary": "運転時間は2日平均で1日9時間以内、4週平均で1週40時間以内。連続運転は4時間以内（貸切バスの高速道路区間はおおむね2時間までとするよう努める）。",
+      "sourceUrl": "https://driver-roudou-jikan.mhlw.go.jp/bus/notice"
+    },
+    {
+      "title": "改善基準告示が長い運行日に与える影響",
+      "summary": "朝の会場行きから夜の市内行き・パーティー送迎までを1台・1人の運転者で通すと、拘束時間が13時間（最大15時間）を超えやすい。2人乗務や分割休息の特例には設備や回数の条件がある。運行計画は事業者と相談が必要。",
+      "sourceUrl": "https://driver-roudou-jikan.mhlw.go.jp/bus/notice"
+    },
+    {
+      "title": "九州の路線バス運転者不足（九州運輸局調査）",
+      "summary": "九州運輸局の調査報告書概要版（令和5年3月）は、管内の路線バス運転者不足が近年ますます深刻化し、それを要因としてバス路線の廃止が相次いでいるとしている。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/content/000300690.pdf"
+    },
+    {
+      "title": "九州の地域公共交通の状況（九州運輸局「九州の運輸と観光2026」）",
+      "summary": "運転者不足などを要因として、乗合バス路線や鉄道路線の減便・廃止が九州各地で相次ぎ、地域公共交通は大変厳しい状況に置かれているとしている。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/content/000370768.pdf"
+    },
+    {
+      "title": "宮崎交通の運転手不足に関する言及",
+      "summary": "宮崎交通の2026年9月9日付の発表（日向・入郷地域の実証運行）では、同地域の路線バスについて、利用者減少や燃料価格高騰に加え「運転手の高齢化・人手不足の深刻化」で事業継続が困難な状況にあると説明している。",
+      "sourceUrl": "https://www.miyakoh.co.jp/news/mediafile/8163cd6c3a9036e3cb1cb968d1444335eae2ee44.pdf"
+    },
+    {
+      "title": "貸切バスの繁忙期（宮崎交通FAQ）",
+      "summary": "宮崎交通は5月、10〜11月、2月を繁忙期とし、前日・当日の手配は難しい場合があるため早めの予約を求めている。開催の4月は繁忙期に含まれないが、台数確保は早めの相談が望ましい。",
+      "sourceUrl": "https://www.miyakoh.co.jp/faq/kashikiri/"
+    }
+  ],
+  "checklist": [
+    {
+      "title": "運行日時と区間（便ごとの出発地・到着地・時刻）",
+      "reason": "見積・予約の際、出発地と時刻、目的地、到着地と時刻を伝える必要がある。",
+      "sourceUrl": "https://www.miyakoh.co.jp/kashikiri/nagare.html"
+    },
+    {
+      "title": "必要台数と車種ごとの乗車定員（正席と補助席の別）",
+      "reason": "大型でも定員55名は補助席10席を含むため、正席だけで何人乗れるかで台数が変わる。",
+      "sourceUrl": "https://www.miyakoh.co.jp/kashikiri/lineup.html"
+    },
+    {
+      "title": "待機時間と待機料金の扱い（会場での日中待機か、回送か）",
+      "reason": "貸切運賃には時間制の基準額があり、待機の有無で費用が変わる。宮崎交通FAQには待機料金の記載がないため個別確認が必要。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/00001_00260.html"
+    },
+    {
+      "title": "運転者の拘束時間・休息期間に収まる運行計画（朝便と夜便で運転者を分けるか）",
+      "reason": "1日の拘束時間は原則13時間・最大15時間、休息期間は9時間を下回れない。",
+      "sourceUrl": "https://driver-roudou-jikan.mhlw.go.jp/bus/notice"
+    },
+    {
+      "title": "見積に含まれる費用と別途費用（有料道路・駐車場・乗務員宿泊費など）",
+      "reason": "宮崎交通の料金はバス代・運転手1名分・燃料代を含み、有料道路・駐車場・宿泊費などは別途とされている。",
+      "sourceUrl": "https://www.miyakoh.co.jp/faq/kashikiri/"
+    },
+    {
+      "title": "キャンセル料の発生時期と率、悪天候時の扱い",
+      "reason": "正式予約後は配車日14日前から20%などのキャンセル料がかかる。雨天・荒天時の運行判断と費用は要確認。",
+      "sourceUrl": "https://www.miyakoh.co.jp/faq/kashikiri/"
+    },
+    {
+      "title": "会場周辺での乗降場所と待機場所（公園駐車場の利用可否）",
+      "reason": "劇場専用駐車場はなく、県総合文化公園の共有駐車場は混雑しやすい。バスの扱いは会場・公園管理事務所への確認が必要。",
+      "sourceUrl": "https://www.miyazaki-ac.jp/access/"
+    },
+    {
+      "title": "バリアフリー対応車両（リフト付きなど）の有無",
+      "reason": "宮崎交通の公式ラインナップにはバリアフリー車両の記載がない。必要な場合は事前に個別確認する。",
+      "sourceUrl": "https://www.miyakoh.co.jp/kashikiri/lineup.html"
+    },
+    {
+      "title": "安全性評価認定の状態と開催時点の有効期限",
+      "reason": "県内の複数事業者は認定期限が2027-03-31で、開催時期（2027年4月）には更新後の状態を確認する必要がある。",
+      "sourceUrl": "https://www.bus.or.jp/cms/wp-content/uploads/2026/10/20260930_nintei_jigyosha_list.pdf"
+    },
+    {
+      "title": "見積の有効期限と運賃改定時の扱い",
+      "reason": "運賃の基準額は改定されることがある（直近は令和7年9月26日）。予約から開催まで間が空くため、改定時にどちらの運賃を適用するか確認する。",
+      "sourceUrl": "https://wwwtb.mlit.go.jp/kyushu/00001_00260.html"
+    }
+  ]
+}

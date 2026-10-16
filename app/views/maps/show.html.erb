@@ -60,6 +60,7 @@
 <nav class="page-next" aria-label="ほかのページ">
   <%= link_to event_path do %>開催の基本とアクセス<span>日程・会場・まだ分からないこと</span><% end %>
   <%= link_to restaurants_path do %>ごはんと人数<span>宮崎の飲食店<%= Restaurant.all.size %>件</span><% end %>
+  <%= link_to transport_path do %>移動・バス<span>路線・貸切バス・手配の確認事項</span><% end %>
   <% first_year, last_year = Edition.year_range %>
   <%= link_to editions_path do %>過去のRubyKaigi<span><%= first_year %>〜<%= last_year %>年の公式資料</span><% end %>
 </nav>

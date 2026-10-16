@@ -1234,3 +1234,152 @@
     aspect-ratio: 16 / 9;
   }
 }
+
+/* 移動・バス: the archive's page and section headings, with plain comparison tables. */
+.transport-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--a-radius);
+  background: var(--a-card);
+}
+.transport-table-scroll:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 3px;
+}
+.transport-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.transport-table th,
+.transport-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+.transport-table thead th {
+  background: var(--a-soft);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.transport-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.transport-table tbody th {
+  min-width: 140px;
+  font-size: 13px;
+}
+.transport-table .source {
+  margin: 0;
+  font-size: 11px;
+}
+.transport-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  counter-reset: check;
+}
+.transport-checklist li {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px 14px 48px;
+  border: 1px solid var(--line);
+  border-radius: var(--a-radius);
+  background: var(--a-card);
+  position: relative;
+  counter-increment: check;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.transport-checklist li::before {
+  content: counter(check, decimal-leading-zero);
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  color: var(--ruby);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.transport-checklist strong {
+  font-size: 14px;
+}
+.transport-checklist span {
+  color: var(--a-ink-2);
+}
+.transport-past,
+.transport-taxis {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.transport-past li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.transport-past-year {
+  color: var(--ruby);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.transport-past-year small {
+  display: block;
+  margin-top: 4px;
+  color: var(--a-ink-2);
+  font-size: 12px;
+  font-weight: 400;
+}
+.transport-past p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.transport-taxis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 10px;
+}
+.transport-taxis li {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--a-radius);
+  background: var(--a-card);
+  font-size: 13px;
+}
+.transport-taxis span {
+  color: var(--a-ink-2);
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .transport-table-scroll {
+    margin: 0 -16px;
+    border-width: 1px 0;
+    border-radius: 0;
+  }
+  .transport-past li {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px;
+  }
+}
+.transport-table th:not(:last-child),
+.transport-table td:not(:last-child) {
+  width: 1%;
+  min-width: 120px;
+}
+.transport-operators td:nth-child(4),
+.transport-operators th:nth-child(4) {
+  white-space: nowrap;
+}
