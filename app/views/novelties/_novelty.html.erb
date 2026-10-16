@@ -1,10 +1,21 @@
-<li class="novelty-item" data-novelty-id="<%= novelty.id %>">
-  <p class="novelty-category"><%= novelty.category %></p>
-  <h4><%= novelty.name %></h4>
-  <p class="novelty-provider"><%= novelty.provider %></p>
-  <dl>
-    <div><dt>対象・入手方法</dt><dd><%= novelty.distribution %></dd></div>
-    <div><dt>確認できたこと</dt><dd><%= novelty.note %></dd></div>
-  </dl>
-  <p class="source"><%= external_link_to novelty.source_label, novelty.source_url %></p>
+<li id="<%= novelty.anchor %>" class="novelty-item" data-novelty-id="<%= novelty.id %>" data-kind="<%= novelty.kind %>" data-reach="<%= novelty.reach %>" data-photo="<%= NoveltyPhoto.for_novelty(novelty).any? ? 'yes' : 'no' %>">
+  <% photo = NoveltyPhoto.for_novelty(novelty).first %>
+  <% if photo %>
+    <%= render 'editions/photo', photo:, variant: 'thumb' %>
+  <% else %>
+    <div class="novelty-mark" title="<%= novelty.kind_label %>（写真なし）"><%= render 'novelties/glyph', kind: novelty.kind %><span class="visually-hidden"><%= novelty.kind_label %></span></div>
+  <% end %>
+  <div class="novelty-body">
+    <h4><%= novelty.name %></h4>
+    <p class="novelty-meta"><span class="novelty-category" data-reach="<%= novelty.reach %>"><%= novelty.category %></span><span class="novelty-distribution"><%= novelty.distribution %></span></p>
+    <div class="novelty-actions">
+      <details class="novelty-detail">
+        <summary>記録を読む</summary>
+        <p><%= novelty.note %></p>
+        <p class="novelty-source-name"><%= novelty.provider %> · 出典：<%= novelty.source_label %></p>
+        <% if photo %><p class="novelty-source-name">写真：<%= photo.credit %>（<%= photo.kind_label %>・<%= photo.license_label %>）</p><% end %>
+      </details>
+      <%= external_link_to '出典', novelty.source_url, class: 'novelty-source', 'aria-label': "#{novelty.name}の出典：#{novelty.source_label}" %>
+    </div>
+  </div>
 </li>

@@ -828,157 +828,16 @@ footer details span {
   margin: 3px 0;
   color: var(--muted);
 }
-.archive-card {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 32px;
-  padding: 24px 0;
-  border-top: 1px solid var(--line);
-}
-.archive-year > a {
-  font-size: 28px;
-  text-decoration: none;
-  color: var(--ruby);
-}
-.archive-year > span {
-  display: block;
-  font-size: 12px;
-  color: var(--muted);
-}
-.archive-card h3 {
-  font-size: 17px;
-  margin-bottom: 4px;
-}
-.archive-dates,
-.archive-point {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.archive-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
-  font-size: 12px;
-}
-.archive-sections {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-  margin: 24px 0;
-  font-size: 14px;
-}
-.novelty-year .archive-year h3 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 500;
-  color: var(--ruby);
-}
-.novelty-year .archive-year h3 a {
-  text-decoration: none;
-}
-.novelty-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
-}
-.novelty-item + .novelty-item {
-  border-top: 1px solid var(--line);
-  padding-top: 24px;
-  margin-top: 24px;
-}
-.novelty-category {
-  display: inline-block;
-  padding: 2px 9px;
-  margin-bottom: 8px;
-  background: var(--tint);
-  color: var(--ruby);
-  border-radius: 3px;
-  font-size: 12px;
-}
-.novelty-item h4 {
-  margin-bottom: 4px;
-  font-size: 17px;
-}
-.novelty-provider {
-  margin-bottom: 12px;
-  color: var(--muted);
-  font-size: 13px;
-}
-.novelty-item dl {
-  margin: 0;
-  font-size: 14px;
-}
-.novelty-item dt {
-  font-weight: 600;
-}
-.novelty-item dd {
-  margin: 2px 0 10px;
-}
-.novelty-item .source {
-  margin-bottom: 0;
-  overflow-wrap: anywhere;
-}
-.archive-resources {
-  padding-left: 20px;
-  font-size: 14px;
-}
-.archive-resources li {
-  margin: 16px 0;
-}
-.archive-resources p {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-.archive-reading {
-  border-top: 1px solid var(--line);
-  padding-top: 20px;
-}
-.archive-reading > summary {
-  font-size: 14px;
-}
-.reading-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  margin-top: 20px;
-}
-.reading-grid h3 {
-  font-size: 14px;
-}
-.reading-grid p {
-  font-size: 12px;
-  color: var(--muted);
-}
 select:focus-visible {
   outline: 2px solid var(--sea);
   outline-offset: 4px;
 }
 @media (max-width: 767px) {
-  .dining-grid,
-  .reading-grid {
+  .dining-grid {
     grid-template-columns: 1fr;
   }
   .dining-card {
     padding: 20px;
-  }
-  .archive-card {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .archive-year {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 8px 20px;
-  }
-  .archive-year > a {
-    font-size: 26px;
-  }
-  .archive-links {
-    gap: 12px 18px;
   }
   .dining-filter label {
     flex-basis: 100%;
@@ -1084,28 +943,6 @@ select:focus-visible {
 .dining-card-heading {
   min-width: 0;
   flex: 1;
-}
-.dining-thumbnail {
-  width: 96px;
-  height: 80px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--tint);
-  color: var(--ruby);
-  font-size: 9px;
-  overflow: hidden;
-}
-.dining-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.thumbnail-symbol {
-  font-size: 32px;
-  line-height: 1.2;
 }
 .dining-number {
   font-size: 13px;
@@ -1249,10 +1086,6 @@ select:focus-visible {
   }
   .dining-card-header {
     gap: 12px;
-  }
-  .dining-thumbnail {
-    width: 76px;
-    height: 76px;
   }
   .dining-card h3 {
     font-size: 18px;
@@ -1522,4 +1355,237 @@ select:focus-visible {
   #rails-root:not([hidden]) {
     animation: none;
   }
+}
+/* Text-only content shared by every page. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* ごはん・人数 list view: one row per candidate so names, seats and party sizes line up.
+   The same card is cloned into the map's detail panel, where it keeps the card layout. */
+.dining-grid {
+  display: block;
+  margin-top: 16px;
+  border-top: 1px solid var(--ink);
+}
+.dining-list-head {
+  display: grid;
+  grid-template-columns: var(--dining-columns);
+  gap: 0 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+.dining-grid,
+.dining-list-head {
+  --dining-columns: 40px minmax(0, 1.5fr) 92px 112px minmax(0, 1.25fr);
+}
+.dining-grid .dining-card {
+  display: grid;
+  grid-template-columns: var(--dining-columns);
+  gap: 4px 20px;
+  align-items: start;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+.dining-grid .dining-card:hover {
+  background: #fffefa99;
+}
+.dining-grid .dining-card-header {
+  display: contents;
+}
+.dining-number {
+  color: var(--ruby);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+.dining-card .kicker {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.dining-card .kicker .is-listed {
+  color: var(--ruby);
+}
+.dining-card .kicker .is-unknown {
+  color: #8a5a12;
+}
+.dining-grid .dining-card h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.dining-grid .restaurant-address {
+  margin: 2px 0 0;
+  font-size: 11px;
+}
+.dining-grid .capacity-facts {
+  display: contents;
+}
+.dining-grid .capacity-facts > div {
+  padding-top: 1px;
+}
+.dining-grid .capacity-facts dt {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.dining-grid .capacity-facts dd {
+  margin: 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.dining-grid .capacity-facts strong {
+  font-size: 20px;
+  font-weight: 600;
+}
+.dining-grid .capacity-facts span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.dining-grid .capacity-facts > div:last-child span {
+  color: #8a5a12;
+}
+.dining-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  min-width: 0;
+}
+.dining-grid .dining-card-actions .destination-tools {
+  display: contents;
+}
+.dining-grid .dining-card-actions .destination-links {
+  display: contents;
+}
+.dining-grid .destination-links a,
+.dining-grid .dining-focus,
+.dining-grid .copy-address {
+  font-size: 11px;
+}
+.dining-grid .dining-focus {
+  margin: 0;
+  min-height: 32px;
+}
+.dining-grid .copy-address {
+  margin: 0;
+  min-height: 32px;
+  padding: 4px 10px;
+}
+.dining-grid .copy-address-status {
+  flex-basis: 100%;
+  margin: 0;
+}
+.dining-grid .copy-address-status:empty {
+  display: none;
+}
+.dining-grid .dining-card-actions > .source {
+  margin: 0;
+}
+.dining-grid .restaurant-note,
+.dining-grid .dining-card > details,
+.dining-grid .dining-card > .source {
+  grid-column: 2 / -1;
+  margin: 0;
+}
+.dining-grid .restaurant-note {
+  max-width: 64em;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.dining-grid .dining-card > details summary {
+  padding: 4px 0;
+  font-size: 11px;
+}
+.dining-grid .dining-card > .source {
+  font-size: 10px;
+  line-height: 1.7;
+}
+.dining-grid .dining-card-selected {
+  outline: 0;
+  box-shadow: inset 3px 0 0 var(--ruby);
+  background: var(--tint);
+}
+@media (max-width: 900px) {
+  .dining-grid,
+  .dining-list-head {
+    --dining-columns: 32px minmax(0, 1fr) 76px 92px;
+  }
+  .dining-grid .dining-card-actions {
+    grid-column: 2 / -1;
+    margin-top: 6px;
+  }
+  .dining-list-head > :last-child {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .dining-grid,
+  .dining-list-head {
+    --dining-columns: 28px minmax(0, 1fr) 64px 70px;
+  }
+  .dining-grid .dining-card {
+    gap: 2px 10px;
+    padding: 14px 0;
+  }
+  .dining-grid .dining-card h3 {
+    font-size: 15px;
+  }
+  .dining-grid .capacity-facts strong {
+    font-size: 17px;
+  }
+  .dining-grid .capacity-facts dd {
+    font-size: 11px;
+  }
+  .dining-grid .capacity-facts span {
+    font-size: 10px;
+  }
+}
+.dining-list-head button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  justify-self: start;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 11px;
+  text-align: left;
+}
+.dining-list-head button::after {
+  content: '↕';
+  opacity: 0.45;
+}
+.dining-list-head button[aria-pressed='true'] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.dining-list-head button[data-direction='asc']::after {
+  content: '↑';
+  opacity: 1;
+}
+.dining-list-head button[data-direction='desc']::after {
+  content: '↓';
+  opacity: 1;
+}
+.dining-list-head button:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 2px;
 }

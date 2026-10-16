@@ -1,34 +1,14 @@
-<article class="dining-card" data-restaurant-id="<%= restaurant.id %>" data-group-capacity="<%= restaurant.group_capacity %>" data-dining-area="<%= restaurant.area %>">
+<article class="dining-card" data-restaurant-id="<%= restaurant.id %>" data-group-capacity="<%= restaurant.group_capacity %>" data-dining-area="<%= restaurant.area %>" data-position="<%= restaurant.position %>" data-total-seats="<%= restaurant.total_seats %>" data-name="<%= restaurant.name %>">
   <div class="dining-card-header">
-    <div class="dining-thumbnail">
-      <% if restaurant.thumbnail %>
-        <img src="<%= restaurant.thumbnail.fetch('path') %>" alt="<%= restaurant.thumbnail.fetch('alt') %>" width="96" height="80" loading="lazy" decoding="async">
-      <% else %>
-        <span class="thumbnail-symbol" aria-hidden="true">◇</span><span>写真未掲載</span>
-      <% end %>
-    </div>
+    <span class="dining-number" aria-hidden="true"><%= list_number(restaurant.position) %></span>
     <div class="dining-card-heading">
+      <h3><span class="visually-hidden"><%= list_number(restaurant.position) %> </span><%= restaurant.name %></h3>
       <p class="kicker">
-        <span class="dining-number"><%= list_number(restaurant.position) %></span>
-        <%= restaurant.hotel_banquet? ? 'ホテル宴会場' : '飲食店' %> · <%= restaurant.group_size_listed? ? '掲載人数あり' : '人数要確認' %>
+        <%= restaurant.hotel_banquet? ? 'ホテル宴会場' : '飲食店' %> · <%= restaurant.area %> · <span class="<%= restaurant.group_size_listed? ? 'is-listed' : 'is-unknown' %>"><%= restaurant.group_size_listed? ? '掲載人数あり' : '人数要確認' %></span>
       </p>
-      <h3><%= restaurant.name %></h3>
       <p class="restaurant-address"><%= restaurant.address %></p>
     </div>
   </div>
-
-  <% if restaurant.thumbnail %>
-    <p class="photo-credit">
-      <a href="<%= restaurant.thumbnail.fetch('sourceUrl') %>"><%= restaurant.thumbnail.fetch('credit') %></a> ·
-      <a href="<%= restaurant.thumbnail.fetch('licenseUrl') %>"><%= restaurant.thumbnail.fetch('license') %></a>
-    </p>
-  <% end %>
-
-  <% if restaurant.located? %>
-    <button type="button" class="dining-focus" data-dining-focus="<%= restaurant.id %>" aria-pressed="false">地図で見る ↗</button>
-  <% else %>
-    <p class="source">地図上の位置は未確認です</p>
-  <% end %>
 
   <dl class="capacity-facts">
     <div>
@@ -41,7 +21,14 @@
     </div>
   </dl>
 
-  <%= render 'shared/destination_tools', destination: restaurant %>
+  <div class="dining-card-actions">
+    <% if restaurant.located? %>
+      <button type="button" class="dining-focus" data-dining-focus="<%= restaurant.id %>" aria-pressed="false">地図で見る</button>
+    <% else %>
+      <p class="source">地図上の位置は未確認です</p>
+    <% end %>
+    <%= render 'shared/destination_tools', destination: restaurant %>
+  </div>
   <p class="restaurant-note"><%= restaurant.note %></p>
 
   <details>

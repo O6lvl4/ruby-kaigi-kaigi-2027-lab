@@ -1,0 +1,23 @@
+<section id="novelty-shop" class="archive-section" aria-labelledby="novelty-shop-title">
+  <div class="archive-section-heading">
+    <p class="archive-eyebrow">03</p>
+    <h2 id="novelty-shop-title">販売品・デジタル素材</h2>
+    <p>公式の「Novelties」「Goodies」ページにある販売サイトとスライド素材の案内です。無料の参加者配布とは分けています。現在の販売・在庫は未確認です。</p>
+  </div>
+  <div class="novelty-shop">
+    <% ArchivePhoto.merchandise.each do |photo| %>
+      <%= render 'editions/photo', photo:, variant: 'shop' %>
+    <% end %>
+    <ul class="archive-resources">
+      <% Novelty.resources.each do |resource| %>
+        <li>
+          <span class="archive-resource-year"><%= resource.fetch('year') %></span>
+          <div>
+            <%= external_link_to resource.fetch('label'), resource.fetch('url') %>
+            <% if resource['note'] %><p><%= resource['note'] %></p><% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

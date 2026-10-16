@@ -1,37 +1,94 @@
 <% content_for :title, '過去RubyKaigi' %>
-<section id="archive" class="section reference-section" aria-labelledby="archive-title">
-  <%= section_label '06', @page.fetch('title'), id: 'archive-title' %>
-  <p class="section-intro"><%= @page.fetch('intro') %></p>
-  <nav class="archive-sections" aria-label="過去RubyKaigiの掲載内容">
-    <a href="#archive">開催一覧</a>
-    <a href="#novelties">ノベルティ・記念品</a>
-    <a href="#archive-reading">運営の読み方</a>
-  </nav>
-  <div class="archive-list">
-    <%= render @editions %>
-  </div>
-  <p class="source">各年の公式サイトを参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
-</section>
-<%= render 'novelties/archive', novelties: @novelties %>
-<section id="archive-reading" class="section reference-section" aria-labelledby="archive-reading-title">
-  <%= section_label '08', '運営の読み方', id: 'archive-reading-title' %>
-  <p class="section-intro">公開資料で確認できる実施例と、そこから考えられることを分けてまとめています。</p>
-  <details class="archive-reading">
-    <summary>過去の開催から、どこを読む？</summary>
-    <div class="reading-grid">
-      <% @reading_prompts.each do |prompt| %>
-        <article>
-          <h3><%= prompt.title %></h3>
-          <p><%= prompt.fact %></p>
-          <p><strong>読み方の提案：</strong><%= prompt.inference %></p>
-          <p class="source">
-            <% prompt.sources.each_with_index do |url, index| %>
-              <a href="<%= url %>">実施例の出典 <%= index + 1 %> ↗</a>
-            <% end %>
-          </p>
-        </article>
-      <% end %>
+<% novelties_by_year = @novelties.group_by(&:year) %>
+<div class="archive-guide">
+  <header id="archive" class="archive-header" aria-labelledby="archive-title">
+    <p class="archive-eyebrow">RUBYKAIGI ARCHIVE <span><%= Edition.year_range.join('—') %></span></p>
+    <h1 id="archive-title">過去RubyKaigi</h1>
+    <p class="archive-lead">開催地ごとのノベルティと開催の記録を、出典つきで見比べるためのアーカイブです。</p>
+    <p class="archive-counts">開催 <%= @editions.length %>件 · ノベルティ <%= @novelties.length %>件 · 販売・素材 <%= Novelty.resources.length %>件 · 確認日 <time datetime="<%= Novelty.checked_at %>"><%= Novelty.checked_at %></time></p>
+    <nav class="archive-sections" aria-label="過去RubyKaigiの掲載内容">
+      <a href="#novelties"><span>01</span>見比べる</a>
+      <a href="#archive-events"><span>02</span>年ごとの記録</a>
+      <a href="#novelty-shop"><span>03</span>販売品・素材</a>
+      <a href="#archive-reading"><span>04</span>運営の読み方</a>
+      <a href="#archive-policy"><span>05</span>掲載方針と出典</a>
+    </nav>
+  </header>
+
+  <section id="novelties" class="archive-section" aria-labelledby="novelties-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">01</p>
+      <h2 id="novelties-title">ノベルティを見比べる</h2>
+      <p>品目ごとに、どの年に何があったか。名前を選ぶと、年ごとの記録にある詳細へ移動します。</p>
     </div>
-  </details>
-  <p class="source">公式サイト・担当者の公開記録を参照 · 確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time></p>
-</section>
+    <%= render 'novelties/matrix', novelties_by_year: %>
+  </section>
+
+  <section id="archive-events" class="archive-section" aria-labelledby="archive-events-title" data-novelty-explorer>
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">02</p>
+      <h2 id="archive-events-title">年ごとの記録</h2>
+      <p>開催地・会場・日程と、その年のノベルティ・写真をまとめています。2020年は現地開催の中止とオンラインのTakeoutを別に記録しています。</p>
+    </div>
+    <%= render 'novelties/filters', novelties: @novelties, editions: @editions %>
+    <ol class="archive-list">
+      <%= render partial: 'editions/edition', collection: @editions, locals: { novelties_by_year: } %>
+    </ol>
+    <p class="novelty-empty" data-novelty-empty hidden>この条件に合うノベルティはありません。<button type="button" data-novelty-clear>条件をクリア</button></p>
+  </section>
+
+  <%= render 'novelties/shop' %>
+
+  <section id="archive-reading" class="archive-section" aria-labelledby="archive-reading-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">04</p>
+      <h2 id="archive-reading-title">運営の読み方</h2>
+      <p>公開された実施例と、そこから考えられることを分けています。2027年の決定事項ではありません。</p>
+    </div>
+    <details class="archive-reading">
+      <summary>過去の開催から、どこを読む？ <span><%= @reading_prompts.length %>つの観点</span></summary>
+      <div class="reading-grid">
+        <% @reading_prompts.each_with_index do |prompt, index| %>
+          <article>
+            <span class="archive-reading-number"><%= list_number(index + 1) %></span>
+            <h3><%= prompt.title %></h3>
+            <p><%= prompt.fact %></p>
+            <p class="archive-reading-idea"><strong>読み方の提案</strong><%= prompt.inference %></p>
+            <p class="source">
+              <% prompt.sources.each_with_index do |url, source_index| %>
+                <a href="<%= url %>">実施例の出典 <%= source_index + 1 %> ↗</a>
+              <% end %>
+            </p>
+          </article>
+        <% end %>
+      </div>
+    </details>
+  </section>
+
+  <section id="archive-policy" class="archive-section archive-policy" aria-labelledby="archive-policy-title">
+    <div class="archive-section-heading">
+      <p class="archive-eyebrow">05</p>
+      <h2 id="archive-policy-title">掲載方針と出典</h2>
+      <p>一覧の読み方と、出典・画像の扱いです。</p>
+    </div>
+    <dl class="archive-policy-list">
+      <div>
+        <dt>掲載範囲</dt>
+        <dd><%= Novelty.coverage_note %></dd>
+      </div>
+      <div>
+        <dt>配り方の区分</dt>
+        <dd>「公式配布」は参加者向けに配られた記録がある品、「限定・条件付き」は役割・数量・スタンプラリー達成などの条件がある品、「制作のみ確認」は制作の記録だけで配布対象が未確認の品、「スポンサー品」はスポンサーブースでの配布です。カードには出典での区分をそのまま表示しています。</dd>
+      </div>
+      <div>
+        <dt>写真</dt>
+        <dd>会場の写真はWikimedia Commonsのもので、撮影者とライセンス（CC BY・CC BY-SA・パブリックドメイン）を各写真に表示しています。ノベルティの写真は、出典の制作記事・参加記録から引用しており、多くはライセンスの表記がありません。権利は各著作者に帰属し、申し出があれば削除します。実写・モック画像・デザイン図を区別して表示し、写真のない品は品目のアイコンで示します（実物の写真ではありません）。</dd>
+      </div>
+      <div>
+        <dt>出典と確認日</dt>
+        <dd>開催情報は各年の公式サイト、ノベルティは運営・制作者・配布担当者の公開記録を参照しています。確認日 <time datetime="<%= Edition.checked_at %>"><%= Edition.checked_at %></time>。出典のクレジットは主催者による本サイトの承認を意味しません。</dd>
+      </div>
+    </dl>
+  </section>
+  <%= render 'editions/photo_dialog' %>
+</div>

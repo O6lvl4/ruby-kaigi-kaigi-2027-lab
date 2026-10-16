@@ -5,6 +5,7 @@ class EditionsController < ApplicationController
     @page = Edition.page
     @reading_prompts = Edition.reading_prompts
     @novelties = Novelty.all
+    @photos = ArchivePhoto.all
     respond_to do |format|
       format.html
       format.json { render json: archive_data }
@@ -15,6 +16,6 @@ class EditionsController < ApplicationController
 
   def archive_data
     { checkedAt: Edition.checked_at, editions: @editions,
-      noveltyCheckedAt: Novelty.checked_at, novelties: @novelties, noveltyResources: Novelty.resources }
+      noveltyCheckedAt: Novelty.checked_at, novelties: @novelties, noveltyResources: Novelty.resources, photos: @photos }
   end
 end

@@ -3,3 +3,6 @@ dist/
 public/rails-runtime.wasm
 .test-data/
 upstream-*/
+
+# Collected novelty images awaiting a publication decision (see research/novelty-images/manifest.json)
+research/

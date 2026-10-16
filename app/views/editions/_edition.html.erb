@@ -1,21 +1,40 @@
-<article class="archive-card" data-edition-id="<%= edition.id %>" data-archive-year="<%= edition.year %>">
-  <div class="archive-year">
-    <a href="<%= edition.url %>"><%= edition.year %> ↗</a>
-    <span><%= edition.city %></span>
-    <% if edition.edition %><span><%= edition.edition %></span><% end %>
-  </div>
-  <div>
-    <h3><%= edition.venue %></h3>
-    <p class="archive-dates"><%= edition.dates %></p>
-    <p class="archive-point"><%= edition.point %></p>
+<% items = edition.id == edition.year.to_s ? novelties_by_year.fetch(edition.year, []) : [] %>
+<% photos = ArchivePhoto.for_edition(edition) %>
+<li id="archive-<%= edition.id %>" class="archive-card<%= ' is-quiet' if items.empty? %>" data-edition-id="<%= edition.id %>" data-archive-year="<%= edition.year %>" aria-labelledby="archive-<%= edition.id %>-title">
+  <div class="archive-card-facts">
+    <% if (venue_photo = VenuePhoto.for_edition(edition)) %><%= render 'editions/photo', photo: venue_photo, variant: 'venue' %><% end %>
+    <h3 id="archive-<%= edition.id %>-title" class="archive-year"><span class="archive-year-number"><%= edition.year %></span><span class="archive-city"><%= edition.city %></span></h3>
+    <% if edition.edition %><p class="archive-format"><%= edition.edition %></p><% end %>
+    <dl class="archive-facts">
+      <div><dt>会場</dt><dd><%= edition.venue %></dd></div>
+      <div><dt>日程</dt><dd><%= edition.dates %></dd></div>
+    </dl>
     <nav class="archive-links" aria-label="RubyKaigi <%= edition.year %> 公式資料">
+      <a href="<%= edition.url %>">公式サイト ↗</a>
       <% if edition.schedule_url %><a href="<%= edition.schedule_url %>">プログラム ↗</a><% end %>
       <% if edition.events_url %><a href="<%= edition.events_url %>">交流イベント ↗</a><% end %>
-      <% if edition.operations_url %><a href="<%= edition.operations_url %>"><%= edition.operations_label %> ↗</a><% end %>
-      <% Array(edition.resources).each do |resource| %>
-        <a href="<%= resource.fetch('url') %>"><%= resource.fetch('label') %> ↗</a>
-      <% end %>
     </nav>
-    <% if edition.point_source %><p class="source"><a href="<%= edition.point_source %>">実施例の出典 ↗</a></p><% end %>
+    <details class="archive-event-details">
+      <summary>運営の記録</summary>
+      <p class="archive-point"><%= edition.point %></p>
+      <nav class="archive-links" aria-label="RubyKaigi <%= edition.year %> 運営の資料">
+        <% if edition.operations_url %><a href="<%= edition.operations_url %>"><%= edition.operations_label %> ↗</a><% end %>
+        <% Array(edition.resources).each do |resource| %><a href="<%= resource.fetch('url') %>"><%= resource.fetch('label') %> ↗</a><% end %>
+        <% if edition.point_source %><a href="<%= edition.point_source %>">実施例の出典 ↗</a><% end %>
+      </nav>
+    </details>
   </div>
-</article>
+  <div class="archive-card-items">
+    <% if items.any? %>
+      <p class="archive-card-count"><span data-novelty-year-count><%= items.length %></span>件のノベルティ</p>
+      <ul class="novelty-list"><%= render items %></ul>
+    <% else %>
+      <p class="archive-card-none">この開催のノベルティは掲載していません。</p>
+    <% end %>
+    <% if photos.any? %>
+      <div class="archive-card-photos" data-novelty-figure>
+        <% photos.each do |photo| %><%= render 'editions/photo', photo:, variant: 'inline' %><% end %>
+      </div>
+    <% end %>
+  </div>
+</li>

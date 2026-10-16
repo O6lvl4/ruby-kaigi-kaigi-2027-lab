@@ -209,6 +209,24 @@ assert.equal(editionData.editions.filter(item => item.year === 2020).length, 2);
 assert.match(archivesHtml, /現地開催中止/);
 console.log('PASS novelty JSON and Rails cards agree, with exact sources and explicit distribution categories');
 
+const photoData = await data('archive_photos');
+assert.deepEqual(editionsJson.body.photos, photoData.photos);
+assert.equal((archivesHtml.match(/data-archive-photo=/g) || []).length, photoData.photos.length);
+assert.ok(photoData.photos.some(photo => photo.kind === 'photograph'));
+for (const photo of photoData.photos) {
+  assert.match(photo.src, /^images\/archives\/[a-z0-9-]+\.(jpg|webp)$/);
+  assert.ok((await readFile(`public/${photo.src}`)).byteLength > 0);
+  assert.ok(photo.width > 0 && photo.height > 0);
+  assert.ok(photo.creator && photo.alt && photo.changes && photo.licenseEvidence.length);
+  assert.match(photo.license, /^CC BY (3|4)\.0$/);
+  for (const key of ['sourceUrl', 'licenseUrl', 'originalUrl']) assert.equal(new URL(photo[key]).protocol, 'https:');
+  assert.ok(archivesHtml.includes(escaped(photo.alt)));
+  assert.ok(archivesHtml.includes(photo.licenseUrl));
+  assert.ok(archivesHtml.includes(`src="/${photo.src}"`));
+}
+assert.match(archivesHtml, /<dialog[^>]+aria-labelledby="archive-photo-title"/);
+console.log('PASS licensed archive images retain credit, provenance, dimensions, and accessible enlargement controls');
+
 assert.equal(new Set(venues.map(v => v.id)).size, 20);
 assert.equal(venues.filter(v => v.venueType === 'hotel_banquet').length, 4);
 assert.equal(venues.find(v => v.id === 'rikyu').groupCapacity, null);
