@@ -41,113 +41,733 @@
   "candidates": [
     {
       "id": "kaikou-yamato",
-      "category": "bento",
       "name": "海幸大和",
-      "summary": "公式サイトに会議・セミナー向け弁当と、予算に応じたオーダーメイド弁当の案内があります。",
-      "sourceUrl": "https://kaikou-yamato.com/scene/scene02/",
-      "sourceLabel": "公式：会議やセミナーなどイベントに",
+      "summary": "会議・イベント向け仕出しとケータリング。複数日の献立変更も相談できる。",
+      "sourceUrl": "https://kaikou-yamato.com/faq/",
+      "sourceLabel": "公式サイト",
       "checkedAt": "2026-10-19",
-      "status": "候補・条件未確認",
-      "priceNote": "掲載例：地産弁当 1,500円（税込）。2027年の価格・配送料は未確認。",
-      "capacityNote": "未確認",
-      "checks": [
-        "希望食数の製造可否",
-        "会場への配達範囲・納品時間"
-      ],
+      "priceNote": "公式弁当一覧にチキン南蛮500円、地産弁当1,500円、二段弁当2,300円（税込）。2027年価格は要確認。",
+      "capacityNote": "最大食数は未確認。大口の受注枠は要相談。",
       "planningFacts": [
         {
           "label": "配達・最低注文",
-          "value": "配達の案内あり。会場への配達範囲・最低注文数・送料は未確認。",
-          "sourceUrl": "https://kaikou-yamato.com/how_to_order/"
+          "value": "配達対応。地域により有料。最低注文額は通常期の条件を要確認。",
+          "sourceUrl": "https://kaikou-yamato.com/faq/"
         },
         {
           "label": "注文期限",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "原則3日前。前日受付の場合もあるが当日注文は基本不可。",
+          "sourceUrl": "https://kaikou-yamato.com/faq/"
         },
         {
           "label": "食事制限・アレルギー",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "アレルギー対応の案内あり。品目・混入対策・ベジタリアン等は個別確認。",
+          "sourceUrl": "https://kaikou-yamato.com/faq/"
         },
         {
           "label": "容器回収",
-          "value": "当日または後日の容器回収を案内。選ぶ弁当容器への適用・回収時間は要確認。",
-          "sourceUrl": "https://kaikou-yamato.com/how_to_order/"
+          "value": "使用後の器は洗わず回収可。回収時刻を指定できない場合あり。",
+          "sourceUrl": "https://kaikou-yamato.com/faq/"
         }
       ],
-      "nextQuestion": "希望日の指定時刻に、必要な食数を会場へ一括納品できますか？"
+      "nextQuestion": "希望食数を昼食時刻までに一括納品し、個別食の表示と容器回収まで対応できるか？",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市阿波岐原町請田2442",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認",
+      "priceSourceUrl": "https://kaikou-yamato.com/scene/scene02/"
     },
     {
       "id": "kisetu-kawano",
-      "category": "bento",
       "name": "季節料理かわの",
-      "summary": "公式サイトに会議弁当の案内があります。配達は注文合計6,000円（税込）以上から応相談と掲載されています。",
+      "summary": "会議にも使える懐石系のおもてなし弁当。宮崎牛のメニューを掲載。",
       "sourceUrl": "https://www.kisetu-kawano.jp/private/bento",
-      "sourceLabel": "公式：おもてなし弁当",
+      "sourceLabel": "公式サイト",
       "checkedAt": "2026-10-19",
-      "status": "候補・条件未確認",
-      "priceNote": "掲載価格：2,800円（税込）より。2027年の価格・大口注文条件は未確認。",
-      "capacityNote": "未確認",
-      "checks": [
-        "大口注文の締切・対応食数",
-        "会場への配達可否・配送料"
-      ],
+      "priceNote": "会議用途の案内は税込2,800円より。価格・献立は2027年分を再確認。",
+      "capacityNote": "大量注文の上限は未確認。",
       "planningFacts": [
         {
           "label": "配達・最低注文",
-          "value": "注文合計6,000円（税込）以上から配達応相談。最低食数・会場への配達可否・送料は未確認。",
-          "sourceUrl": "https://www.kisetu-kawano.jp/private/bento"
+          "value": "2026年5月の案内では地域別に6,000／8,000／15,000／20,000円以上。会場住所で確認。",
+          "sourceUrl": "https://www.kisetu-kawano.jp/information/takeout202605"
         },
         {
           "label": "注文期限",
-          "value": "通常注文は前日14時までと掲載。大口注文の締切・2027年の条件は別途確認。",
+          "value": "前日14時まで。大会規模の注文は別途早期相談。",
           "sourceUrl": "https://www.kisetu-kawano.jp/private/bento"
         },
         {
           "label": "食事制限・アレルギー",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "公式公開情報では未確認。要問い合わせ"
         },
         {
           "label": "容器回収",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "公式公開情報では未確認。要問い合わせ"
         }
       ],
-      "nextQuestion": "希望日の指定時刻に、必要な食数を会場へ一括納品できますか？"
+      "nextQuestion": "希望食数の受注枠と、会場住所に適用される配達条件は？",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市内。地域別の配達最低金額あり",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "miyazakiya",
+      "name": "まごのて宅配弁当 宮崎屋",
+      "summary": "会議・大会用の予約弁当と宅配弁当を扱う。",
+      "sourceUrl": "https://ann-5.jp/",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "会議弁当680円～（掲載税込734円～）。内容・値段は相談。",
+      "capacityNote": "最大食数は未確認。10個は配達の最低数であり供給上限ではない。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "宮崎市内（一部例外）。配達注文は10個以上。",
+          "sourceUrl": "https://ann-5.jp/"
+        },
+        {
+          "label": "注文期限",
+          "value": "スポーツ・会議・行楽弁当は3日前までの事前予約。",
+          "sourceUrl": "https://ann-5.jp/"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "大会期間の一日当たり食数、納品便、特別食の可否を相談できるか？",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市。2026年8月の新店舗案内は清武町加納乙451-1",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "shokukobo-futami",
+      "name": "食工房ふたみ",
+      "summary": "会議・イベント向け仕出し弁当とオードブル。用途・予算に合わせた相談を受け付ける。",
+      "sourceUrl": "https://syokukobo-futami.com/",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "固定価格は確認できず。予算・内容に応じた見積もり。",
+      "capacityNote": "大口対応の案内あり。具体的な最大食数は未確認。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "宮崎市内を中心に配達。地域・金額で条件が異なる。固定の最低注文数なし。",
+          "sourceUrl": "https://syokukobo-futami.com/"
+        },
+        {
+          "label": "注文期限",
+          "value": "数量・内容で必要日数が変わるため日時決定後に早めの相談。",
+          "sourceUrl": "https://syokukobo-futami.com/"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "可能な範囲で対応。予約時に具体的なアレルゲンを伝える。",
+          "sourceUrl": "https://syokukobo-futami.com/"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "必要食数を時間内に製造・配達できるか、対応可能な個別食と見積もりを確認したい。",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市神宮東2-10-39",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "fu-jyu",
+      "name": "お弁当の楓樹",
+      "summary": "会議・研修・ロケ・イベント用弁当とオードブルを扱う。",
+      "sourceUrl": "https://fu-jyu.jp/menu/",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "日常メニューはS弁当450円、W弁当500円、チキン弁当600円（税込）。イベント用は予算相談。",
+      "capacityNote": "少人数・大人数向けの案内あり。最大食数は未確認。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "通常弁当は1個から無料配達の案内。イベント納品の対象地域・条件は要確認。",
+          "sourceUrl": "https://fu-jyu.jp/menu/"
+        },
+        {
+          "label": "注文期限",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "イベント用の単価、最大食数、会場への納品条件は？",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市内の事業者。会場までの配達可否は要確認",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "brighthouse-sumiyoshi",
+      "name": "ブライトハウス住吉（清樹会）",
+      "summary": "会議・行事用の特注弁当を用意する就労継続支援B型事業所。",
+      "sourceUrl": "https://seiju-kai.jp/brighthouse/brighthouse-bento/",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "特注弁当は600・800・1,000・1,200円の掲載。税扱い・2027年価格は要確認。",
+      "capacityNote": "特注弁当は50個から。最大食数は未確認。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "特注弁当は50個から配達。配達範囲は注文時に確認。",
+          "sourceUrl": "https://seiju-kai.jp/brighthouse/brighthouse-bento/"
+        },
+        {
+          "label": "注文期限",
+          "value": "特注の締切は未掲載。日常配食の当日9:30締切を特注に適用しない。",
+          "sourceUrl": "https://seiju-kai.jp/brighthouse/brighthouse-bento/"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "50個以上の特注について、受注上限・何日前の確定・会場への納品時刻を確認したい。",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市島之内字伊鈴山10243-3",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "coop-miyazaki",
+      "name": "コープみやざき（特注弁当）",
+      "summary": "行楽・会合向けの予約弁当。宮崎市内複数店舗の惣菜部門が窓口。",
+      "sourceUrl": "https://www.miyazaki.coop/bento/bento_a",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "税込463円の幕の内から税込2,500円の御膳まで掲載。予約商品袋は別料金。",
+      "capacityNote": "店舗ごとの製造上限は未確認。注文店と数量の調整が必要。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "合計1万円以上・1週間前までの予約で店舗基礎購買圏内へ配達。事前払い。",
+          "sourceUrl": "https://www.miyazaki.coop/bento/bento_a"
+        },
+        {
+          "label": "注文期限",
+          "value": "原則1週間前。個数・内容によって受注できない場合がある。",
+          "sourceUrl": "https://www.miyazaki.coop/bento/bento_a"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "製造室で卵・乳・小麦・そば・落花生・えび・かに・くるみ・カシューナッツを扱う。除去対応は未確認。",
+          "sourceUrl": "https://www.miyazaki.coop/bento/bento_a"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "担当店舗の配達範囲、全日程の製造枠、アレルゲン表示の提供方法は？",
+      "checks": [
+        "2027年の受注可否・納品時間",
+        "最大製造数と数量確定期限",
+        "会場への搬入条件"
+      ],
+      "locationNote": "宮崎市内の花ヶ島・柳丸・宮脇・大塚・赤江など各店が候補",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "taruton",
+      "name": "お弁当のたるとん",
+      "summary": "公式LINEにイベント弁当の受付を掲載。店頭受取候補として検討できる。",
+      "sourceUrl": "https://page.line.me/521otybr",
+      "sourceLabel": "公式LINE",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント弁当の金額は今回の文字情報では未確認。見積もりが必要。",
+      "capacityNote": "イベント弁当は種類ごとに10個から。最大食数は未確認。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "イベント弁当は各10個から。テイクアウト可。会場配達は未確認。",
+          "sourceUrl": "https://page.line.me/521otybr"
+        },
+        {
+          "label": "注文期限",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        },
+        {
+          "label": "容器回収",
+          "value": "公式公開情報では未確認。要問い合わせ"
+        }
+      ],
+      "nextQuestion": "大会向けの最大食数と単価、会場配達の可否は？",
+      "checks": [
+        "会場配達の可否",
+        "最大食数と予約締切",
+        "食事制限・アレルギー対応"
+      ],
+      "locationNote": "宮崎市宮崎駅東3-7-1",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "benihana",
+      "name": "べにはな",
+      "summary": "高鍋町の仕出し・ケータリング。宮崎市内の掲載配達対象は佐土原町に限られるため条件付き候補。",
+      "sourceUrl": "https://benihana.site/question/",
+      "sourceLabel": "公式サイト",
+      "checkedAt": "2026-10-19",
+      "priceNote": "メニュー別見積もり。サイト内でオードブル大の価格表記に差があるため電話確認が必要。",
+      "capacityNote": "最大食数は未確認。配達は5個以上。",
+      "planningFacts": [
+        {
+          "label": "配達・最低注文",
+          "value": "5個以上で配達無料。公表範囲は児湯郡・西都市・宮崎市佐土原町。市中心部は範囲外のため要相談。",
+          "sourceUrl": "https://benihana.site/question/"
+        },
+        {
+          "label": "注文期限",
+          "value": "3日前まで。数量確定は前日、キャンセルは2日前まで。",
+          "sourceUrl": "https://benihana.site/question/"
+        },
+        {
+          "label": "食事制限・アレルギー",
+          "value": "完全除去食には非対応。アレルギー対象商品を別品に変更する対応。",
+          "sourceUrl": "https://benihana.site/question/"
+        },
+        {
+          "label": "容器回収",
+          "value": "回収あり。方法は配達時に打ち合わせ。",
+          "sourceUrl": "https://benihana.site/question/"
+        }
+      ],
+      "nextQuestion": "佐土原町以外の大会会場へ納品できるか？できる場合の金額・食数・回収条件は？",
+      "checks": [
+        "大会会場が配達対象か最優先で確認",
+        "最新の料金・最大食数",
+        "完全除去食が必要な参加者には別手配を検討"
+      ],
+      "locationNote": "市外：児湯郡高鍋町北高鍋1351-3。宮崎市内の通常配達は佐土原町のみ",
+      "providerType": "actual_provider",
+      "category": "bento",
+      "status": "候補・条件未確認"
     },
     {
       "id": "munchies",
-      "category": "kitchen-car",
       "name": "自然派タイレストラン MUNCHIES",
-      "summary": "公式サイトで、催事などへのキッチンカー出店相談を受け付けています。",
+      "summary": "厨房付き車両で現場調理を行うタイ料理店。野外フェス・パーティーへの出店を案内。",
       "sourceUrl": "https://www.munchiesmiyazaki.org/kitchencar",
-      "sourceLabel": "公式：キッチンカー",
+      "sourceLabel": "公式キッチンカーページ",
       "checkedAt": "2026-10-19",
-      "status": "候補・条件未確認",
-      "priceNote": "未確認",
-      "capacityNote": "未確認",
-      "checks": [
-        "提供メニュー・提供速度",
-        "出店費・最低保証・設備条件"
-      ],
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
       "planningFacts": [
         {
           "label": "出店の窓口・対象",
-          "value": "店舗の公式サイトで催事などへの出店相談を受付。",
+          "value": "電話080-3967-5308。催事出店の相談を受け付ける。",
           "sourceUrl": "https://www.munchiesmiyazaki.org/kitchencar"
         },
         {
           "label": "会場許可・設備",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "厨房設備を備えた車両で現場調理。車両寸法・必要電源と会場許可は要確認。",
+          "sourceUrl": "https://www.munchiesmiyazaki.org/kitchencar"
         },
         {
           "label": "提供速度・行列",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
         },
         {
           "label": "雨天・キャンセル",
-          "value": "未確認。希望条件を伝えて確認が必要です。"
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
         }
       ],
-      "nextQuestion": "会場の条件で出店でき、休憩時間内に何食を提供できますか？"
+      "nextQuestion": "希望メニュー、昼休み内の提供食数、市内への出張条件を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "市外・国富町本庄。宮崎市会場への派遣条件は要確認。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "hakusuisha-yumemilk",
+      "name": "白水舎乳業 夢みるく",
+      "summary": "宮崎市と周辺を中心に、宮崎産牛乳のソフトクリームを移動販売。休憩時間向け候補。",
+      "sourceUrl": "https://hakusuisha.jp/hanbai/",
+      "sourceLabel": "公式移動販売ページ",
+      "checkedAt": "2026-10-19",
+      "priceNote": "公式掲載：土日祝「1日40,000～・100食以上販売」を出張条件として案内。両条件の関係、税・交通費、2027年適用額は要確認。平日は要相談。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "電話・公式問い合わせフォームから出張相談。平日は時間・場所を相談。",
+          "sourceUrl": "https://hakusuisha.jp/hanbai/"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "自動車による飲食店営業・アイスクリーム製造業の許可取得を明記。会場使用許可、電源・車両寸法は別途確認。",
+          "sourceUrl": "https://hakusuisha.jp/hanbai/"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天・荒天等で出店辞退の場合があると明記。キャンセル料金・判断期限は未確認。",
+          "sourceUrl": "https://hakusuisha.jp/hanbai/"
+        }
+      ],
+      "nextQuestion": "土日祝の掲載条件の解釈、税込総額、必要電源、雨天時の代替とキャンセル条件を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "宮崎市・宮崎市周辺への出張を明記。ページ内に県内原則対応との記載もあり、個別確認が必要。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "odosou-kitchen-car",
+      "name": "旅館小戸荘 キッチンカー",
+      "summary": "宮崎県産牛を使う復刻ハヤシライスを移動販売。会社・施設への訪問とイベント出店を案内。",
+      "sourceUrl": "https://www.odosou.com/hayashirice",
+      "sourceLabel": "公式ハヤシライス・キッチンカーページ",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "出店相談は0985-23-2092。会社・施設への訪問を明記。",
+          "sourceUrl": "https://www.odosou.com/hayashirice"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、必要電源・給排水は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "会議会場への出張可否、昼食時間に提供できる食数、事前予約・一括精算条件を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "宮崎市橘通東。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "kijyorina",
+      "name": "Trattoria Kijyori-na",
+      "summary": "ローストビーフ丼やパスタ等を提供するイタリア料理のキッチンカー。公式サイトに出店依頼条件あり。",
+      "sourceUrl": "https://kijyori-na.com/",
+      "sourceLabel": "公式サイト・店舗情報",
+      "checkedAt": "2026-10-19",
+      "priceNote": "公式店舗情報の掲載：平日の出店依頼30,000円～、土日祝50,000円～。税・交通費・保証方式・2027年条件は要確認。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "電話080-4166-3690と公式お問い合わせ窓口。曜日別の出店依頼条件を掲載。",
+          "sourceUrl": "https://kijyori-na.com/about"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、必要電源・給排水は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "掲載の出店条件に交通費・税を含むか、昼食ピークの提供食数とメニューを教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件",
+        "出店条件の根拠：https://kijyori-na.com/about"
+      ],
+      "locationNote": "市外・児湯郡木城町椎木。宮崎市会場への出張費・対応は要確認。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認",
+      "priceSourceUrl": "https://kijyori-na.com/about"
+    },
+    {
+      "id": "airu",
+      "name": "AIRU -アイル-",
+      "summary": "都城市の農家のキッチンカー。ピザ、米粉チュロス、ソフトクリーム等を案内。",
+      "sourceUrl": "https://r.goope.jp/airu/info/6420453",
+      "sourceLabel": "公式キッチンカー営業案内",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "公式サイトの問い合わせフォームと公式Instagramから相談。宮崎県・鹿児島県のイベント出店を明記。",
+          "sourceUrl": "https://r.goope.jp/airu/info/6420453"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、ピザ調理設備の電源・火気条件は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "宮崎市内の出張条件、ピザと軽食の同時提供可否、1時間あたりの提供数を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "市外・都城市高城町。宮崎県・鹿児島県を中心にイベント出店。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "millha",
+      "name": "Millha!（ミルハ）",
+      "summary": "白水舎乳業の夢みるくを使用するソフトクリームのキッチンカー。休憩時間向けの候補。",
+      "sourceUrl": "https://foodtruckers.info/member/1833/",
+      "sourceLabel": "FOOD TRUCKERS公式・店舗本人紹介",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "店舗本人紹介に電話0985-20-4649を掲載。ソフトクリームのキッチンカーとして営業を明記。",
+          "sourceUrl": "https://foodtruckers.info/member/1833/"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、ソフトクリーム機の必要電源は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "現在のイベント出店条件、昼休みの最大提供数、必要電源を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "宮崎市橘通東1-12-1。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "tropical-market",
+      "name": "トロピカルマーケット",
+      "summary": "高鍋町の農園によるフードトラック。自家農園のフルーツを使ったスイーツ・ジュース、タイコーヒー・タイティーを紹介。",
+      "sourceUrl": "https://foodtruckers.info/member/%E3%83%88%E3%83%AD%E3%83%94%E3%82%AB%E3%83%AB%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%83%E3%83%88/",
+      "sourceLabel": "FOOD TRUCKERS公式・店舗本人紹介",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "店舗本人紹介に電話080-3130-4673を掲載。イベントの相談を案内。",
+          "sourceUrl": "https://foodtruckers.info/member/%E3%83%88%E3%83%AD%E3%83%94%E3%82%AB%E3%83%AB%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%83%E3%83%88/"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、必要電源・冷凍冷蔵設備は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "開催時期に用意できる果物メニュー、宮崎市会場への出張条件と供給数を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "市外・児湯郡高鍋町南高鍋。宮崎市への出張条件と季節メニューは要確認。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "minami-strawberry-farm",
+      "name": "南いちご農園（みなみストロベリーファーム）",
+      "summary": "日南市北郷町の観光農園。いちごのオフシーズンに移動販売車でいちご100％のかき氷を販売。",
+      "sourceUrl": "https://foodtruckers.info/member/%E5%8D%97%E3%81%84%E3%81%A1%E3%81%94%E8%BE%B2%E5%9C%92/",
+      "sourceLabel": "FOOD TRUCKERS公式・店舗本人紹介",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "店舗本人紹介に電話090-8401-5373、メール窓口を掲載。移動販売車の営業を明記。",
+          "sourceUrl": "https://foodtruckers.info/member/%E5%8D%97%E3%81%84%E3%81%A1%E3%81%94%E8%BE%B2%E5%9C%92/"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、冷凍設備・かき氷機の電源は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "開催月の移動販売可否、いちごかき氷の供給数、出張費と電源条件を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "市外・日南市北郷町。オフシーズンの移動販売を案内しており、開催時期の対応は要確認。 RubyKaigi 2027は4月開催のため、農園の繁忙期との両立・出店時期を先に確認。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
+    },
+    {
+      "id": "wam-prioche",
+      "name": "WAM PRIOCHE（ワムプリオッシュ）",
+      "summary": "都城発のキッチンカー。フォークで食べるクロワッサンFORKURO、ポテナゲ、ドリンクを紹介。",
+      "sourceUrl": "https://foodtruckers.info/member/wam-prioche%EF%BC%88%E3%83%AF%E3%83%A0%E3%83%97%E3%83%AA%E3%82%AA%E3%83%83%E3%82%B7%E3%83%A5%EF%BC%89/",
+      "sourceLabel": "FOOD TRUCKERS公式・店舗本人紹介",
+      "checkedAt": "2026-10-19",
+      "priceNote": "イベント出店の料金・最低保証・交通費は未確認。要見積もり。",
+      "capacityNote": "1時間あたりの提供数・最大食数・当日の人員は未確認。",
+      "planningFacts": [
+        {
+          "label": "出店の窓口・対象",
+          "value": "店舗本人紹介に電話050-8884-9146とメールを掲載。2022年10月のキッチンカー開業を明記。",
+          "sourceUrl": "https://foodtruckers.info/member/wam-prioche%EF%BC%88%E3%83%AF%E3%83%A0%E3%83%97%E3%83%AA%E3%82%AA%E3%83%83%E3%82%B7%E3%83%A5%EF%BC%89/"
+        },
+        {
+          "label": "会場許可・設備",
+          "value": "会場許可、車両寸法、必要電源・調理設備は未確認。"
+        },
+        {
+          "label": "提供速度・行列",
+          "value": "時間あたりの提供数・ピーク時の行列対策は未確認。"
+        },
+        {
+          "label": "雨天・キャンセル",
+          "value": "雨天対応・中止判断・キャンセル期限と料金は未確認。"
+        }
+      ],
+      "nextQuestion": "現在のキッチンカーメニューと宮崎市内への出張条件、ピーク時の提供数を教えてください。",
+      "checks": [
+        "2027年の希望日程・会場への出店可否",
+        "最低保証・交通費・税込総額",
+        "車両寸法・電源・火気・会場許可",
+        "提供数・行列・雨天とキャンセル条件"
+      ],
+      "locationNote": "市外・都城市。宮崎市会場への出張条件は要確認。",
+      "providerType": "actual_provider",
+      "category": "kitchen-car",
+      "status": "候補・条件未確認"
     },
     {
       "id": "foodcars-miyazaki",
@@ -183,7 +803,9 @@
           "value": "未確認。希望条件を伝えて確認が必要です。"
         }
       ],
-      "nextQuestion": "会場の条件で出店でき、休憩時間内に何食を提供できますか？"
+      "nextQuestion": "会場の条件で出店でき、休憩時間内に何食を提供できますか？",
+      "providerType": "consultation",
+      "locationNote": "宮崎県〜九州の事業者を探す相談窓口。個別事業者ではありません。"
     },
     {
       "id": "ninjo-yokocho",
@@ -219,7 +841,416 @@
           "value": "未確認。希望条件を伝えて確認が必要です。"
         }
       ],
-      "nextQuestion": "希望日に、必要人数が同じ会として集まれる貸切範囲と総額を教えてください。"
+      "nextQuestion": "希望日に、必要人数が同じ会として集まれる貸切範囲と総額を教えてください。",
+      "providerType": "actual_provider",
+      "locationNote": "宮崎市。貸切条件・会場への移動は要確認。"
+    },
+    {
+      "id": "the-meibia-miyazaki-party",
+      "category": "party",
+      "name": "ザ・メイビア宮崎",
+      "summary": "大小の室別に着席・立食の人数が明示されたホテル宴会場。送迎の相談先にもなります。",
+      "sourceUrl": "https://the-meibia-miyazaki.jp/party_mice/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "掲載例：洋食コース・和洋中折衷会席はフリードリンク付き8,470円〜（税・サービス料込）。2027年料金と会場費は要見積り。",
+      "capacityNote": "ザ・ノース：着席90〜180人／立食90〜250人。ザ・ウエスト：着席50〜120人／立食50〜180人。イースト：着席30〜50人／立食30〜60人。サウス：着席30〜40人／立食30〜50人。室を合算しません。貸切条件は未確認。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "ザ・ノース：着席90〜180人／立食90〜250人。ザ・ウエスト：着席50〜120人／立食50〜180人。イースト：着席30〜50人／立食30〜60人。サウス：着席30〜40人／立食30〜50人。室を合算しません。貸切条件は未確認。",
+          "sourceUrl": "https://the-meibia-miyazaki.jp/party_mice/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "マイクロバス送迎（無料または有料）の案内あり。経路・台数・運行条件は要確認。",
+          "sourceUrl": "https://the-meibia-miyazaki.jp/party_mice/"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "屋内宴会室。ザ・ウエストは音響システムの案内あり。マイク・映像機材・通信と雨天時の送迎動線は要確認。",
+          "sourceUrl": "https://the-meibia-miyazaki.jp/party_mice/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市下原町247-18",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "jal-city-miyazaki-party",
+      "category": "party",
+      "name": "ホテルJALシティ宮崎",
+      "summary": "中心部のホテル宴会場。数十人の正餐・小規模パーティを室分割で検討できます。",
+      "sourceUrl": "https://www.miyazaki-jalcity.co.jp/banquet/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "洋食ブッフェ5,000円〜、標準フリードリンク2,700円。オルソ全室は2時間50,000円（いずれも税・サービス料込）。適用・合計と2027年料金は要見積り。",
+      "capacityNote": "オルソ全スパン：正餐64人。オルソ1：32人、オルソ2：16人。立食の図はあるが人数は未確認。シアター100人を食事定員に転用せず、分割室と全室を加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "オルソ全スパン：正餐64人。オルソ1：32人、オルソ2：16人。立食の図はあるが人数は未確認。シアター100人を食事定員に転用せず、分割室と全室を加算しません。",
+          "sourceUrl": "https://www.miyazaki-jalcity.co.jp/banquet/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "橘通西4丁目。カンファレンス会場からの経路・送迎可否は未確認。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "屋内宴会場。音響・投影・ネット設備と費用、雨天時の乗降場所は要確認。"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "公式宴会約款に取消料の規定あり。見積り時に適用日・料率、人数変更期限と最低保証を確認。",
+          "sourceUrl": "https://www.miyazaki-jalcity.co.jp/wp-content/themes/hotel-jalcity-miyazaki/pdf/enkai-saiji.pdf"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市橘通西4丁目2番30号",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "miyazaki-kanko-hotel-party",
+      "category": "party",
+      "name": "宮崎観光ホテル",
+      "summary": "大規模宴会から小宴会まで公式比較表で食事形式別に選べるホテル。",
+      "sourceUrl": "https://www.miyakan-h.com/conference/list.html",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "宴会料金は日程・料理・飲料・会場・演出ごとの見積りが必要。期間限定プランを2027年開催時の料金とは扱いません。",
+      "capacityNote": "光燿：ディナー400人／立食600人。紅日向：ディナー160人／立食200人。紅・日向の各分割室：ディナー72人／立食100人。いずれも目安。全室と分割室の人数は加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "光燿：ディナー400人／立食600人。紅日向：ディナー160人／立食200人。紅・日向の各分割室：ディナー72人／立食100人。いずれも目安。全室と分割室の人数は加算しません。",
+          "sourceUrl": "https://www.miyakan-h.com/conference/list.html"
+        },
+        {
+          "label": "会場への移動",
+          "value": "松山・大淀川沿い。カンファレンス会場からの移動時間・貸切バス乗降は未確認。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "屋内宴会場。音響・映像設備の構成と追加費用、館内ネット回線、雨天の乗降動線は要確認。"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市松山1-1-1",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "art-miyazaki-skytower-party",
+      "category": "party",
+      "name": "アートホテル宮崎 スカイタワー",
+      "summary": "分割・連結できる宴会室と映像設備を備えたホテル。",
+      "sourceUrl": "https://art-miyazaki-skytower.com/hall/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "宴会料理・会場料金は要見積り。掲載機材例：プロジェクター21,000円／一式、スクリーン21,000円／一式。2027年適用・税扱いは確認が必要。",
+      "capacityNote": "日向全室：着席宴会約150人（公式欄名「正賓」）／立食約214人。向日葵：約60／100人、向日葵＋菜ノ花：約90／130人、浜木綿：約50／70人（順に着席／立食）。分割・連結室を加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "日向全室：着席宴会約150人（公式欄名「正賓」）／立食約214人。向日葵：約60／100人、向日葵＋菜ノ花：約90／130人、浜木綿：約50／70人（順に着席／立食）。分割・連結室を加算しません。",
+          "sourceUrl": "https://art-miyazaki-skytower.com/hall/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "高千穂通2丁目。カンファレンス会場からの経路・送迎可否は未確認。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "3階専用インターネット回線、7,500lmプロジェクター、150インチスクリーンを案内。室別利用と費用は要確認。屋内会場ですが雨天乗降動線は未確認。",
+          "sourceUrl": "https://art-miyazaki-skytower.com/hall/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市高千穂通2-1-26",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "hotel-merieges-party",
+      "category": "party",
+      "name": "ホテルメリージュ",
+      "summary": "中心部で円卓宴会を検討できるホテル。会議用の人数と宴会レイアウトを区別して掲載。",
+      "sourceUrl": "https://www.merieges.co.jp/banquet/houou",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "掲載例：和洋中折衷コース4,400円、ビュッフェ8,800円（20人〜）、飲み放題1,600円〜（税込）。2027年料金・会場費は要確認。",
+      "capacityNote": "鳳凰の円卓レイアウト最大120人。飛翔は円卓最大40人。立食人数・最低貸切人数は未確認。鳳凰シアター150人を宴会人数に転用しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "鳳凰の円卓レイアウト最大120人。飛翔は円卓最大40人。立食人数・最低貸切人数は未確認。鳳凰シアター150人を宴会人数に転用しません。",
+          "sourceUrl": "https://www.merieges.co.jp/banquet/houou"
+        },
+        {
+          "label": "会場への移動",
+          "value": "公式トップは宮崎駅から15分・繁華街へ徒歩1分と案内。実際の出発会場からの経路は要確認。",
+          "sourceUrl": "https://www.merieges.co.jp/"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "音響・照明を常設。スクリーン・プロジェクター・インターネット回線等は貸出、在庫に限りあり。屋内会場、雨天乗降場所は要確認。",
+          "sourceUrl": "https://www.merieges.co.jp/banquet/houou"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "ビュッフェ20人〜・3日前までの予約と掲載。宴会プランに取消ポリシーへのリンクあり。最低保証・人数変更期限と2027年条件は確認が必要。",
+          "sourceUrl": "https://www.merieges.co.jp/banquetplan"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市橘通東3-1-11",
+      "providerType": "actual_provider",
+      "priceSourceUrl": "https://www.merieges.co.jp/banquetplan"
+    },
+    {
+      "id": "new-welcity-miyazaki-party",
+      "category": "party",
+      "name": "ニューウェルシティ宮崎",
+      "summary": "宮崎駅東側で大人数から小宴会まで比較できる実会場。食事と備品の料金表があります。",
+      "sourceUrl": "https://www.nwc-miyazaki.co.jp/convention",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "和洋パーティ料理5,500円〜、フリードリンク1,500円〜（税込）。会場・機材・延長を含む2027年総額は要見積り。",
+      "capacityNote": "洋室大会場全室：着席300人／立食500人。霧島＋高千穂：着席200人／立食240人。霧島・高千穂単室は各着席70人／立食70人。アンジェラス：着席50人／立食50人。配置で増減。分割室と全室は加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "洋室大会場全室：着席300人／立食500人。霧島＋高千穂：着席200人／立食240人。霧島・高千穂単室は各着席70人／立食70人。アンジェラス：着席50人／立食50人。配置で増減。分割室と全室は加算しません。",
+          "sourceUrl": "https://www.nwc-miyazaki.co.jp/convention"
+        },
+        {
+          "label": "会場への移動",
+          "value": "宮崎駅東1丁目。出発会場からの経路・送迎・大型車乗降場所は未確認。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "屋内会場。マイク1,500円、プロジェクター15,000円、仮設スクリーン小6,000円などの備品料金掲載（税込）。ネット回線と雨天動線は要確認。",
+          "sourceUrl": "https://www.nwc-miyazaki.co.jp/convention"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・宴会取消条件・人数変更期限は未確認。飲食物の持込は不可と公式掲載。",
+          "sourceUrl": "https://www.nwc-miyazaki.co.jp/convention"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市宮崎駅東1丁目2番地8",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "airline-hotel-party",
+      "category": "party",
+      "name": "エアラインホテル",
+      "summary": "中心街の吹き抜けホールでビュッフェパーティの貸切相談ができるホテル。",
+      "sourceUrl": "https://www.airlinehotel.jp/facility/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "宴会料理4,400円〜（税込）。円卓・エアラインホールのビュッフェは会場代無料の案内あり。飲料・機材を含む総額と2027年条件は要確認。",
+      "capacityNote": "エアラインホール：ビュッフェのパーティ最大120人と掲載。着席／立食の内訳は未確認。竜舌蘭＋龍胆の81人はスクール定員のため食事人数には使いません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "エアラインホール：ビュッフェのパーティ最大120人と掲載。着席／立食の内訳は未確認。竜舌蘭＋龍胆の81人はスクール定員のため食事人数には使いません。",
+          "sourceUrl": "https://www.airlinehotel.jp/facility/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "橘通西3丁目。カンファレンス会場からの経路と送迎可否は未確認。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "西館4階の屋内吹き抜け会場。マイク・ステージ・スクリーンは無料、プロジェクター16,500円（税込）の一覧あり。選択会場での適用・搬入・雨天乗降は要確認。",
+          "sourceUrl": "https://www.airlinehotel.jp/facility/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "120人ビュッフェは着席・立食のどちらですか。希望日の貸切範囲・飲料を含む最低保証と総額を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市橘通西3丁目10番19号",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "seagaia-convention-party",
+      "category": "party",
+      "name": "シーガイアコンベンションセンター",
+      "summary": "小宴会から大規模MICEまで対応する施設。室別に食事用の比較表があります。",
+      "sourceUrl": "https://www.seagaia-mice.jp/facilities/convention-center/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "料理・飲料・会場・機材・送迎を含む2027年の個別見積りが必要。",
+      "capacityNote": "比較表の掲載例：ジブラルタルはディナー60人／ビュッフェ90人、オーチャード全室は120人／130人、クリスタルは60人／90人。ビュッフェ時の着席・立食の運用は確認が必要。室ごとの数字で施設全体を貸し切る条件ではありません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "比較表の掲載例：ジブラルタルはディナー60人／ビュッフェ90人、オーチャード全室は120人／130人、クリスタルは60人／90人。ビュッフェ時の着席・立食の運用は確認が必要。室ごとの数字で施設全体を貸し切る条件ではありません。",
+          "sourceUrl": "https://www.seagaia-mice.jp/facilities/convention-center/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "中心街とは別エリア。送迎バスの経路・所要時間・最終便は要確認。会場選定時に移動費も比較。"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "Wi-Fi、車椅子貸出、バリアフリートイレを案内。有料の音響・プロジェクター・スクリーンあり。設備はフロアで異なるため要確認。屋内会場。",
+          "sourceUrl": "https://www.seagaia-mice.jp/facilities/convention-center/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市・シーガイア地区",
+      "providerType": "actual_provider"
+    },
+    {
+      "id": "amandan-blue-aoshima-party",
+      "category": "party",
+      "name": "アマンダンブルー青島",
+      "summary": "法人パーティの公式窓口と室別の着席・立食定員がある青島の貸切邸宅。",
+      "sourceUrl": "https://restaurant.novarese.jp/aba/mice/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "掲載例：スタンダードビュッフェ5,500円、ディナーコース6,600円（1人・税込）。飲料・貸切料・機材・送迎と2027年料金は要見積り。",
+      "capacityNote": "メインダイニング：着席150人／立食200人。クリスタルホール・ラウンジ：各着席50人／立食60人。個室：着席30人／立食40人。貸切範囲は要確認、室ごとの定員を加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "メインダイニング：着席150人／立食200人。クリスタルホール・ラウンジ：各着席50人／立食60人。個室：着席30人／立食40人。貸切範囲は要確認、室ごとの定員を加算しません。",
+          "sourceUrl": "https://restaurant.novarese.jp/aba/mice/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "公式案内：青島駅徒歩4分、宮崎駅から車25分。送迎バス手配の案内あり。帰路・台数・費用は要確認。",
+          "sourceUrl": "https://restaurant.novarese.jp/aba/"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "会議イベント向け無線LAN、プロジェクター等の案内あり。屋内ダイニングとガーデンがあり、屋外利用時の雨天切替範囲は要確認。",
+          "sourceUrl": "https://restaurant.novarese.jp/aba/mice/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市青島3丁目1-43。中心市街地からの移動が必要。",
+      "providerType": "actual_provider",
+      "priceSourceUrl": "https://restaurant.novarese.jp/aba/plan/"
+    },
+    {
+      "id": "ana-holiday-inn-miyazaki-party",
+      "category": "party",
+      "name": "ANA ホリデイ・イン リゾート 宮崎",
+      "summary": "青島地区のホテルで洋室・和室の宴会を検討できます。パーティ専用ページで食事人数を公開。",
+      "sourceUrl": "https://www.anahirmiyazaki.com/facilities/banquet/",
+      "sourceLabel": "公式：宴会・パーティ会場案内",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "確認時、宴会・パーティプランの掲載なし。料理・飲料・会場・機材・送迎を含む2027年見積りが必要。",
+      "capacityNote": "パームブルー全室：ディナー130人／ビュッフェ200人。ブルーシップ・ブルーウェーブ各室：ディナー60人／ビュッフェ100人。ヴィーナス：ディナー40人／ビュッフェ60人。ビュッフェの立食運用は要確認。全室と分割室を加算しません。",
+      "planningFacts": [
+        {
+          "label": "着席・立食／貸切範囲",
+          "value": "パームブルー全室：ディナー130人／ビュッフェ200人。ブルーシップ・ブルーウェーブ各室：ディナー60人／ビュッフェ100人。ヴィーナス：ディナー40人／ビュッフェ60人。ビュッフェの立食運用は要確認。全室と分割室を加算しません。",
+          "sourceUrl": "https://www.anahirmiyazaki.com/facilities/banquet/"
+        },
+        {
+          "label": "会場への移動",
+          "value": "公式トップは子供の国駅から徒歩7分、宮崎空港から車15分と案内。カンファレンス会場からの送迎・帰路は別途確認。",
+          "sourceUrl": "https://www.anahirmiyazaki.com/"
+        },
+        {
+          "label": "設備・雨天",
+          "value": "屋内宴会室。会議ページにWi-Fi・有料プロジェクター／スクリーン貸出の案内あり。選択宴会室での適用と雨天乗降を確認。",
+          "sourceUrl": "https://anahirmiyazaki.com/facilities/meeting/"
+        },
+        {
+          "label": "最低保証・キャンセル",
+          "value": "最低保証・取消料・人数変更期限は未確認。"
+        }
+      ],
+      "nextQuestion": "希望日の人数・食事形式で使える室と、飲食・会場・機材を含む総額、最低保証、取消条件を確認できますか？",
+      "checks": [
+        "2027年の空き・受付開始・利用時間",
+        "食事形式と室別人数・貸切範囲",
+        "飲食・設備・移動を含む見積りと取消条件"
+      ],
+      "locationNote": "宮崎市青島1丁目16番1号。中心市街地からの移動が必要。",
+      "providerType": "actual_provider"
     }
   ]
 }

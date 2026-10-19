@@ -1,0 +1,20 @@
+<article id="candidate-<%= candidate.id %>" class="candidate-card" data-food-candidate="<%= candidate.id %>">
+  <p class="kicker"><%= candidate.status %> · <%= candidate.consultation? ? '相談窓口' : '事業者・会場' %></p>
+  <h4><%= candidate.name %></h4>
+  <p class="source"><%= candidate.location_note %></p>
+  <p><%= candidate.summary %></p>
+  <dl>
+    <dt>価格・費用</dt><dd><%= candidate.price_note %><% if candidate.price_source_url %> <a href="<%= candidate.price_source_url %>">料金の出典 ↗</a><% end %></dd>
+    <dt>提供数・受入人数</dt><dd><%= candidate.capacity_note %></dd>
+    <% candidate.planning_facts.each do |fact| %>
+      <dt><%= fact.fetch('label') %></dt>
+      <dd><%= fact.fetch('value') %><% if fact['sourceUrl'] %> <a href="<%= fact.fetch('sourceUrl') %>">出典 ↗</a><% end %></dd>
+    <% end %>
+  </dl>
+  <p class="candidate-next"><strong>候補を絞るための一問</strong><br><%= candidate.next_question %></p>
+  <details>
+    <summary>次に確認すること</summary>
+    <ul><% candidate.checks.each do |check| %><li><%= check %></li><% end %></ul>
+  </details>
+  <p class="source"><a href="<%= candidate.source_url %>"><%= candidate.source_label %> ↗</a><br>確認日：<%= candidate.checked_at %> · <a href="#candidate-<%= candidate.id %>">この候補へのリンク</a></p>
+</article>

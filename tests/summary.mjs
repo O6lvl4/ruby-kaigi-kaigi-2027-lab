@@ -105,6 +105,14 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.locator('[data-restaurant-id]').count(), restaurants.length);
       assert.equal(await page.locator('[data-food-candidate]').count(), restaurantsJson.body.foodCandidates.length);
       assert.equal(await page.locator('.candidate-category').count(), 3);
+      for (const category of ['bento', 'kitchen-car', 'party']) {
+        const providers = restaurantsJson.body.foodCandidates.filter(
+          item => item.category === category && item.providerType === 'actual_provider'
+        );
+        assert.ok(providers.length >= 8);
+        assert.equal(await page.locator(`#tab-${category} span`).innerText(), `${providers.length}件`);
+      }
+
       await page.locator('#tab-party').click();
       await page.locator('#candidate-ninjo-yokocho summary').click();
       assert.equal(await page.locator('#candidate-ninjo-yokocho details').getAttribute('open'), '');
@@ -125,7 +133,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.locator('#tab-kitchen-car').getAttribute('aria-selected'), 'true');
       await page.locator('#tab-kitchen-car').press('End');
       assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
-      await page.locator('a[href="#candidate-ninjo-yokocho"]').click();
+      await page.locator('#candidate-ninjo-yokocho a[href="#candidate-ninjo-yokocho"]').click();
       assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
       assert.equal(await page.locator('#candidate-ninjo-yokocho').isVisible(), true);
       await page.locator('#tab-party').press('Home');

@@ -12,29 +12,22 @@
         <summary>依頼前のチェックリスト</summary>
         <ul><% category.fetch('checks').each do |check| %><li><%= check %></li><% end %></ul>
       </details>
+      <% providers = @food_candidates.select { |candidate| candidate.category == category.fetch('id') && !candidate.consultation? } %>
+      <% consultations = @food_candidates.select { |candidate| candidate.category == category.fetch('id') && candidate.consultation? } %>
+      <p class="source">事業者・会場 <%= providers.size %>件<% if consultations.any? %> ／ 相談窓口 <%= consultations.size %>件（別枠）<% end %>。市外の拠点・配送範囲の制限は各候補に記載しています。</p>
+      <nav class="candidate-links" aria-label="<%= category.fetch('name') %>の候補一覧">
+        <% providers.each do |candidate| %><a href="#candidate-<%= candidate.id %>"><%= candidate.name %></a><% end %>
+      </nav>
       <div class="candidate-grid">
-        <% @food_candidates.select { |candidate| candidate.category == category.fetch('id') }.each do |candidate| %>
-          <article id="candidate-<%= candidate.id %>" class="candidate-card" data-food-candidate="<%= candidate.id %>">
-            <p class="kicker"><%= candidate.status %></p>
-            <h4><%= candidate.name %></h4>
-            <p><%= candidate.summary %></p>
-            <dl>
-              <dt>価格・費用</dt><dd><%= candidate.price_note %></dd>
-              <dt>提供数・受入人数</dt><dd><%= candidate.capacity_note %></dd>
-              <% candidate.planning_facts.each do |fact| %>
-                <dt><%= fact.fetch('label') %></dt>
-                <dd><%= fact.fetch('value') %><% if fact['sourceUrl'] %> <a href="<%= fact.fetch('sourceUrl') %>">出典 ↗</a><% end %></dd>
-              <% end %>
-            </dl>
-            <p class="candidate-next"><strong>候補を絞るための一問</strong><br><%= candidate.next_question %></p>
-            <details>
-              <summary>次に確認すること</summary>
-              <ul><% candidate.checks.each do |check| %><li><%= check %></li><% end %></ul>
-            </details>
-            <p class="source"><a href="<%= candidate.source_url %>"><%= candidate.source_label %> ↗</a><br>確認日：<%= candidate.checked_at %> · <a href="#candidate-<%= candidate.id %>">この候補へのリンク</a></p>
-          </article>
-        <% end %>
+        <% providers.each do |candidate| %><%= render 'food_candidate', candidate: candidate %><% end %>
       </div>
+      <% if consultations.any? %>
+        <h4>事業者探しの相談窓口</h4>
+        <p class="source">以下は個別のキッチンカー事業者ではなく、紹介・手配について相談する窓口です。上の候補件数には含めていません。</p>
+        <div class="candidate-grid">
+          <% consultations.each do |candidate| %><%= render 'food_candidate', candidate: candidate %><% end %>
+        </div>
+      <% end %>
       <% if category.fetch('id') == 'party' %>
         <p class="source">ホテル宴会場などは、既存の<a href="#dining">飲食店・宴会場一覧</a>でも比較できます。掲載人数は各施設・部屋の条件をご確認ください。</p>
       <% end %>

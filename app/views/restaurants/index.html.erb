@@ -6,7 +6,7 @@
   <nav id="dining-tabs" class="dining-tabs" aria-label="ごはん・人数の種類">
     <a id="tab-restaurants" href="#dining" data-dining-tab="dining">飲食店・人数 <span><%= @restaurants.size %>件</span></a>
     <% @food_categories.each do |category| %>
-      <a id="tab-<%= category.fetch('id') %>" href="#candidates-<%= category.fetch('id') %>" data-dining-tab="candidates-<%= category.fetch('id') %>"><%= category.fetch('name') %> <span><%= @food_candidates.count { |candidate| candidate.category == category.fetch('id') } %>件</span></a>
+      <a id="tab-<%= category.fetch('id') %>" href="#candidates-<%= category.fetch('id') %>" data-dining-tab="candidates-<%= category.fetch('id') %>"><%= category.fetch('name') %> <span><%= @food_candidates.count { |candidate| candidate.category == category.fetch('id') && !candidate.consultation? } %>件</span></a>
     <% end %>
   </nav>
   <p class="source"><a href="#contribute-candidates">候補・訂正を情報提供する ↗</a> · 公開情報の比較用です。主催者による選定・予約・発注を示しません。2027年の対応可否・空きは未確認です。</p>

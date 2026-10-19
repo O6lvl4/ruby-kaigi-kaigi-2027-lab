@@ -338,6 +338,8 @@ for (const item of food.candidates) {
   assert.ok(item.status && item.priceNote && item.capacityNote && item.checks.length);
   assert.equal(item.planningFacts.length, 4);
   assert.ok(item.nextQuestion);
+  assert.ok(item.locationNote);
+  assert.ok(['actual_provider', 'consultation'].includes(item.providerType));
   for (const fact of item.planningFacts) assert.ok(fact.label && fact.value);
   assert.ok(pages['/restaurants'].includes(`id="candidate-${item.id}"`));
   assert.ok(pages['/restaurants'].includes(escaped(item.name)));
@@ -350,3 +352,14 @@ assert.match(ninjo.priceNote, /貸切料金は未確認/);
 assert.match(pages['/restaurants'], /template=food-candidate.yml/);
 assert.match(pages['/restaurants'], /直接投稿・即時反映はありません/);
 console.log('PASS catering candidates: categories, source dates, unknowns, planned event and contribution link');
+
+for (const category of food.categories) {
+  const providers = food.candidates.filter(
+    item => item.category === category.id && item.providerType === 'actual_provider'
+  );
+  assert.ok(providers.length >= 8, `${category.id} has a substantive provider shortlist`);
+  assert.equal(new Set(providers.map(item => item.name)).size, providers.length);
+}
+assert.equal(food.candidates.find(item => item.id === 'foodcars-miyazaki').providerType, 'consultation');
+assert.match(pages['/restaurants'], /事業者探しの相談窓口/);
+console.log('PASS expanded shortlists distinguish actual providers, consultation desks and service geography');
