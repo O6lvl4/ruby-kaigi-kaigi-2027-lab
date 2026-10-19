@@ -126,8 +126,6 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       await page.locator('#tab-kitchen-car').press('End');
       assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
       await page.locator('a[href="#candidate-ninjo-yokocho"]').click();
-      await page.reload();
-      await ready(page, { map: false });
       assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
       assert.equal(await page.locator('#candidate-ninjo-yokocho').isVisible(), true);
       await page.locator('#tab-party').press('Home');
@@ -290,6 +288,16 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.locator('#rails-root main[data-platform="wasm32-wasi"]').count(), 1);
       assert.equal(new URL(page.url()).hash, '#novelties');
       assert.equal(await page.locator('[data-novelty-id]').count(), novelties.length);
+      await page.goto(new URL('restaurants#candidate-ninjo-yokocho', base).href);
+      await ready(page, { map: false });
+      assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
+      await page.reload();
+      await ready(page, { map: false });
+      assert.equal(await page.locator('#candidate-ninjo-yokocho').isVisible(), true);
+      assert.equal(await page.locator('[data-dining-panel]:visible').count(), 1);
+      await page.locator('#tab-bento').click();
+      await page.screenshot({ path: `evidence/dining-tabs-${name}-${size}.png`, fullPage: true });
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       results.push({
         engine: name,
         viewport: size,
