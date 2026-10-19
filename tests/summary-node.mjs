@@ -323,3 +323,27 @@ for (const body of Object.values(pages)) {
 console.log(
   'PASS all 27 destinations have qualified addresses; 20 dining pins and origin-free Maps links are Rails-rendered'
 );
+
+const food = await data('food_candidates');
+assert.deepEqual((await get('/restaurants.json')).body.foodCandidates, food.candidates);
+assert.equal(new Set(food.candidates.map(item => item.id)).size, food.candidates.length);
+assert.deepEqual(
+  food.categories.map(item => item.id),
+  ['bento', 'kitchen-car', 'party']
+);
+for (const item of food.candidates) {
+  assert.ok(food.categories.some(category => category.id === item.category));
+  assert.match(item.sourceUrl, /^https:\/\//);
+  assert.match(item.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(item.status && item.priceNote && item.capacityNote && item.checks.length);
+  assert.ok(pages['/restaurants'].includes(`id="candidate-${item.id}"`));
+  assert.ok(pages['/restaurants'].includes(escaped(item.name)));
+  assert.ok(pages['/restaurants'].includes(escaped(item.sourceUrl)));
+}
+const ninjo = food.candidates.find(item => item.id === 'ninjo-yokocho');
+assert.match(ninjo.summary, /開催前の計画/);
+assert.match(ninjo.capacityNote, /未確認/);
+assert.match(ninjo.priceNote, /貸切料金は未確認/);
+assert.match(pages['/restaurants'], /template=food-candidate.yml/);
+assert.match(pages['/restaurants'], /直接投稿・即時反映はありません/);
+console.log('PASS catering candidates: categories, source dates, unknowns, planned event and contribution link');

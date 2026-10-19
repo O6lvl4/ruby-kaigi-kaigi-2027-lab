@@ -1,0 +1,52 @@
+name: お弁当・キッチンカー・パーティ会場の情報
+description: 新しい候補や、掲載情報の訂正を提案する
+title: "[候補情報] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        投稿は公開されます。公開情報だけを記入してください。個人の連絡先、非公開の見積書・会議内容は記入しないでください。
+        内容の確認・編集後にサイトへ反映します。投稿だけでは選定・予約・発注や掲載を確約しません。
+  - type: dropdown
+    id: category
+    attributes:
+      label: 種類
+      options:
+        - お弁当
+        - キッチンカー
+        - パーティ会場
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: 候補名
+      description: 訂正の場合は、対象の候補名も記入してください。
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: 公開されている出典URL
+      description: 公式サイト・主催者の案内など、事実を確認できるページ。
+    validations:
+      required: true
+  - type: input
+    id: checked-at
+    attributes:
+      label: 確認日
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: facts
+    attributes:
+      label: 確認できた内容・訂正内容
+      description: 価格（税込／税別）、提供食数・受入人数、配達・出店・貸切条件など。予定と開催済みの実績を分けてください。
+    validations:
+      required: true
+  - type: textarea
+    id: unknowns
+    attributes:
+      label: 未確認の条件・次に確認したいこと
+      description: 不明な条件は推測せず「未確認」と書いてください。

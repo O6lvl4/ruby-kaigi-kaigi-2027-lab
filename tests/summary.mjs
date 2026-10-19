@@ -103,6 +103,16 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.evaluate(() => document.title), '開催・アクセス｜RubyKaigiKaigi 2027');
       await go(page, '/restaurants');
       assert.equal(await page.locator('[data-restaurant-id]').count(), restaurants.length);
+      assert.equal(await page.locator('[data-food-candidate]').count(), restaurantsJson.body.foodCandidates.length);
+      assert.equal(await page.locator('.candidate-category').count(), 3);
+      await page.locator('#candidate-ninjo-yokocho summary').click();
+      assert.equal(await page.locator('#candidate-ninjo-yokocho details').getAttribute('open'), '');
+      await page.locator('#candidate-ninjo-yokocho summary').click();
+      assert.equal(await page.locator('#candidate-ninjo-yokocho details').getAttribute('open'), null);
+      assert.equal(
+        await page.locator('#contribute-candidates a').first().getAttribute('href'),
+        'https://github.com/O6lvl4/ruby-kaigi-kaigi-2027-lab/issues/new?template=food-candidate.yml'
+      );
       assert.deepEqual(
         await page.locator('#dining-capacity option').evaluateAll(options => options.map(x => x.value)),
         ['0', '10', '20', '30', '50', '60', '100']
