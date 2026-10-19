@@ -1,8 +1,19 @@
 <% content_for :title, 'ごはん・人数' %>
-<section id="dining" class="section reference-section" aria-labelledby="dining-title">
+<div class="section dining-overview">
+  <p class="kicker">食事・懇親会の検討ノート</p>
+  <h1>何を手配する？</h1>
+  <p>お店を探す、昼食を届ける、会場に出店してもらう、みんなで集まる。用途ごとに、比較する条件をそろえました。</p>
+  <nav id="dining-tabs" class="dining-tabs" aria-label="ごはん・人数の種類">
+    <a id="tab-restaurants" href="#dining" data-dining-tab="dining">飲食店・人数 <span><%= @restaurants.size %>件</span></a>
+    <% @food_categories.each do |category| %>
+      <a id="tab-<%= category.fetch('id') %>" href="#candidates-<%= category.fetch('id') %>" data-dining-tab="candidates-<%= category.fetch('id') %>"><%= category.fetch('name') %> <span><%= @food_candidates.count { |candidate| candidate.category == category.fetch('id') } %>件</span></a>
+    <% end %>
+  </nav>
+  <p class="source"><a href="#contribute-candidates">候補・訂正を情報提供する ↗</a> · 公開情報の比較用です。主催者による選定・予約・発注を示しません。2027年の対応可否・空きは未確認です。</p>
+</div>
+<section data-dining-panel aria-labelledby="tab-restaurants" id="dining" class="section reference-section">
   <%= section_label '05', @page.fetch('title'), id: 'dining-title' %>
   <p class="section-intro"><%= @page.fetch('intro') %></p>
-  <p class="source"><a href="#food-candidates">お弁当・キッチンカー・パーティ会場の候補と情報提供へ ↓</a></p>
   <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= @page.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
   <%= render 'toolbar', restaurants: @restaurants %>
   <p id="dining-results" class="source" role="status" aria-live="polite"><%= @restaurants.size %>件を掲載（うち人数要確認 <%= @restaurants.count { |restaurant| !restaurant.group_size_listed? } %>件）</p>
