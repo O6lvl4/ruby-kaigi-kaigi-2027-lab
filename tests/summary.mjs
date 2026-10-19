@@ -105,6 +105,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
       assert.equal(await page.locator('[data-restaurant-id]').count(), restaurants.length);
       assert.equal(await page.locator('[data-food-candidate]').count(), restaurantsJson.body.foodCandidates.length);
       assert.equal(await page.locator('.candidate-category').count(), 3);
+      await page.locator('#tab-party').click();
       await page.locator('#candidate-ninjo-yokocho summary').click();
       assert.equal(await page.locator('#candidate-ninjo-yokocho details').getAttribute('open'), '');
       await page.locator('#candidate-ninjo-yokocho summary').click();
@@ -113,6 +114,30 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
         await page.locator('#contribute-candidates a').first().getAttribute('href'),
         'https://github.com/O6lvl4/ruby-kaigi-kaigi-2027-lab/issues/new?template=food-candidate.yml'
       );
+      assert.equal(await page.locator('[data-dining-panel]:visible').count(), 1);
+      await page.locator('#tab-bento').click();
+      assert.equal(await page.locator('#tab-bento').getAttribute('aria-selected'), 'true');
+      await page.locator('#tab-bento').press('ArrowRight');
+      assert.equal(await page.locator('#tab-kitchen-car').getAttribute('aria-selected'), 'true');
+      await page.goBack();
+      assert.equal(await page.locator('#tab-bento').getAttribute('aria-selected'), 'true');
+      await page.goForward();
+      assert.equal(await page.locator('#tab-kitchen-car').getAttribute('aria-selected'), 'true');
+      await page.locator('#tab-kitchen-car').press('End');
+      assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
+      await page.locator('a[href="#candidate-ninjo-yokocho"]').click();
+      await page.reload();
+      await ready(page, { map: false });
+      assert.equal(await page.locator('#tab-party').getAttribute('aria-selected'), 'true');
+      assert.equal(await page.locator('#candidate-ninjo-yokocho').isVisible(), true);
+      await page.locator('#tab-party').press('Home');
+      assert.equal(await page.locator('#tab-restaurants').getAttribute('aria-selected'), 'true');
+      assert.equal(await page.locator('[data-dining-panel]:visible').count(), 1);
+      assert.ok(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+        'Tab layout fits viewport'
+      );
+      await go(page, '/restaurants');
       assert.deepEqual(
         await page.locator('#dining-capacity option').evaluateAll(options => options.map(x => x.value)),
         ['0', '10', '20', '30', '50', '60', '100']

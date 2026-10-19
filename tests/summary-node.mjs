@@ -336,6 +336,9 @@ for (const item of food.candidates) {
   assert.match(item.sourceUrl, /^https:\/\//);
   assert.match(item.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
   assert.ok(item.status && item.priceNote && item.capacityNote && item.checks.length);
+  assert.equal(item.planningFacts.length, 4);
+  assert.ok(item.nextQuestion);
+  for (const fact of item.planningFacts) assert.ok(fact.label && fact.value);
   assert.ok(pages['/restaurants'].includes(`id="candidate-${item.id}"`));
   assert.ok(pages['/restaurants'].includes(escaped(item.name)));
   assert.ok(pages['/restaurants'].includes(escaped(item.sourceUrl)));

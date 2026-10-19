@@ -1640,3 +1640,74 @@ select:focus-visible {
   border-top: 1px solid var(--line);
   padding-top: 24px;
 }
+
+.dining-overview {
+  padding-bottom: 0;
+}
+.dining-overview h1 {
+  margin: 12px 0;
+  font-size: clamp(28px, 4vw, 44px);
+}
+.dining-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 28px 0 16px;
+}
+.dining-tabs a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.dining-tabs a[aria-selected='true'] {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+.dining-tabs span {
+  font-size: 11px;
+  font-weight: 400;
+}
+.dining-tabs a:focus-visible {
+  outline: 3px solid var(--sea);
+  outline-offset: 3px;
+}
+[data-dining-panel][hidden] {
+  display: none;
+}
+.candidate-category {
+  margin-top: 0;
+}
+.candidate-category h3 {
+  font-size: 28px;
+}
+.candidate-decision {
+  padding: 20px 24px;
+  border-left: 4px solid var(--sea);
+  background: #eef2ea;
+  margin: 24px 0;
+}
+.candidate-decision p {
+  margin: 6px 0;
+}
+.candidate-next {
+  padding: 14px 16px;
+  background: #f2eee3;
+  border-radius: 6px;
+}
+@media (max-width: 650px) {
+  .dining-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dining-tabs a {
+    padding: 13px 12px;
+    font-size: 13px;
+  }
+}
