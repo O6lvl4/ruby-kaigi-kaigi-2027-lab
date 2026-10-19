@@ -2,6 +2,7 @@
 <section id="dining" class="section reference-section" aria-labelledby="dining-title">
   <%= section_label '05', @page.fetch('title'), id: 'dining-title' %>
   <p class="section-intro"><%= @page.fetch('intro') %></p>
+  <p class="source"><a href="#food-candidates">お弁当・キッチンカー・パーティ会場の候補と情報提供へ ↓</a></p>
   <p class="note"><strong>席数と、集まれる人数は別です。</strong><br><%= @page.fetch('capacityNote') %> 価格・コース料金も未確認です。</p>
   <%= render 'toolbar', restaurants: @restaurants %>
   <p id="dining-results" class="source" role="status" aria-live="polite"><%= @restaurants.size %>件を掲載（うち人数要確認 <%= @restaurants.count { |restaurant| !restaurant.group_size_listed? } %>件）</p>
@@ -19,3 +20,5 @@
   </div>
   <p class="source"><%= @page.fetch('publicationDisclaimer') %> 掲載情報は変更されることがあります。店舗との条件確認・予約は別途必要です。</p>
 </section>
+
+<%= render 'food_candidates' %>

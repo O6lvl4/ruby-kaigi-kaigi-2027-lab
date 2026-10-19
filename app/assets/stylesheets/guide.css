@@ -1592,3 +1592,51 @@ select:focus-visible {
   outline: 2px solid var(--sea);
   outline-offset: 2px;
 }
+
+/* Source-backed catering leads remain separate from restaurant capacity filters. */
+.candidate-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 24px 0;
+}
+.candidate-category,
+.candidate-contribute {
+  margin-top: 40px;
+  scroll-margin-top: 100px;
+}
+.candidate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.candidate-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  scroll-margin-top: 100px;
+}
+.candidate-card h4 {
+  font-size: 21px;
+  line-height: 1.5;
+  margin: 10px 0 16px;
+}
+.candidate-card dt {
+  font-weight: 700;
+  margin-top: 14px;
+}
+.candidate-card dd {
+  margin: 4px 0 16px;
+}
+.candidate-card summary,
+.candidate-checklist summary {
+  cursor: pointer;
+  padding: 10px 0;
+}
+.candidate-contribute {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}

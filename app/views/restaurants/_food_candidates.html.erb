@@ -1,0 +1,48 @@
+<section id="food-candidates" class="section reference-section" aria-labelledby="food-candidates-title">
+  <%= section_label '候補集', 'お弁当・キッチンカー・パーティ会場', id: 'food-candidates-title' %>
+  <p class="section-intro">昼食から懇親会まで、公開情報を持ち寄る候補リスト。情報源・確認日・まだ確認が必要な条件を一緒に残します。</p>
+  <p class="note">すべて検討候補です。主催者による選定・予約・発注を示すものではなく、2027年の対応可否は未確認です。上の飲食店一覧とは別のリストで、上の人数・エリア絞り込みの対象には入りません。</p>
+  <nav class="candidate-links" aria-label="候補の種類">
+    <% @food_categories.each do |category| %>
+      <a href="#candidates-<%= category.fetch('id') %>"><%= category.fetch('name') %></a>
+    <% end %>
+    <a href="#contribute-candidates">候補を情報提供する</a>
+  </nav>
+  <% @food_categories.each do |category| %>
+    <section id="candidates-<%= category.fetch('id') %>" class="candidate-category" aria-labelledby="candidates-<%= category.fetch('id') %>-title">
+      <h3 id="candidates-<%= category.fetch('id') %>-title"><%= category.fetch('name') %></h3>
+      <p><%= category.fetch('intro') %></p>
+      <details class="candidate-checklist">
+        <summary>この種類で確認したいこと</summary>
+        <ul><% category.fetch('checks').each do |check| %><li><%= check %></li><% end %></ul>
+      </details>
+      <div class="candidate-grid">
+        <% @food_candidates.select { |candidate| candidate.category == category.fetch('id') }.each do |candidate| %>
+          <article id="candidate-<%= candidate.id %>" class="candidate-card" data-food-candidate="<%= candidate.id %>">
+            <p class="kicker"><%= candidate.status %></p>
+            <h4><%= candidate.name %></h4>
+            <p><%= candidate.summary %></p>
+            <dl>
+              <dt>価格・費用</dt><dd><%= candidate.price_note %></dd>
+              <dt>提供数・受入人数</dt><dd><%= candidate.capacity_note %></dd>
+            </dl>
+            <details>
+              <summary>次に確認すること</summary>
+              <ul><% candidate.checks.each do |check| %><li><%= check %></li><% end %></ul>
+            </details>
+            <p class="source"><a href="<%= candidate.source_url %>"><%= candidate.source_label %> ↗</a><br>確認日：<%= candidate.checked_at %> · <a href="#candidate-<%= candidate.id %>">この候補へのリンク</a></p>
+          </article>
+        <% end %>
+      </div>
+      <% if category.fetch('id') == 'party' %>
+        <p class="source">ホテル宴会場などは、既存の<a href="#dining">飲食店・宴会場一覧</a>でも比較できます。掲載人数は各施設・部屋の条件をご確認ください。</p>
+      <% end %>
+    </section>
+  <% end %>
+  <section id="contribute-candidates" class="candidate-contribute" aria-labelledby="contribute-candidates-title">
+    <h3 id="contribute-candidates-title">候補を情報提供する</h3>
+    <p>候補名、種類、公開されている出典URL、確認日、分かる条件・未確認の条件をお寄せください。既存候補の訂正も歓迎します。</p>
+    <p><a href="https://github.com/O6lvl4/ruby-kaigi-kaigi-2027-lab/issues/new?template=food-candidate.yml">GitHubで候補・訂正を提案する ↗</a> · <a href="https://github.com/O6lvl4/ruby-kaigi-kaigi-2027-lab/issues">集まった情報を見る ↗</a></p>
+    <p class="note">GitHubアカウントが必要です。投稿は公開され、確認・編集後にサイトへ反映します。このページ内での直接投稿・即時反映はありません。個人の連絡先、非公開の見積書・会議内容は書き込まないでください。</p>
+  </section>
+</section>

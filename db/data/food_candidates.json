@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-10-19",
+  "categories": [
+    {
+      "id": "bento",
+      "name": "お弁当",
+      "intro": "会場で受け取る昼食の候補。提供食数と搬入条件を確認しましょう。",
+      "checks": [
+        "一度に用意できる食数・納品時間・配達先",
+        "アレルギー表示・菜食対応・容器回収",
+        "最低注文数・送料・変更／キャンセル期限"
+      ]
+    },
+    {
+      "id": "kitchen-car",
+      "name": "キッチンカー",
+      "intro": "出店の相談先と事業者の候補。会場側の許可と出店条件は別途確認が必要です。",
+      "checks": [
+        "会場の出店許可・営業許可・保険",
+        "設置面積・電源・給排水・雨天対応",
+        "時間あたりの提供数・最低保証・ごみ処理"
+      ]
+    },
+    {
+      "id": "party",
+      "name": "パーティ会場",
+      "intro": "懇親会・貸切の候補。実施予定の参考例と、会場の確定した受入人数を区別します。",
+      "checks": [
+        "着席／立食の人数・貸切範囲・時間",
+        "料理・飲み放題・音響・雨天時の動線",
+        "最低保証・総額・キャンセル条件"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "kaikou-yamato",
+      "category": "bento",
+      "name": "海幸大和",
+      "summary": "公式サイトに会議・セミナー向け弁当と、予算に応じたオーダーメイド弁当の案内があります。",
+      "sourceUrl": "https://kaikou-yamato.com/scene/scene02/",
+      "sourceLabel": "公式：会議やセミナーなどイベントに",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "掲載例：地産弁当 1,500円（税込）。2027年の価格・配送料は未確認。",
+      "capacityNote": "未確認",
+      "checks": [
+        "希望食数の製造可否",
+        "会場への配達範囲・納品時間"
+      ]
+    },
+    {
+      "id": "kisetu-kawano",
+      "category": "bento",
+      "name": "季節料理かわの",
+      "summary": "公式サイトに会議弁当の案内があります。配達は注文合計6,000円（税込）以上から応相談と掲載されています。",
+      "sourceUrl": "https://www.kisetu-kawano.jp/private/bento",
+      "sourceLabel": "公式：おもてなし弁当",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "掲載価格：2,800円（税込）より。2027年の価格・大口注文条件は未確認。",
+      "capacityNote": "未確認",
+      "checks": [
+        "大口注文の締切・対応食数",
+        "会場への配達可否・配送料"
+      ]
+    },
+    {
+      "id": "munchies",
+      "category": "kitchen-car",
+      "name": "自然派タイレストラン MUNCHIES",
+      "summary": "公式サイトで、催事などへのキッチンカー出店相談を受け付けています。",
+      "sourceUrl": "https://www.munchiesmiyazaki.org/kitchencar",
+      "sourceLabel": "公式：キッチンカー",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "未確認",
+      "capacityNote": "未確認",
+      "checks": [
+        "提供メニュー・提供速度",
+        "出店費・最低保証・設備条件"
+      ]
+    },
+    {
+      "id": "foodcars-miyazaki",
+      "category": "kitchen-car",
+      "name": "宮崎フードイベントサポート協会",
+      "summary": "宮崎県〜九州の移動販売・キッチンカーを案内する団体。複数事業者を探す際の相談先候補です。",
+      "sourceUrl": "https://www.foodcars-miyazaki.jp/",
+      "sourceLabel": "公式：宮崎フードイベントサポート協会",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "未確認",
+      "capacityNote": "未確認",
+      "checks": [
+        "紹介・手配の範囲と費用",
+        "必要台数・会場での出店可否"
+      ]
+    },
+    {
+      "id": "ninjo-yokocho",
+      "category": "party",
+      "name": "人情横丁（貸切の検討候補）",
+      "summary": "YOBO万博 in 宮崎の主催者による募集ページでは、2026年12月5日夜に人情横丁を貸し切り、200名規模の懇親会を開催する予定と案内されています。確認日（2026年10月19日）時点では開催前の計画で、開催済み実績ではありません。",
+      "sourceUrl": "https://camp-fire.jp/projects/984340/view",
+      "sourceLabel": "主催者の募集ページ：YOBO万博 in 宮崎（CAMPFIRE）",
+      "checkedAt": "2026-10-19",
+      "status": "候補・条件未確認",
+      "priceNote": "貸切料金は未確認。クラウドファンディングの支援額・参加権価格は、会場の貸切料金ではありません。",
+      "capacityNote": "未確認。参考イベントの計画は200名規模ですが、会場の定員や2027年の受入人数を示すものではありません。",
+      "checks": [
+        "貸切窓口・プランの有無と適用条件",
+        "実際の受入人数・貸切範囲・雨天対応",
+        "2027年の空き状況・飲食込み総額"
+      ]
+    }
+  ]
+}
